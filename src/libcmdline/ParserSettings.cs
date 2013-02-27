@@ -41,6 +41,7 @@ namespace CommandLine
         private bool _caseSensitive;
         private bool _mutuallyExclusive;
         private bool _ignoreUnknownArguments;
+        private bool _dynamicAutoBuild;
         private TextWriter _helpWriter;
         private CultureInfo _parsingCulture;
 
@@ -225,6 +226,19 @@ namespace CommandLine
             set
             {
                 PopsicleSetter.Set(Consumed, ref _parsingCulture, value);
+            }
+        }
+
+        public bool DynamicAutoBuild
+        {
+            get
+            {
+                return _dynamicAutoBuild;
+            }
+
+            set
+            {
+                PopsicleSetter.Set(Consumed, ref _dynamicAutoBuild, value);
             }
         }
 
