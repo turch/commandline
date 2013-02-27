@@ -55,6 +55,7 @@
     <Compile Include="Fakes\OptionsWithImplicitLongName.cs" />
     <Compile Include="Fakes\OptionsWithTwoArrays.cs" />
     <Compile Include="Unit\Attributes\AttributesFixture.cs" />
+    <Compile Include="Unit\Attributes\HelpOptionAttributeFixture.cs" />
     <Compile Include="Unit\Attributes\OptionArrayAttributeFixture.cs">
       <SubType>Code</SubType>
     </Compile>

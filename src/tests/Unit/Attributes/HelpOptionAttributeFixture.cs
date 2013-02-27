@@ -72,26 +72,24 @@ namespace CommandLine.Tests.Unit.Attributes
         [Fact]
         public void Correct_input_not_activates_help()
         {
-            var options = new MockOptions();
             var writer = new StringWriter();
             var parser = new CommandLine.Parser(with => with.HelpWriter = writer);
-            var result = parser.ParseArguments(
-                    new string[] { "-imath.xml", "-oresult.xml" }, options);
+            var options = parser.ParseArguments<MockOptions>(
+                    new string[] { "-imath.xml", "-oresult.xml" });
 
-            result.Should().BeTrue();;
+            options.Should().NotBeNull();
             writer.ToString().Length.Should().Be(0);
         }
 
         [Fact]
         public void Bad_input_activates_help()
         {
-            var options = new MockOptions();
             var writer = new StringWriter();
             var parser = new CommandLine.Parser(with => with.HelpWriter = writer);
-            var result = parser.ParseArguments(
-                    new string[] { "math.xml", "-oresult.xml" }, options);
+            var options = parser.ParseArguments<MockOptions>(
+                    new string[] { "math.xml", "-oresult.xml" });
 
-            result.Should().BeFalse();
+            options.Should().BeNull();
 
             string helpText = writer.ToString();
             (helpText.Length > 0).Should().BeTrue();
@@ -102,13 +100,12 @@ namespace CommandLine.Tests.Unit.Attributes
         [Fact]
         public void Explicit_help_activation()
         {
-            var options = new MockOptions();
             var writer = new StringWriter();
             var parser = new CommandLine.Parser(with => with.HelpWriter = writer);
-            var result = parser.ParseArguments(
-                    new string[] { "--help" }, options);
+            var options = parser.ParseArguments<MockOptions>(
+                    new string[] { "--help" });
 
-            result.Should().BeFalse();
+            options.Should().BeNull();
 
             string helpText = writer.ToString();
             (helpText.Length > 0).Should().BeTrue();

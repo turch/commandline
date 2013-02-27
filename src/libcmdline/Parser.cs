@@ -342,7 +342,7 @@ namespace CommandLine
                 options = this.DoParseArgumentsCore(args, options);
                 if (object.Equals(options, default(T)))
                 {
-                    DisplayHelpText(options, pair, helpWriter);
+                    DisplayHelpText(new T(), pair, helpWriter);
                     return options;
                 }
             }
