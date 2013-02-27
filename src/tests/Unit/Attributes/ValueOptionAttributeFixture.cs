@@ -7,22 +7,26 @@ namespace CommandLine.Tests.Unit.Attributes
     public class ValueOptionAttributeFixture : BaseFixture
     {
         [Fact]
-        public void Index_Implicit_By_Declaration_Order()
+        public void Index_implicit_by_declaration_order()
         {
-            var options = new OptionsWithValueOptionImplicitIndex();
             string[] args = "foo bar".Split();
-            CommandLine.Parser.Default.ParseArguments(args, options);
+
+            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithValueOptionImplicitIndex>(args);
+
+            options.Should().NotBeNull();
             options.A.ShouldBeEquivalentTo("foo");
             options.B.ShouldBeEquivalentTo("bar");
             options.C.Should().BeNull();
         }
 
         [Fact]
-        public void Index_Explicitly_Set_On_Value_Option()
+        public void Index_explicitly_set_on_value_option()
         {
-            var options = new OptionsWithValueOptionExplicitIndex();
             string[] args = "foo bar".Split();
-            CommandLine.Parser.Default.ParseArguments(args, options);
+
+            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithValueOptionExplicitIndex>(args);
+
+            options.Should().NotBeNull();
             options.A.Should().BeNull();
             options.B.ShouldBeEquivalentTo("bar");
             options.C.ShouldBeEquivalentTo("foo");
