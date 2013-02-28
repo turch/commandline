@@ -33,7 +33,7 @@ namespace CommandLine.Parsing
             _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
         }
 
-        public override PresentParserState Parse(IArgumentEnumerator argumentEnumerator, OptionMap map, object options)
+        public override PresentParserState Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
         {
             var parts = argumentEnumerator.Current.Substring(2).Split(new[] { '=' }, 2);
             var option = map[parts[0]];
