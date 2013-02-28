@@ -46,10 +46,10 @@ namespace CommandLine.Parsing
 
             if (ReflectionHelper.IsNullableType(optionInfo.InnerProperty.PropertyType))
             {
-                return optionInfo.ReceivedValue = optionInfo.PropertyWriter.WriteNullable(value, options);
+                return optionInfo.ReceivedValue = PropertyWriter.WriteNullable(value, options, optionInfo.InnerProperty, optionInfo.ParsingCulture);
             }
 
-            return optionInfo.ReceivedValue = optionInfo.PropertyWriter.WriteScalar(value, options);
+            return optionInfo.ReceivedValue = PropertyWriter.WriteScalar(value, options, optionInfo.InnerProperty, optionInfo.ParsingCulture);
         }
 
         public static bool SetValue<T>(IList<string> values, T options, OptionInfo optionInfo)

@@ -83,11 +83,13 @@
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
     <Compile Include="Parsing\OptionInfoPersister.cs" />
-    <Compile Include="Parsing\PropertyWriter.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
     <Compile Include="Infrastructure\ReflectionCache.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Infrastructure\ReflectionHelper.cs" />
+    <Compile Include="Parsing\PropertyWriter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Parsing\TargetCapabilitiesExtensions.cs">
       <SubType>Code</SubType>
     </Compile>

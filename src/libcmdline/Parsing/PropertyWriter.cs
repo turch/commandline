@@ -31,33 +31,23 @@ using System.Reflection;
 
 namespace CommandLine.Parsing
 {
-    internal sealed class PropertyWriter
+    internal static class PropertyWriter
     {
-        private readonly CultureInfo _parsingCulture;
-
-        public PropertyWriter(PropertyInfo property, CultureInfo parsingCulture)
-        {
-            _parsingCulture = parsingCulture;
-            Property = property;
-        }
-
-        public PropertyInfo Property { get; private set; }
-
-        public bool WriteScalar(string value, object target)
+        public static bool WriteScalar<T>(string value, T target, PropertyInfo property, CultureInfo parsingCulture)
         {
             try
             {
                 object propertyValue = null;
-                if (Property.PropertyType.IsEnum)
+                if (property.PropertyType.IsEnum)
                 {
-                    propertyValue = Enum.Parse(Property.PropertyType, value, true);
+                    propertyValue = Enum.Parse(property.PropertyType, value, true);
                 }
                 else
                 {
-                    propertyValue = Convert.ChangeType(value, Property.PropertyType, _parsingCulture);
+                    propertyValue = Convert.ChangeType(value, property.PropertyType, parsingCulture);
                 }
 
-                Property.SetValue(target, propertyValue, null);
+                property.SetValue(target, propertyValue, null);
             }
             catch (InvalidCastException)
             {
@@ -80,14 +70,14 @@ namespace CommandLine.Parsing
         }
 
         [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "FormatException (thrown by ConvertFromString) is thrown as Exception.InnerException, so we've to catch directly System.Exception")]
-        public bool WriteNullable(string value, object target)
+        public static bool WriteNullable<T>(string value, T target, PropertyInfo property, CultureInfo parsingCulture)
         {
-            var nc = new NullableConverter(Property.PropertyType);
+            var nc = new NullableConverter(property.PropertyType);
 
             // FormatException (thrown by ConvertFromString) is thrown as Exception.InnerException, so we've to catch directly System.Exception
             try
             {
-                Property.SetValue(target, nc.ConvertFromString(null, _parsingCulture, value), null);
+                property.SetValue(target, nc.ConvertFromString(null, parsingCulture, value), null);
             }
             catch (Exception)
             {

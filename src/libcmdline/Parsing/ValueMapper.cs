@@ -78,11 +78,9 @@ namespace CommandLine.Parsing
             {
                 var valueOption = _valueOptionAttributeList[_valueOptionIndex++];
 
-                var propertyWriter = new PropertyWriter(valueOption.Left(), _parsingCulture);
-
-                return ReflectionHelper.IsNullableType(propertyWriter.Property.PropertyType) ?
-                    propertyWriter.WriteNullable(item, _target) :
-                    propertyWriter.WriteScalar(item, _target);
+                return ReflectionHelper.IsNullableType(valueOption.Left().PropertyType) ?
+                    PropertyWriter.WriteNullable(item, _target, valueOption.Left(), _parsingCulture) :
+                    PropertyWriter.WriteScalar(item, _target, valueOption.Left(), _parsingCulture);
             }
 
             return IsValueListDefined && AddValueItem(item);
