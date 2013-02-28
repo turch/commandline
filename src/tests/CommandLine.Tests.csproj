@@ -110,6 +110,8 @@
     <Compile Include="Fakes\SimpleOptionsForAutoBuid.cs" />
     <Compile Include="Fakes\OptionsForPlugInScenario.cs" />
     <Compile Include="Fakes\OptionsWithUIntArray.cs" />
+    <Compile Include="Unit\Parser\MutuallyExclusiveParsingFixture.cs" />
+    <Compile Include="Unit\Parser\ParserFixture.cs" />
     <Compile Include="Unit\Text\CopyrightInfoFixture.cs" />
     <Compile Include="Unit\Text\HeadingInfoFixture.cs" />
     <Compile Include="Unit\Text\MultiLineTextAttributeFixture.cs" />
@@ -124,9 +126,7 @@
       <Name>CommandLine</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Unit\Parser\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
 </Project>
