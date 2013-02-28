@@ -41,11 +41,6 @@ namespace CommandLine
     /// </summary>
     public sealed class Parser : IDisposable
     {
-        ///// <summary>
-        ///// Default exit code (1) used by <see cref="Parser.ParseArgumentsStrict(string[],object,Action)"/>
-        ///// and <see cref="Parser.ParseArgumentsStrict(string[],object,Action&lt;string,object&gt;,Action)"/> overloads.
-        ///// </summary>
-        //public const int DefaultExitCodeFail = 1;
         private static readonly Parser DefaultParser = new Parser(true);
         private readonly ParserSettings _settings;
         private bool _disposed;
@@ -120,60 +115,6 @@ namespace CommandLine
         {
             get { return DefaultParser; }
         }
-
-        ///// <summary>
-        ///// Gets the instance that implements <see cref="CommandLine.ParserSettings"/> in use.
-        ///// </summary>
-        //public ParserSettings Settings
-        //{
-        //    get { return _settings; }
-        //}
-
-        ///// <summary>
-        ///// Parses a <see cref="System.String"/> array of command line arguments, setting values in <paramref name="options"/>
-        ///// parameter instance's public fields decorated with appropriate attributes.
-        ///// </summary>
-        ///// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        ///// <param name="options">An instance used to receive values.
-        ///// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
-        ///// <returns>True if parsing process succeed.</returns>
-        ///// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
-        ///// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        //public bool ParseArguments(string[] args, object options)
-        //{
-        //    Assumes.NotNull(args, "args", SR.ArgumentNullException_ArgsStringArrayCannotBeNull);
-        //    Assumes.NotNull(options, "options", SR.ArgumentNullException_OptionsInstanceCannotBeNull);
-
-        //    return DoParseArguments(args, options);
-        //}
-
-        ///// <summary>
-        ///// Parses a <see cref="System.String"/> array of command line arguments with verb commands, setting values in <paramref name="options"/>
-        ///// parameter instance's public fields decorated with appropriate attributes.
-        ///// This overload supports verb commands.
-        ///// </summary>
-        ///// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        ///// <param name="options">An instance used to receive values.
-        ///// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
-        ///// <param name="onVerbCommand">Delegate executed to capture verb command name and instance.</param>
-        ///// <returns>True if parsing process succeed.</returns>
-        ///// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
-        ///// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        ///// <exception cref="System.ArgumentNullException">Thrown if <paramref name="onVerbCommand"/> is null.</exception>
-        //public bool ParseArguments(string[] args, object options, Action<string, object> onVerbCommand)
-        //{
-        //    Assumes.NotNull(args, "args", SR.ArgumentNullException_ArgsStringArrayCannotBeNull);
-        //    Assumes.NotNull(options, "options", SR.ArgumentNullException_OptionsInstanceCannotBeNull);
-        //    Assumes.NotNull(options, "onVerbCommand", SR.ArgumentNullException_OnVerbDelegateCannotBeNull);
-
-        //    object verbInstance = null;
-
-        //    var result = DoParseArgumentsVerbs(args, options, ref verbInstance);
-            
-        //    onVerbCommand(args.FirstOrDefault() ?? string.Empty, result ? verbInstance : null);
-
-        //    return result;
-        //}
 
         /// <summary>
         /// Parses a <see cref="System.String"/> array of command line arguments, setting values in <paramref name="options"/>
@@ -405,7 +346,6 @@ namespace CommandLine
 
             hadError |= !optionMap.EnforceRules();
 
-            //return !hadError ? options : default(T);
             return new Tuple<bool, T>(!hadError, options);
         }
 
@@ -457,7 +397,7 @@ namespace CommandLine
             var resultAndVerbInstance = DoParseArgumentsCore(args.Skip(1).ToArray(), verbInstance);
             var result = resultAndVerbInstance.Item1;
             verbInstance = resultAndVerbInstance.Item2;
-            //if (verbInstance == null && helpInfo != null)
+
             if (!result && helpInfo != null)
             {
                 // Particular verb parsing failed, we try to print its help
