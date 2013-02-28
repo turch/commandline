@@ -16,14 +16,17 @@ namespace CommandLine.Tests.Unit.Attributes
         {
             // Given
             var parser = new CommandLine.Parser();
+            var result = true;
             var arguments = new[] {
                 "--segments", "header.txt:body.txt:footer.txt"
             };
 
             // When
-            var options = parser.ParseArguments<OptionsWithImplicitLongName>(arguments);
+            var options = parser.ParseArguments<OptionsWithImplicitLongName>(
+                arguments, () => { result = false; });
 
             // Than
+            result.Should().BeTrue();
             options.Should().NotBeNull();
             options.Segments.Should().HaveCount(c => c == 3);
             options.Segments.Should().ContainInOrder(new[] { "header.txt", "body.txt", "footer.txt" });

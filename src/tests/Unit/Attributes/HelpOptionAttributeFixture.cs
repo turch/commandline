@@ -74,10 +74,11 @@ namespace CommandLine.Tests.Unit.Attributes
         {
             var writer = new StringWriter();
             var parser = new CommandLine.Parser(with => with.HelpWriter = writer);
+            var result = true;
             var options = parser.ParseArguments<MockOptions>(
-                    new string[] { "-imath.xml", "-oresult.xml" });
+                    new[] { "-imath.xml", "-oresult.xml" }, () => result = false);
 
-            options.Should().NotBeNull();
+            result.Should().BeTrue();
             writer.ToString().Length.Should().Be(0);
         }
 
@@ -86,10 +87,11 @@ namespace CommandLine.Tests.Unit.Attributes
         {
             var writer = new StringWriter();
             var parser = new CommandLine.Parser(with => with.HelpWriter = writer);
+            var result = true;
             var options = parser.ParseArguments<MockOptions>(
-                    new string[] { "math.xml", "-oresult.xml" });
+                    new[] { "math.xml", "-oresult.xml" }, () => result = false);
 
-            options.Should().BeNull();
+            result.Should().BeFalse();
 
             string helpText = writer.ToString();
             (helpText.Length > 0).Should().BeTrue();
@@ -102,10 +104,11 @@ namespace CommandLine.Tests.Unit.Attributes
         {
             var writer = new StringWriter();
             var parser = new CommandLine.Parser(with => with.HelpWriter = writer);
+            var result = true;
             var options = parser.ParseArguments<MockOptions>(
-                    new string[] { "--help" });
+                    new[] { "--help" }, () => result = false);
 
-            options.Should().BeNull();
+            result.Should().BeFalse();
 
             string helpText = writer.ToString();
             (helpText.Length > 0).Should().BeTrue();

@@ -9,10 +9,13 @@ namespace CommandLine.Tests.Unit.Attributes
         [Fact]
         public void Index_implicit_by_declaration_order()
         {
-            string[] args = "foo bar".Split();
+            var args = "foo bar".Split();
+            var result = true;
 
-            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithValueOptionImplicitIndex>(args);
+            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithValueOptionImplicitIndex>(
+                args, () => { result = false; });
 
+            result.Should().BeTrue();
             options.Should().NotBeNull();
             options.A.ShouldBeEquivalentTo("foo");
             options.B.ShouldBeEquivalentTo("bar");
@@ -22,10 +25,13 @@ namespace CommandLine.Tests.Unit.Attributes
         [Fact]
         public void Index_explicitly_set_on_value_option()
         {
-            string[] args = "foo bar".Split();
+            var args = "foo bar".Split();
+            var result = true;
 
-            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithValueOptionExplicitIndex>(args);
+            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithValueOptionExplicitIndex>
+                (args, () => { result = false; });
 
+            result.Should().BeTrue();
             options.Should().NotBeNull();
             options.A.Should().BeNull();
             options.B.ShouldBeEquivalentTo("bar");

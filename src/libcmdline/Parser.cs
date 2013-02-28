@@ -187,20 +187,27 @@ namespace CommandLine
         /// <returns>True if parsing process succeed.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
-        public T ParseArguments<T>(string[] args, Action onFail = null)
+        public T ParseArguments<T>(string[] args, Action onFail)
             where T : new()
         {
             Assumes.NotNull(args, "args", SR.ArgumentNullException_ArgsStringArrayCannotBeNull);
             //Assumes.NotNull(options, "options", SR.ArgumentNullException_OptionsInstanceCannotBeNull);
 
-            var options = DoParseArguments<T>(args);
+            var optionsAndResult = DoParseArguments<T>(args);
+            var result = optionsAndResult.Item1;
+            var options = optionsAndResult.Item2;
 
-            HandleDynamicAutoBuild(options, onFail);
+            HandleDynamicAutoBuild(options);
+
+            if (!result)
+            {
+                onFail();
+            }
 
             return options;
         }
 
-        private void HandleDynamicAutoBuild<T>(T options, Action onFail)
+        private void HandleDynamicAutoBuild<T>(T options)
             where T : new()
         {
             if (!object.Equals(options, default(T)))
@@ -211,11 +218,6 @@ namespace CommandLine
             if (this._settings.DynamicAutoBuild)
             {
                 this.InvokeAutoBuildIfNeeded(options);
-            }
-
-            if (onFail != null)
-            {
-                onFail();
             }
         }
 
@@ -234,21 +236,29 @@ namespace CommandLine
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="onVerbCommand"/> is null.</exception>
-        public T ParseArguments<T>(string[] args, Action<string, object> onVerbCommand, Action onFail = null)
+        public T ParseArguments<T>(string[] args, Action<string, object> onVerbCommand, Action onFail)
             where T : new()
         {
             Assumes.NotNull(args, "args", SR.ArgumentNullException_ArgsStringArrayCannotBeNull);
             //Assumes.NotNull(options, "options", SR.ArgumentNullException_OptionsInstanceCannotBeNull);
             Assumes.NotNull(onVerbCommand, "onVerbCommand", SR.ArgumentNullException_OnVerbDelegateCannotBeNull);
 
-            var optionsAndVerbInstance = DoParseArgumentsVerbs<T>(args);
+            var resultAndOptionsAndVerbInstance = DoParseArgumentsVerbs<T>(args);
 
-            var options = optionsAndVerbInstance.Item1;
-            var verbInstance = optionsAndVerbInstance.Item2;
+            var result = resultAndOptionsAndVerbInstance.Item1;
+            var options = resultAndOptionsAndVerbInstance.Item2;
+            var verbInstance = resultAndOptionsAndVerbInstance.Item3;
 
-            HandleDynamicAutoBuild(options, onFail);
+            HandleDynamicAutoBuild(options);
+
+            //TODO: evaluate mutually activation of delegates
 
             onVerbCommand(args.FirstOrDefault() ?? string.Empty, verbInstance);
+
+            if (!result)
+            {
+                onFail();
+            }
 
             return options;
         }
@@ -324,7 +334,7 @@ namespace CommandLine
             return settings.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        private T DoParseArguments<T>(string[] args)
+        private Tuple<bool, T> DoParseArguments<T>(string[] args)
             where T : new()
         {
             var options = new T();
@@ -337,13 +347,17 @@ namespace CommandLine
                 if (ParseHelp(args, pair.Right))
                 {
                     DisplayHelpText(options, pair, helpWriter);
-                    return default(T);
+                    return new Tuple<bool, T>(false, options);
                 }
-                options = this.DoParseArgumentsCore(args, options);
-                if (object.Equals(options, default(T)))
+
+                var optionsAndResult= this.DoParseArgumentsCore(args, options);
+                var result = optionsAndResult.Item1;
+                options = optionsAndResult.Item2;
+
+                if (!result)
                 {
                     DisplayHelpText(new T(), pair, helpWriter);
-                    return options;
+                    return new Tuple<bool, T>(false, options);
                 }
             }
 
@@ -358,7 +372,7 @@ namespace CommandLine
             helpWriter.Write(helpText);
         }
 
-        private T DoParseArgumentsCore<T>(string[] args, T options)
+        private Tuple<bool,T> DoParseArgumentsCore<T>(string[] args, T options)
             where T : new()
         {
             var hadError = false;
@@ -402,10 +416,11 @@ namespace CommandLine
 
             hadError |= !optionMap.EnforceRules();
 
-            return !hadError ? options : default(T);
+            //return !hadError ? options : default(T);
+            return new Tuple<bool, T>(!hadError, options);
         }
 
-        private Tuple<T, object> DoParseArgumentsVerbs<T>(string[] args)
+        private Tuple<bool, T, object> DoParseArgumentsVerbs<T>(string[] args)
             where T : new()
         {
             var options = new T();
@@ -420,14 +435,14 @@ namespace CommandLine
                     DisplayHelpVerbText(options, helpInfo, null);
                 }
 
-                return new Tuple<T, object>(default(T), null);
+                return new Tuple<bool, T, object>(false, options, null);
             }
 
             var optionMap = OptionMap.Create(options, verbs, _settings);
 
             if (TryParseHelpVerb(args, options, helpInfo, optionMap))
             {
-                return new Tuple<T, object>(default(T), null);
+                return new Tuple<bool, T, object>(false, options, null);
             }
 
             var verbOption = optionMap[args.First()];
@@ -440,7 +455,7 @@ namespace CommandLine
                     DisplayHelpVerbText(options, helpInfo, null);
                 }
 
-                return new Tuple<T, object>(default(T), null);
+                return new Tuple<bool, T, object>(false, options, null);
             }
 
             var verbInstance = verbOption.GetValue(options);
@@ -457,7 +472,7 @@ namespace CommandLine
                 DisplayHelpVerbText(options, helpInfo, args.First());
             }
 
-            return new Tuple<T, object>(options, verbInstance);
+            return new Tuple<bool, T, object>(true, options, verbInstance);
         }
 
         private bool ParseHelp(string[] args, HelpOptionAttribute helpOption)

@@ -15,6 +15,7 @@ namespace CommandLine.Tests.Unit.Attributes
         {
             // Given
             var parser = new CommandLine.Parser();
+            var result = true;
             var arguments = new[] {
                 "--download", "something",
                 "--up-load", "this",
@@ -22,9 +23,11 @@ namespace CommandLine.Tests.Unit.Attributes
             };
 
             // When
-            var options = parser.ParseArguments<OptionsWithImplicitLongName>(arguments);
+            var options = parser.ParseArguments<OptionsWithImplicitLongName>(
+                arguments, () => { result = false; });
 
             // Than
+            result.Should().BeTrue();
             options.Should().NotBeNull();
             options.Download.Should().Be("something");
             options.Upload.Should().Be("this");
