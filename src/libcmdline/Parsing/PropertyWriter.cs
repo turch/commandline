@@ -31,9 +31,6 @@ using System.Reflection;
 
 namespace CommandLine.Parsing
 {
-    /// <summary>
-    /// Encapsulates property writing primitives.
-    /// </summary>
     internal sealed class PropertyWriter
     {
         private readonly CultureInfo _parsingCulture;

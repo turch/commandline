@@ -109,7 +109,7 @@ namespace CommandLine.Parsing
 
             var map = new OptionMap(list.Count, settings);
 
-            foreach (Tuple<PropertyInfo, BaseOptionAttribute> pair in list)
+            foreach (var pair in list)
             {
                 if (pair.Left() != null && pair.Right() != null)
                 {
@@ -168,7 +168,8 @@ namespace CommandLine.Parsing
         {
             foreach (var option in _map.Values)
             {
-                option.SetDefault(RawOptions);
+                //option.SetDefault(RawOptions);
+                OptionInfoPersister.SetDefault(RawOptions, option);
             }
         }
 

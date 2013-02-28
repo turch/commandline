@@ -124,7 +124,7 @@ namespace CommandLine.Parsing
 
         public bool ReceivedValue
         {
-            get; private set;
+            get; set;
         }
 
         public bool HasBothNames
@@ -138,6 +138,54 @@ namespace CommandLine.Parsing
         public bool HasParameterLessCtor
         {
             get; set;
+        }
+
+        public Attribute InnerAttribute
+        {
+            get
+            {
+                return _attribute;
+            }
+        }
+
+        public PropertyInfo InnerProperty
+        {
+            get
+            {
+                return _property;
+            }
+        }
+
+        public CultureInfo ParsingCulture
+        {
+            get
+            {
+                return _parsingCulture;
+            }
+        }
+
+        public PropertyWriter PropertyWriter
+        {
+            get
+            {
+                return _propertyWriter;
+            }
+        }
+
+        public bool HasDefaultValue
+        {
+            get
+            {
+                return _hasDefaultValue;
+            }
+        }
+
+        public object DefaultValue
+        {
+            get
+            {
+                return _defaultValue;
+            }
         }
 
         public object GetValue(object target)
@@ -163,74 +211,74 @@ namespace CommandLine.Parsing
             return instance;
         }
 
-        public bool SetValue(string value, object options)
-        {
-            if (_attribute is OptionListAttribute)
-            {
-                return SetValueList(value, options);
-            }
+        //public bool SetValue(string value, object options)
+        //{
+        //    if (_attribute is OptionListAttribute)
+        //    {
+        //        return SetValueList(value, options);
+        //    }
 
-            if (ReflectionHelper.IsNullableType(_property.PropertyType))
-            {
-                return ReceivedValue = _propertyWriter.WriteNullable(value, options);
-            }
+        //    if (ReflectionHelper.IsNullableType(_property.PropertyType))
+        //    {
+        //        return ReceivedValue = _propertyWriter.WriteNullable(value, options);
+        //    }
 
-            return ReceivedValue = _propertyWriter.WriteScalar(value, options);
-        }
+        //    return ReceivedValue = _propertyWriter.WriteScalar(value, options);
+        //}
 
-        public bool SetValue(IList<string> values, object options)
-        {
-            var elementType = _property.PropertyType.GetElementType();
-            var array = Array.CreateInstance(elementType, values.Count);
+        //public bool SetValue(IList<string> values, object options)
+        //{
+        //    var elementType = _property.PropertyType.GetElementType();
+        //    var array = Array.CreateInstance(elementType, values.Count);
 
-            for (int i = 0; i < array.Length; i++)
-            {
-                try
-                {
-                    array.SetValue(Convert.ChangeType(values[i], elementType, _parsingCulture), i);
-                    _property.SetValue(options, array, null);
-                }
-                catch (FormatException)
-                {
-                    return false;
-                }
-            }
+        //    for (var i = 0; i < array.Length; i++)
+        //    {
+        //        try
+        //        {
+        //            array.SetValue(Convert.ChangeType(values[i], elementType, _parsingCulture), i);
+        //            _property.SetValue(options, array, null);
+        //        }
+        //        catch (FormatException)
+        //        {
+        //            return false;
+        //        }
+        //    }
 
-            return ReceivedValue = true;
-        }
+        //    return ReceivedValue = true;
+        //}
 
-        public bool SetValue(bool value, object options)
-        {
-            _property.SetValue(options, value, null);
-            return ReceivedValue = true;
-        }
+        //public bool SetValue(bool value, object options)
+        //{
+        //    _property.SetValue(options, value, null);
+        //    return ReceivedValue = true;
+        //}
 
-        public void SetDefault(object options)
-        {
-            if (_hasDefaultValue)
-            {
-                try
-                {
-                    _property.SetValue(options, _defaultValue, null);
-                }
-                catch (Exception e)
-                {
-                    throw new ParserException("Bad default value.", e);
-                }
-            }
-        }
+        //public void SetDefault(object options)
+        //{
+        //    if (_hasDefaultValue)
+        //    {
+        //        try
+        //        {
+        //            _property.SetValue(options, _defaultValue, null);
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            throw new ParserException("Bad default value.", e);
+        //        }
+        //    }
+        //}
 
-        private bool SetValueList(string value, object options)
-        {
-            _property.SetValue(options, new List<string>(), null);
-            var fieldRef = (IList<string>)_property.GetValue(options, null);
-            var values = value.Split(((OptionListAttribute)_attribute).Separator);
-            foreach (var item in values)
-            {
-                fieldRef.Add(item);
-            }
+        //private bool SetValueList(string value, object options)
+        //{
+        //    _property.SetValue(options, new List<string>(), null);
+        //    var fieldRef = (IList<string>)_property.GetValue(options, null);
+        //    var values = value.Split(((OptionListAttribute)_attribute).Separator);
+        //    foreach (var item in values)
+        //    {
+        //        fieldRef.Add(item);
+        //    }
 
-            return ReceivedValue = true;
-        }
+        //    return ReceivedValue = true;
+        //}
     }
 }

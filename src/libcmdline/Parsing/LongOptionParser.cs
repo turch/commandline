@@ -60,7 +60,8 @@ namespace CommandLine.Parsing
                 {
                     if (!option.IsArray)
                     {
-                        valueSetting = option.SetValue(parts[1], options);
+                        //valueSetting = option.SetValue(parts[1], options);
+                        valueSetting = OptionInfoPersister.SetValue(parts[1], options, option);
                         if (!valueSetting)
                         {
                             DefineOptionThatViolatesFormat(option);
@@ -74,7 +75,8 @@ namespace CommandLine.Parsing
                     var items = ArgumentParser.GetNextInputValues(argumentEnumerator);
                     items.Insert(0, parts[1]);
 
-                    valueSetting = option.SetValue(items, options);
+                    //valueSetting = option.SetValue(items, options);
+                    valueSetting = OptionInfoPersister.SetValue(items, options, option);
                     if (!valueSetting)
                     {
                         DefineOptionThatViolatesFormat(option);
@@ -86,7 +88,8 @@ namespace CommandLine.Parsing
                 {
                     if (!option.IsArray)
                     {
-                        valueSetting = option.SetValue(argumentEnumerator.Next, options);
+                        //valueSetting = option.SetValue(argumentEnumerator.Next, options);
+                        valueSetting = OptionInfoPersister.SetValue(argumentEnumerator.Next, options, option);
                         if (!valueSetting)
                         {
                             DefineOptionThatViolatesFormat(option);
@@ -99,7 +102,8 @@ namespace CommandLine.Parsing
 
                     var items = ArgumentParser.GetNextInputValues(argumentEnumerator);
 
-                    valueSetting = option.SetValue(items, options);
+                    //valueSetting = option.SetValue(items, options);
+                    valueSetting = OptionInfoPersister.SetValue(items, options, option);
                     if (!valueSetting)
                     {
                         DefineOptionThatViolatesFormat(option);
@@ -114,7 +118,8 @@ namespace CommandLine.Parsing
                 return PresentParserState.Failure;
             }
 
-            valueSetting = option.SetValue(true, options);
+            //valueSetting = option.SetValue(true, options);
+            valueSetting = OptionInfoPersister.SetValue(true, options, option);
             if (!valueSetting)
             {
                 DefineOptionThatViolatesFormat(option);
