@@ -237,7 +237,7 @@ namespace CommandLine
 
             //TODO: evaluate mutually activation of delegates
 
-            onVerbCommand(args.FirstOrDefault() ?? string.Empty, verbInstance);
+            onVerbCommand(args.FirstOrDefault() ?? string.Empty, result ? verbInstance : null);
 
             if (!result)
             {
@@ -454,14 +454,17 @@ namespace CommandLine
                 verbInstance = verbOption.CreateInstance(options);
             }
 
-            verbInstance = DoParseArgumentsCore(args.Skip(1).ToArray(), verbInstance);
-            if (verbInstance == null && helpInfo != null)
+            var resultAndVerbInstance = DoParseArgumentsCore(args.Skip(1).ToArray(), verbInstance);
+            var result = resultAndVerbInstance.Item1;
+            verbInstance = resultAndVerbInstance.Item2;
+            //if (verbInstance == null && helpInfo != null)
+            if (!result && helpInfo != null)
             {
                 // Particular verb parsing failed, we try to print its help
                 DisplayHelpVerbText(options, helpInfo, args.First());
             }
 
-            return new Tuple<bool, T, object>(true, options, verbInstance);
+            return new Tuple<bool, T, object>(result, options, verbInstance);
         }
 
         private bool TryParseHelp(string[] args, HelpOptionAttribute helpOption)

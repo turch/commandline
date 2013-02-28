@@ -113,6 +113,7 @@
     <Compile Include="Unit\Parser\MutuallyExclusiveParsingFixture.cs" />
     <Compile Include="Unit\Parser\OptionArrayAttributeParsingFixture.cs" />
     <Compile Include="Unit\Parser\ParserFixture.cs" />
+    <Compile Include="Unit\Parser\VerbsFixture.cs" />
     <Compile Include="Unit\Text\CopyrightInfoFixture.cs" />
     <Compile Include="Unit\Text\HeadingInfoFixture.cs" />
     <Compile Include="Unit\Text\MultiLineTextAttributeFixture.cs" />
