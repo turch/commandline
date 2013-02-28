@@ -120,6 +120,7 @@
     <Compile Include="Unit\Parser\VerbsFixture.cs" />
     <Compile Include="Unit\Text\CopyrightInfoFixture.cs" />
     <Compile Include="Unit\Text\HeadingInfoFixture.cs" />
+    <Compile Include="Unit\Text\HelpTextFixture.cs" />
     <Compile Include="Unit\Text\MultiLineTextAttributeFixture.cs" />
     <Compile Include="Unit\Infrastructure\ReflectionHelperFixture.cs" />
   </ItemGroup>

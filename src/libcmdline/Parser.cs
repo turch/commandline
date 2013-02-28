@@ -330,7 +330,7 @@ namespace CommandLine
             var pair = ReflectionHelper.RetrieveMethod<HelpOptionAttribute>(options);
             var helpWriter = _settings.HelpWriter;
 
-            // TODO: refactoring following query in TargetCapabilitiesExtensions
+            // TODO: refactoring following query in TargetCapabilitiesExtensions?
             if (pair != null && helpWriter != null)
             {
                 if (this.TryParseHelp(args, pair.Right))
@@ -345,7 +345,7 @@ namespace CommandLine
 
                 if (!result)
                 {
-                    DisplayHelpText(new T(), pair, helpWriter);
+                    DisplayHelpText(options, pair, helpWriter);
                     return new Tuple<bool, T>(false, options);
                 }
             }
