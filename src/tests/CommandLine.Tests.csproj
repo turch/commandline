@@ -113,6 +113,7 @@
     <Compile Include="Unit\Parser\MutuallyExclusiveParsingFixture.cs" />
     <Compile Include="Unit\Parser\OptionArrayAttributeParsingFixture.cs" />
     <Compile Include="Unit\Parser\ParserFixture.cs" />
+    <Compile Include="Unit\Parser\UnknownArgumentsFixture.cs" />
     <Compile Include="Unit\Parser\ValueListAttributeParsingFixture.cs" />
     <Compile Include="Unit\Parser\ValueOptionAttributeParsingFixture.cs" />
     <Compile Include="Unit\Parser\VerbsFixture.cs" />
