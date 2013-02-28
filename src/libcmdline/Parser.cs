@@ -89,7 +89,7 @@ namespace CommandLine
             Assumes.NotNull(configuration, "configuration", SR.ArgumentNullException_ParserSettingsDelegateCannotBeNull);
 
             _settings = new ParserSettings();
-            configuration.Invoke(Settings);
+            configuration.Invoke(_settings);
             _settings.Consumed = true;
         }
 
@@ -121,13 +121,13 @@ namespace CommandLine
             get { return DefaultParser; }
         }
 
-        /// <summary>
-        /// Gets the instance that implements <see cref="CommandLine.ParserSettings"/> in use.
-        /// </summary>
-        public ParserSettings Settings
-        {
-            get { return _settings; }
-        }
+        ///// <summary>
+        ///// Gets the instance that implements <see cref="CommandLine.ParserSettings"/> in use.
+        ///// </summary>
+        //public ParserSettings Settings
+        //{
+        //    get { return _settings; }
+        //}
 
         ///// <summary>
         ///// Parses a <see cref="System.String"/> array of command line arguments, setting values in <paramref name="options"/>
@@ -193,32 +193,18 @@ namespace CommandLine
             Assumes.NotNull(args, "args", SR.ArgumentNullException_ArgsStringArrayCannotBeNull);
             //Assumes.NotNull(options, "options", SR.ArgumentNullException_OptionsInstanceCannotBeNull);
 
-            var optionsAndResult = DoParseArguments<T>(args);
-            var result = optionsAndResult.Item1;
-            var options = optionsAndResult.Item2;
-
-            HandleDynamicAutoBuild(options);
+            var resultAndOptions = DoParseArguments<T>(args);
+            var result = resultAndOptions.Item1;
+            var options = resultAndOptions.Item2;
 
             if (!result)
             {
+                HandleDynamicAutoBuild(options);
+
                 onFail();
             }
 
             return options;
-        }
-
-        private void HandleDynamicAutoBuild<T>(T options)
-            where T : new()
-        {
-            if (!object.Equals(options, default(T)))
-            {
-                return;
-            }
-
-            if (this._settings.DynamicAutoBuild)
-            {
-                this.InvokeAutoBuildIfNeeded(options);
-            }
         }
 
         /// <summary>
@@ -249,14 +235,14 @@ namespace CommandLine
             var options = resultAndOptionsAndVerbInstance.Item2;
             var verbInstance = resultAndOptionsAndVerbInstance.Item3;
 
-            HandleDynamicAutoBuild(options);
-
             //TODO: evaluate mutually activation of delegates
 
             onVerbCommand(args.FirstOrDefault() ?? string.Empty, verbInstance);
 
             if (!result)
             {
+                HandleDynamicAutoBuild(options);
+
                 onFail();
             }
 
@@ -287,11 +273,12 @@ namespace CommandLine
             return found ? pair.Left.GetValue(target, null) : target;
         }
 
-        private static void SetParserStateIfNeeded(object options, IEnumerable<ParsingError> errors)
+        private static T SetParserStateIfNeeded<T>(T options, IEnumerable<ParsingError> errors)
+            where T : new()
         {
             if (!options.CanReceiveParserState())
             {
-                return;
+                return options;
             }
 
             var property = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options)[0].Left;
@@ -327,6 +314,8 @@ namespace CommandLine
             {
                 state.Errors.Add(error);
             }
+
+            return options;
         }
 
         private static StringComparison GetStringComparison(ParserSettings settings)
@@ -344,7 +333,7 @@ namespace CommandLine
             // TODO: refactoring following query in TargetCapabilitiesExtensions
             if (pair != null && helpWriter != null)
             {
-                if (ParseHelp(args, pair.Right))
+                if (this.TryParseHelp(args, pair.Right))
                 {
                     DisplayHelpText(options, pair, helpWriter);
                     return new Tuple<bool, T>(false, options);
@@ -368,7 +357,7 @@ namespace CommandLine
             where T : new()
         {
             string helpText;
-            HelpOptionAttribute.InvokeMethod(options, pair, out helpText);
+            HelpOptionAttribute.InvokeMethod(options, pair, out helpText); // TODO: refactor this
             helpWriter.Write(helpText);
         }
 
@@ -395,7 +384,7 @@ namespace CommandLine
                     var result = parser.Parse(arguments, optionMap, options);
                     if ((result & PresentParserState.Failure) == PresentParserState.Failure)
                     {
-                        SetParserStateIfNeeded(options, parser.PostParsingState);
+                        options = SetParserStateIfNeeded(options, parser.PostParsingState);
                         hadError = true;
                         continue;
                     }
@@ -475,7 +464,7 @@ namespace CommandLine
             return new Tuple<bool, T, object>(true, options, verbInstance);
         }
 
-        private bool ParseHelp(string[] args, HelpOptionAttribute helpOption)
+        private bool TryParseHelp(string[] args, HelpOptionAttribute helpOption)
         {
             var caseSensitive = _settings.CaseSensitive;
             foreach (var arg in args)
@@ -568,6 +557,15 @@ namespace CommandLine
                     options,
                     current => HelpText.DefaultParsingErrorsHandler(options, current),
                     options.HasVerbs()));
+        }
+
+        private void HandleDynamicAutoBuild<T>(T options)
+            where T : new()
+        {
+            if (_settings.DynamicAutoBuild)
+            {
+                InvokeAutoBuildIfNeeded(options);
+            }
         }
 
         private void Dispose(bool disposing)
