@@ -123,6 +123,7 @@
     <Compile Include="Unit\Text\HelpTextFixture.cs" />
     <Compile Include="Unit\Text\MultiLineTextAttributeFixture.cs" />
     <Compile Include="Unit\Infrastructure\ReflectionHelperFixture.cs" />
+    <Compile Include="Unit\Text\VerbsHelpTextFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
