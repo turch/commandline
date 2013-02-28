@@ -1,11 +1,7 @@
 #region License
-//
-// Command Line Library: Program.cs
-//
-// Author:
-//   Giacomo Stelluti Scala (gsscoder@gmail.com)
-//
-// Copyright (C) 2005 - 2013 Giacomo Stelluti Scala
+// <copyright file="Program.cs" company="Giacomo Stelluti Scala">
+//   Copyright 2015-2013 Giacomo Stelluti Scala
+// </copyright>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,26 +20,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #endregion
-//#define EXEC_TESTS
 #region Using Directives
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Text;
-using CommandLine;
 using CommandLine.Text;
-#if EXEC_TESTS
-using CommandLine.Tests;
-using CommandLine.Text.Tests;
-#endif
 #endregion
 
 namespace CommandLine.Demo
 {
-
-
     sealed partial class Program
     {
         private static readonly HeadingInfo HeadingInfo = new HeadingInfo("sampleapp", "1.8");
@@ -54,16 +39,9 @@ namespace CommandLine.Demo
         /// <param name="args">Command line arguments splitted by the system.</param>
         private static void Main(string[] args)
         {
-#if EXEC_TESTS
-            RunATestForDebugging();
-#endif
-            var options = new Options();
-            var parser = new CommandLine.Parser(with => with.HelpWriter = Console.Error);
+            var options = CommandLine.Parser.Default.ParseArguments<Options>(args, () => Environment.Exit(-2));
 
-            if (parser.ParseArgumentsStrict(args, options, () => Environment.Exit(-2)))
-            {
-                Run(options);
-            }
+            Run(options);
         }
 
         private static void Run(Options options)
@@ -118,16 +96,5 @@ namespace CommandLine.Demo
                 Console.WriteLine("[...]");
             }
         }
-
-#if EXEC_TESTS
-        private static void RunATestForDebugging()
-        {
-            //var test = new {XYZ}Fixture();
-            //test.ExecUnitTestMethod("but set a breakpoint before!");
-            Console.Write("press any key");
-            Console.ReadKey();
-            Environment.Exit(1);
-        }
-#endif
     }
 }

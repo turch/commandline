@@ -151,7 +151,7 @@ namespace CommandLine.Tests.Unit.Text
 
             string help = local.ToString();
 
-            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lines = help.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             lines[lines.Length - 2].Should().Be("This is a first post-options line.");
             lines[lines.Length - 1].Should().Be("This is a second post-options line.");
         }
@@ -163,7 +163,7 @@ namespace CommandLine.Tests.Unit.Text
             local.AddOptions(new MockOptionsWithMetaValue());
 
             string help = local.ToString();
-            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lines = help.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             lines[lines.Length - 2].Should().Be("  i FILE, input-file=FILE    Required. Specify input FILE to be processed.");
         }
 
@@ -212,7 +212,7 @@ namespace CommandLine.Tests.Unit.Text
 
             string help = local.ToString();
 
-            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lines = help.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             lines[1].Should().Be("Before ");
             lines[2].Should().Be("0123456789012345678901234567890123456789");
             lines[3].Should().Be("012 After");
@@ -234,7 +234,7 @@ namespace CommandLine.Tests.Unit.Text
 
             Console.WriteLine(help);
 
-            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lines = help.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             lines[0].Should().Be("Customizing Test.");
             lines[1].Should().Be("Pre-Options.");
             lines[3].Should().Be("  v, verbose       Kommentar umfassend Operationen.");
@@ -257,7 +257,7 @@ namespace CommandLine.Tests.Unit.Text
 
             Console.WriteLine(help);
 
-            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lines = help.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             lines[0].Should().Be("Parameterless Constructor Test.");
             lines[1].Should().Be(string.Format(CultureInfo.InvariantCulture, "Copyright (C) {0} Author", year));
             lines[2].Should().Be("Pre-Options.");
@@ -279,7 +279,7 @@ namespace CommandLine.Tests.Unit.Text
             
             Console.WriteLine(help);
             
-            string[] lines = help.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            string[] lines = help.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
             lines[3].Should().Be("  -s, --something    Input something here.");
         }
 
@@ -295,10 +295,15 @@ namespace CommandLine.Tests.Unit.Text
         public void Invoke_render_parsing_errors_text()
         {
             var sw = new StringWriter();
-            var options = new OptionsForErrorsScenario();
-            var parser = new CommandLine.Parser(new ParserSettings {
-                MutuallyExclusive = true, CaseSensitive = true, HelpWriter = sw});
-            var result = parser.ParseArguments(new string[] {"--option-b", "hello", "-cWORLD"}, options);
+            var parser = new CommandLine.Parser(with =>
+                {
+                    with.MutuallyExclusive = true;
+                    with.CaseSensitive = true;
+                    with.HelpWriter = sw;
+                });
+            var result = true;
+            var options = parser.ParseArguments<OptionsForErrorsScenario>(
+                new[] { "--option-b", "hello", "-cWORLD" }, () => { result = false; });
 
             result.Should().BeFalse();
 
@@ -306,7 +311,7 @@ namespace CommandLine.Tests.Unit.Text
 
             Console.WriteLine(outsw);
 
-            var lines = outsw.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            var lines = outsw.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
             lines[0].Should().Be("--option-b option violates format.");
             lines[1].Should().Be("-c/--option-c option violates format.");
@@ -321,7 +326,7 @@ namespace CommandLine.Tests.Unit.Text
             var options = new RPEOptionsForAutoBuild();
             var parser = new CommandLine.Parser(new ParserSettings {
                 MutuallyExclusive = true, CaseSensitive = true, UseHelpWriter = sw});
-            var result = parser.ParseArguments(new string[] {"--option-b", "hello", "-cWORLD"}, options);
+            var options = parser.ParseArguments(new[] {"--option-b", "hello", "-cWORLD"}, options);
 
             Assert.IsFalse(result);
 
@@ -329,7 +334,7 @@ namespace CommandLine.Tests.Unit.Text
 
             Console.WriteLine(outsw);
 
-            var lines = outsw.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            var lines = outsw.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
             Assert.AreEqual(lines[0], "CommandLine.Tests 1.9");
             Assert.AreEqual(lines[1], "Copyright (C) 2005 - 2012 Giacomo Stelluti Scala");
@@ -354,7 +359,7 @@ namespace CommandLine.Tests.Unit.Text
             var options = new SimpleOptionsForAutoBuid();
             var parser = new CommandLine.Parser(new ParserSettings {
                 MutuallyExclusive = true, CaseSensitive = true, UseHelpWriter = sw});
-            var result = parser.ParseArguments(new string[] {}, options);
+            var options = parser.ParseArguments(new[] {}, options);
 
             Assert.IsFalse(result);
 
@@ -362,7 +367,7 @@ namespace CommandLine.Tests.Unit.Text
 
             Console.WriteLine(outsw);
 
-            var lines = outsw.Split(new string[] { Environment.NewLine }, StringSplitOptions.None);
+            var lines = outsw.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
 
             Assert.AreEqual(lines[0], "CommandLine.Tests 1.9");
             Assert.AreEqual(lines[1], "Copyright (C) 2005 - 2012 Giacomo Stelluti Scala");
@@ -380,10 +385,9 @@ namespace CommandLine.Tests.Unit.Text
         [Fact]
         public void Detailed_help_with_bad_format()
         {
-            var options = new ComplexOptionsWithHelp();
-
-            bool result = new CommandLine.Parser(new ParserSettings(Console.Out)).ParseArguments(
-                new string[] { "-iIN.FILE", "-oOUT.FILE", "--offset", "abc" }, options);
+            var result = true;
+            var options = new CommandLine.Parser(with => with.HelpWriter = Console.Out).ParseArguments<ComplexOptionsWithHelp>(
+                new[] { "-iIN.FILE", "-oOUT.FILE", "--offset", "abc" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -391,10 +395,9 @@ namespace CommandLine.Tests.Unit.Text
         [Fact]
         public void Detailed_help_with_missing_required()
         {
-            var options = new ComplexOptionsWithHelp();
-
-            bool result = new CommandLine.Parser(new ParserSettings(Console.Out)).ParseArguments(
-                new string[] { "-j0" }, options);
+            var result = true;
+            var options = new CommandLine.Parser(with => with.HelpWriter = Console.Out).ParseArguments<ComplexOptionsWithHelp>(
+                new[] { "-j0" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -402,10 +405,9 @@ namespace CommandLine.Tests.Unit.Text
         [Fact]
         public void Detailed_help_with_missing_required_and_bad_format()
         {
-            var options = new ComplexOptionsWithHelp();
-
-            bool result = new CommandLine.Parser(new ParserSettings(Console.Out)).ParseArguments(
-                new string[] { "-i0" }, options);
+            var result = true;
+            var options = new CommandLine.Parser(with => with.HelpWriter = Console.Out).ParseArguments<ComplexOptionsWithHelp>(
+                new[] { "-i0" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -413,10 +415,14 @@ namespace CommandLine.Tests.Unit.Text
         [Fact]
         public void Detailed_help_with_bad_mutual_exclusiveness()
         {
-            var options = new ComplexOptionsWithHelp();
-
-            bool result = new CommandLine.Parser(new ParserSettings(true, true, Console.Out)).ParseArguments(
-                new string[] { "-iIN.FILE", "-oOUT.FILE", "--offset", "0", "-ap" }, options);
+            var result = true;
+            var options = new CommandLine.Parser(with =>
+                {
+                    with.CaseSensitive = true;
+                    with.MutuallyExclusive = true;
+                    with.HelpWriter = Console.Out;
+                }).ParseArguments<ComplexOptionsWithHelp>(
+                new[] { "-iIN.FILE", "-oOUT.FILE", "--offset", "0", "-ap" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -424,10 +430,14 @@ namespace CommandLine.Tests.Unit.Text
         [Fact]
         public void Detailed_help_with_bad_format_and_mutual_exclusiveness()
         {
-            var options = new ComplexOptionsWithHelp();
-
-            bool result = new CommandLine.Parser(new ParserSettings(true, true, Console.Out)).ParseArguments(
-                new string[] { "-iIN.FILE", "-oOUT.FILE", "--offset", "zero", "-pa" }, options);
+            var result = true;
+            var options = new CommandLine.Parser(with =>
+                {
+                    with.CaseSensitive = true;
+                    with.MutuallyExclusive = true;
+                    with.HelpWriter = Console.Out;
+                }).ParseArguments<ComplexOptionsWithHelp>(
+                new[] { "-iIN.FILE", "-oOUT.FILE", "--offset", "zero", "-pa" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -436,10 +446,15 @@ namespace CommandLine.Tests.Unit.Text
         [Fact]
         public void Multiple_required_fields_with_more_than_one_required_field_not_specified_reports_all_missing_required_fields()
         {
-            var options = new ComplexOptions();
             using (var writer = new StringWriter())
             {
-                new CommandLine.Parser(new ParserSettings(false,  false, writer)).ParseArguments(new string[0], options);
+                var result = true;
+                var options = new CommandLine.Parser(with =>
+                {
+                    with.CaseSensitive = false;
+                    with.MutuallyExclusive = false;
+                    with.HelpWriter = Console.Out;
+                }).ParseArguments<ComplexOptions>(new string[0], () => { result = false; });
 
                 options.LastParserState.Errors.Should().HaveCount(n => n == 2);
             }
@@ -471,4 +486,3 @@ namespace CommandLine.Tests.Unit.Text
         }
     }
 }
-

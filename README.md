@@ -1,7 +1,11 @@
-Command Line Parser Library 1.9.71.2 stable for CLR.
+Command Line Parser Library 1.9.8.1 beta for CLR.
 ===
 The Command Line Parser Library offers to CLR applications a clean and concise API for manipulating command line arguments and related tasks defining switches, options and verb commands. It allows you to display an help screen with an high degree of customization and a simple way to report syntax errors to the end user. Everything that is boring and repetitive to be programmed stands up on library shoulders, letting developers concentrate on core logic.
 __This library provides _hassle free_ command line parsing with a constantly updated API since 2005.__
+
+News: 
+---
+  - First attempt to remove main side effects from Parser class (help output excluded).
 
 Compatibility:
 ---
@@ -103,12 +107,6 @@ Resources for newcomers:
   - [Quickstart](https://github.com/gsscoder/commandline/wiki/Quickstart)
   - [Wiki](https://github.com/gsscoder/commandline/wiki)
   - [GNU getopt](http://www.gnu.org/software/libc/manual/html_node/Getopt.html)
-
-Latest Changes: 
----
-  - Promoted to stable.
-  - Implicit name is now available on ``OptionAttribute`` and ``OptionListAttribute``.
-  - Fixing version numeration error.
 
 Contacts:
 ---

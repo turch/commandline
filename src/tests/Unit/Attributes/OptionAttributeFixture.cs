@@ -14,8 +14,8 @@ namespace CommandLine.Tests.Unit.Attributes
         public void Should_use_property_name_as_long_name_if_omitted()
         {
             // Given
-            var options = new OptionsWithImplicitLongName();
             var parser = new CommandLine.Parser();
+            var result = true;
             var arguments = new[] {
                 "--download", "something",
                 "--up-load", "this",
@@ -23,10 +23,12 @@ namespace CommandLine.Tests.Unit.Attributes
             };
 
             // When
-            var result = parser.ParseArguments(arguments, options);
+            var options = parser.ParseArguments<OptionsWithImplicitLongName>(
+                arguments, () => { result = false; });
 
             // Than
-            result.Should().Be(true);
+            result.Should().BeTrue();
+            options.Should().NotBeNull();
             options.Download.Should().Be("something");
             options.Upload.Should().Be("this");
             options.Bytes.Should().Be(1024);

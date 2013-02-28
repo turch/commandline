@@ -16,10 +16,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Value_option_attribute_isolates_non_option_values()
         {
-            var options = new SimpleOptionsWithValueOption();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(
-                new string[] { "--switch", "file.ext", "1000", "0.1234", "-s", "out.ext" }, options);
+            var result = true;
+            var options = parser.ParseArguments<SimpleOptionsWithValueOption>(
+                new string[] { "--switch", "file.ext", "1000", "0.1234", "-s", "out.ext" }, () => { result = false; });
 
             result.Should().BeTrue();
 
@@ -33,10 +33,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Value_option_attribute_values_are_not_mandatory()
         {
-            var options = new SimpleOptionsWithValueOption();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(
-                new string[] { "--switch" }, options);
+            var result = true;
+            var options = parser.ParseArguments<SimpleOptionsWithValueOption>(
+                new string[] { "--switch" }, () => { result = false; });
 
             result.Should().BeTrue();
 
@@ -49,10 +49,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Value_option_takes_precedence_on_value_list_regardless_declaration_order()
         {
-            var options = new SimpleOptionsWithValueOptionAndValueList();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(
-                new string[] { "ofvalueoption", "-1234", "4321", "forvaluelist1", "forvaluelist2", "forvaluelist3" }, options);
+            var result = true;
+            var options = parser.ParseArguments<SimpleOptionsWithValueOptionAndValueList>(
+                new string[] { "ofvalueoption", "-1234", "4321", "forvaluelist1", "forvaluelist2", "forvaluelist3" }, () => { result = false; });
 
             result.Should().BeTrue();
 
@@ -67,10 +67,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Between_value_options_order_matters()
         {
-            var options = new SimpleOptionsWithValueOptionAndValueList();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(
-                new string[] { "4321", "ofvalueoption", "-1234", "forvaluelist1", "forvaluelist2", "forvaluelist3" }, options);
+            var result = true;
+            var options = parser.ParseArguments<SimpleOptionsWithValueOptionAndValueList>(
+                new string[] { "4321", "ofvalueoption", "-1234", "forvaluelist1", "forvaluelist2", "forvaluelist3" }, () => { result = false; });
 
             result.Should().BeFalse();
         }

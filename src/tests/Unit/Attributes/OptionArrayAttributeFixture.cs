@@ -17,18 +17,19 @@ namespace CommandLine.Tests.Unit.Attributes
         public void Should_correctly_parse_two_consecutive_arrays()
         {
             // Given
-            var options = new OptionsWithTwoArrays();
             var parser = new CommandLine.Parser();
+            var result = true;
             var argumets = new[] { "--source", @"d:/document.docx", "--output", @"d:/document.xlsx",
                     "--headers", "1", "2", "3", "4",              // first array
                     "--content", "5", "6", "7", "8", "--verbose"  // second array
                 };
 
             // When
-            var result = parser.ParseArguments(argumets, options);
+            var options = parser.ParseArguments<OptionsWithTwoArrays>(argumets, () => { result = false; });
 
             // Than
             result.Should().BeTrue();
+            options.Should().NotBeNull();
             options.Headers.Should().HaveCount(c => c == 4);
             options.Headers.Should().ContainInOrder(new uint[] { 1, 2, 3, 4 });
             options.Content.Should().HaveCount(c => c == 4);
@@ -39,17 +40,18 @@ namespace CommandLine.Tests.Unit.Attributes
         public void Should_use_property_name_as_long_name_if_omitted()
         {
             // Given
-            var options = new OptionsWithImplicitLongName();
             var parser = new CommandLine.Parser();
+            var result = true;
             var arguments = new[] {
                 "--offsets", "-2", "-1", "0", "1" , "2"
             };
 
             // When
-            var result = parser.ParseArguments(arguments, options);
+            var options = parser.ParseArguments<OptionsWithImplicitLongName>(arguments, () => { result = false; });
 
             // Than
-            result.Should().Be(true);
+            result.Should().BeTrue();
+            options.Should().NotBeNull();
             options.Offsets.Should().HaveCount(c => c == 5);
             options.Offsets.Should().ContainInOrder(new[] { -2, -1, 0, 1, 2 });
         }

@@ -41,23 +41,27 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parse_valid_unknown_arguments()
         {
-            string[] args = { "--plugin", "addonX", "--filename", "input.dat" };
-            var appOptions = new OptionsForAppWithPlugIns();
-            var parser = new CommandLine.Parser(new ParserSettings
-            {
-                IgnoreUnknownArguments = true, CaseSensitive = true });
-            var result1 = parser.ParseArguments(args, appOptions);
+            var args = new[]
+                {
+                    "--plugin", "addonX", "--filename", "input.dat"
+                };
+            var parser = new CommandLine.Parser(with =>
+                {
+                    with.IgnoreUnknownArguments = true;
+                    with.CaseSensitive = true;
+                });
+            var appResult = true;
+            var appOptions = parser.ParseArguments<OptionsForAppWithPlugIns>(args, () => appResult = false);
 
-            result1.Should().BeTrue();
+            appResult.Should().BeTrue();
             appOptions.PlugInName.Should().Be("addonX");
 
-            var plugInXOptions = new OptionsOfPlugInX();
-            var result2 = parser.ParseArguments(args, plugInXOptions);
+            var plugInXResult = true;
+            var plugInXOptions = parser.ParseArguments<OptionsOfPlugInX>(args, () => plugInXResult = false);
 
-            result2.Should().BeTrue();
+            plugInXResult.Should().BeTrue();
             plugInXOptions.InputFileName.Should().Be("input.dat");
             plugInXOptions.ReadOffset.Should().Be(10L);
         }
     }
 }
-

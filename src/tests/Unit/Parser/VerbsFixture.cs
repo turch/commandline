@@ -43,17 +43,17 @@ namespace CommandLine.Tests.Unit.Parser
         {
             string invokedVerb = null;
             object invokedVerbInstance = null;
+            var result = true;
 
-            var options = new OptionsWithVerbs();
-            options.AddVerb.Should().BeNull();
+            //options.AddVerb.Should().BeNull();
 
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] {"add", "-p", "untracked.bin"} , options,
+            var options = parser.ParseArguments<OptionsWithVerbs>(new[] { "add", "-p", "untracked.bin" },
                 (verb, subOptions) =>
                 {
                     invokedVerb = verb;
                     invokedVerbInstance = subOptions;
-                });
+                }, () => { result = false; });
 
             result.Should().BeTrue();
 
@@ -72,27 +72,28 @@ namespace CommandLine.Tests.Unit.Parser
         {
             string invokedVerb = null;
             object invokedVerbInstance = null;
+            var result = true;
 
-            var proof = new Random().Next(int.MaxValue);
-            var options = new OptionsWithVerbs();
-            options.CommitVerb.Should().NotBeNull();
-            options.CommitVerb.CreationProof = proof;
+            //var proof = new Random().Next(int.MaxValue);
+            //var options = new OptionsWithVerbs();
+            //options.CommitVerb.Should().NotBeNull();
+            //options.CommitVerb.CreationProof = proof;
 
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "commit", "--amend" }, options,
+            var options = parser.ParseArguments<OptionsWithVerbs>(new[] { "commit", "--amend" },
                 (verb, subOptions) =>
                 {
                     invokedVerb = verb;
                     invokedVerbInstance = subOptions;
-                });
+                }, () => { result = false; });
 
             result.Should().BeTrue();
 
             invokedVerb.Should().Be("commit");
             invokedVerbInstance.Should().BeOfType<CommitSubOptions>();
 
-            // Check if the instance is the one provider by us (not by the parser)
-            options.CommitVerb.CreationProof.Should().Be(proof);
+            //// Check if the instance is the one provider by us (not by the parser)
+            //options.CommitVerb.CreationProof.Should().Be(proof);
             options.CommitVerb.Amend.Should().BeTrue();
         }
 
@@ -101,17 +102,17 @@ namespace CommandLine.Tests.Unit.Parser
         {
             string invokedVerb = null;
             object invokedVerbInstance = null;
+            var result = true;
 
-            var options = new OptionsWithVerbs();
             var testWriter = new StringWriter();
 
             var parser = new CommandLine.Parser(with => with.HelpWriter = testWriter);
-            var result = parser.ParseArguments(new string[] {}, options,
+            var options = parser.ParseArguments<OptionsWithVerbs>(new string[] { },
                 (verb, subOptions) =>
                 {
                     invokedVerb = verb;
                     invokedVerbInstance = subOptions;
-                });
+                }, () => { result = false; });
 
             result.Should().BeFalse();
 
@@ -127,17 +128,17 @@ namespace CommandLine.Tests.Unit.Parser
         {
             string invokedVerb = null;
             object invokedVerbInstance = null;
+            var result = true;
 
-            var options = new OptionsWithVerbs();
             var testWriter = new StringWriter();
 
             var parser = new CommandLine.Parser(with => with.HelpWriter = testWriter);
-            var result = parser.ParseArguments(new string[] {"clone", "--no_hardlinks"}, options,
+            var options = parser.ParseArguments<OptionsWithVerbs>(new[] { "clone", "--no_hardlinks" },
                 (verb, subOptions) =>
                 {
                     invokedVerb = verb;
                     invokedVerbInstance = subOptions;
-                });
+                }, () => { result = false; });
 
             result.Should().BeFalse();
 
@@ -154,7 +155,7 @@ namespace CommandLine.Tests.Unit.Parser
         //    var options = new OptionsWithVerbs();
 
         //    var parser = new CommandLine.Parser();
-        //    var result = parser.ParseArguments(new string[] {}, options);
+        //    var options = parser.ParseArguments(new[] {}, options);
 
         //    result.Should().BeFalse();
 
@@ -169,7 +170,7 @@ namespace CommandLine.Tests.Unit.Parser
         //    var options = new OptionsWithVerbs();
 
         //    var parser = new CommandLine.Parser();
-        //    var result = parser.ParseArguments(new string[] {"commit", "--amend"}, options);
+        //    var options = parser.ParseArguments(new[] {"commit", "--amend"}, options);
 
         //    result.Should().BeTrue();
 
@@ -183,7 +184,7 @@ namespace CommandLine.Tests.Unit.Parser
         //    var options = new OptionsWithVerbs();
 
         //    var parser = new CommandLine.Parser();
-        //    var result = parser.ParseArguments(new string[] {"commit", "--amend"}, options);
+        //    var options = parser.ParseArguments(new[] {"commit", "--amend"}, options);
 
         //    result.Should().BeTrue();
 
@@ -203,16 +204,15 @@ namespace CommandLine.Tests.Unit.Parser
         {
             string invokedVerb = null;
             object invokedVerbInstance = null;
-
-            var options = new OptionsWithVerbsNoHelp2();
+            var result = true;
 
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new[] {"with", "--must"}, options,
+            var options = parser.ParseArguments<OptionsWithVerbsNoHelp2>(new[] { "with", "--must" },
                 (verb, subOptions) =>
                 {
                     invokedVerb = verb;
                     invokedVerbInstance = subOptions;
-                });
+                }, () => { result = false; });
 
             result.Should().BeFalse();
 
@@ -221,4 +221,3 @@ namespace CommandLine.Tests.Unit.Parser
         }
     }
 }
-

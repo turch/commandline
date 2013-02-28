@@ -50,13 +50,13 @@ namespace CommandLine.Tests.Unit.Text
         [Fact]
         public void Requesting_help_prints_help_index()
         {
-            DoCoreTestForIndex(new string[] {"help"});
+            DoCoreTestForIndex(new[] {"help"});
         }
 
         [Fact]
         public void Requesting_bad_help_prints_help_index()
         {
-            DoCoreTestForIndex(new string[] { "help", "undefined" });
+            DoCoreTestForIndex(new[] { "help", "undefined" });
         }
 
         [Fact]
@@ -65,22 +65,22 @@ namespace CommandLine.Tests.Unit.Text
             string invokedVerb = null;
             object invokedVerbInstance = null;
 
-            var options = new OptionsWithVerbsHelp();
             var testWriter = new StringWriter();
             ReflectionHelper.AssemblyFromWhichToPullInformation = Assembly.GetExecutingAssembly();
             var parser = new CommandLine.Parser(with => with.HelpWriter = testWriter);
-            var result = parser.ParseArguments(new string[] { "clone", "--no_hardlinks" }, options,
+            var result = true;
+            var options = parser.ParseArguments<OptionsWithVerbsHelp>(new[] { "clone", "--no_hardlinks" },
                 (verb, subOptions) =>
                     {
                         invokedVerb = verb;
                         invokedVerbInstance = subOptions;
-                    });
+                    }, () => { result = false; });
 
             result.Should().BeFalse();
 
             var helpText = testWriter.ToString();
             Console.WriteLine(helpText);
-            var lines = helpText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = helpText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             // Verify just significant output
             lines[5].Trim().Should().Be("--no-hardlinks    Optimize the cloning process from a repository on a local");
             lines[6].Trim().Should().Be("filesystem by copying files.");
@@ -97,22 +97,22 @@ namespace CommandLine.Tests.Unit.Text
             string invokedVerb = null;
             object invokedVerbInstance = null;
 
-            var options = new OptionsWithVerbsHelp();
             var testWriter = new StringWriter();
             ReflectionHelper.AssemblyFromWhichToPullInformation = Assembly.GetExecutingAssembly();
             var parser = new CommandLine.Parser(with => with.HelpWriter = testWriter);
-            var result = parser.ParseArguments(new string[] {"help", "add"}, options,
+            var result = true;
+            var options = parser.ParseArguments<OptionsWithVerbsHelp>(new[] { "help", "add" },
                 (verb, subOptions) =>
                     {
                         invokedVerb = verb;
                         invokedVerbInstance = subOptions;
-                    });
+                    }, () => { result = false; });
 
             result.Should().BeFalse();
 
             var helpText = testWriter.ToString();
             Console.WriteLine(helpText);
-            var lines = helpText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = helpText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
 
             invokedVerb.Should().Be("help");
             invokedVerbInstance.Should().Be(null);
@@ -121,20 +121,20 @@ namespace CommandLine.Tests.Unit.Text
 
         private void DoCoreTestForIndex(string[] args)
         {
-            var options = new OptionsWithVerbsHelp();
             var testWriter = new StringWriter();
             ReflectionHelper.AssemblyFromWhichToPullInformation = Assembly.GetExecutingAssembly();
             var parser = new CommandLine.Parser(with => with.HelpWriter = testWriter);
-            var result = parser.ParseArguments(args, options,
+            var result = true;
+            var options = parser.ParseArguments<OptionsWithVerbsHelp>(args,
                 (_, __) =>
                     {
-                    });
+                    }, () => { result = false; });
 
             result.Should().BeFalse();
 
             var helpText = testWriter.ToString();
             Console.WriteLine(helpText);
-            var lines = helpText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            var lines = helpText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             // Verify just significant output
             lines[5].Trim().Should().Be("add       Add file contents to the index.");
             lines[6].Trim().Should().Be("commit    Record changes to the repository.");

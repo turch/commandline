@@ -41,32 +41,33 @@ namespace CommandLine.Tests.Unit.Parser
     public class ParserSettingsFixture
     {
         [Fact]
-        public void Setting_help_writer_using_constructor()
+        public void Setting_help_writer_using_lambda()
         {
             var writer = new StringWriter();
-            var parser = new CommandLine.Parser(new ParserSettings(writer));
-            var options = new SimpleOptionsWithHelpOption();
-            
-            bool success = parser.ParseArguments(new string[] {"--help"}, options);
+            var parser = new CommandLine.Parser(with => with.HelpWriter = writer);
+            var result = true;
 
-            success.Should().BeFalse();
+            var options = parser.ParseArguments<SimpleOptionsWithHelpOption>(new[] { "--help" },
+                () => { result = false; });
+
+            result.Should().BeFalse();
             writer.ToString().Should().Be("MockOptions::GetUsage()");
         }
 
-        [Fact]
-        public void Setting_help_writer_using_property()
-        {
-            var writer = new StringWriter();
-            var settings = new ParserSettings();
-            settings.HelpWriter = writer;
-            var parser = new CommandLine.Parser(settings);
-            var options = new SimpleOptionsWithHelpOption();
+        //[Fact]
+        //public void Setting_help_writer_using_property()
+        //{
+        //    var writer = new StringWriter();
+        //    var settings = new ParserSettings();
+        //    settings.HelpWriter = writer;
+        //    var parser = new CommandLine.Parser(settings);
+        //    var options = new SimpleOptionsWithHelpOption();
 
-            bool success = parser.ParseArguments(new string[] { "--help" }, options);
+        //    bool success = parser.ParseArguments(new string[] { "--help" }, options);
 
-            success.Should().BeFalse();
-            writer.ToString().Should().Be("MockOptions::GetUsage()");
-        }
+        //    success.Should().BeFalse();
+        //    writer.ToString().Should().Be("MockOptions::GetUsage()");
+        //}
 
         [Fact]
         public void Setting_instance_is_not_reusable()
