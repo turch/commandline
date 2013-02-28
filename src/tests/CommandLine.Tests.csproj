@@ -111,6 +111,7 @@
     <Compile Include="Fakes\OptionsForPlugInScenario.cs" />
     <Compile Include="Fakes\OptionsWithUIntArray.cs" />
     <Compile Include="Unit\Parser\MutuallyExclusiveParsingFixture.cs" />
+    <Compile Include="Unit\Parser\NullableTypesParsingFixture.cs" />
     <Compile Include="Unit\Parser\OptionArrayAttributeParsingFixture.cs" />
     <Compile Include="Unit\Parser\ParserFixture.cs" />
     <Compile Include="Unit\Parser\UnknownArgumentsFixture.cs" />

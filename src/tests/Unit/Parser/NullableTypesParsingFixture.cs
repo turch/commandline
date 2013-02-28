@@ -42,27 +42,30 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parse_nullable_integer_option()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "-i", "99" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "-i", "99" }, () => { result = false; });
 
             result.Should().BeTrue();
             options.IntegerValue.Should().Be(99);
 
-            options = new NullableTypesOptions();
             parser = new CommandLine.Parser();
-            result = parser.ParseArguments(new string[] { }, options);
+            var result2 = true;
+            options = parser.ParseArguments<NullableTypesOptions>(
+                new string[] { }, () => { result2 = false; });
 
-            result.Should().BeTrue();
+            result2.Should().BeTrue();
             options.IntegerValue.Should().NotHaveValue();
         }
 
         [Fact]
         public void Passing_bad_value_to_a_nullable_integer_option_fails()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "-i", "string-value" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "-i", "string-value" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -70,9 +73,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Passing_no_value_to_a_nullable_integer_option_fails()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "-int" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "-int" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -80,27 +84,30 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parse_nullable_enumeration_option()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "--enum=ReadWrite" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "--enum=ReadWrite" }, () => { result = false; });
 
             result.Should().BeTrue();
             options.EnumValue.Should().Be(FileAccess.ReadWrite);
 
-            options = new NullableTypesOptions();
             parser = new CommandLine.Parser();
-            result = parser.ParseArguments(new string[] { }, options);
+            var result2 = true;
+            options = parser.ParseArguments<NullableTypesOptions>(
+                new string[] { }, () => { result2 = false; });
 
-            result.Should().BeTrue();
+            result2.Should().BeTrue();
             options.EnumValue.Should().BeNull();
         }
 
         [Fact]
         public void Passing_bad_value_to_a_nullable_enumeration_option_fails()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "-e", "Overwrite" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "-e", "Overwrite" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -108,9 +115,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Passing_no_value_to_a_nullable_enumeration_option_fails()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "--enum" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "--enum" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -118,27 +126,30 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parse_nullable_double_option()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "-d9.999" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "-d9.999" }, () => { result = false; });
 
             result.Should().BeTrue();
             options.DoubleValue.Should().Be(9.999);
 
-            options = new NullableTypesOptions();
             parser = new CommandLine.Parser();
-            result = parser.ParseArguments(new string[] { }, options);
+            var result2 = true;
+            options = parser.ParseArguments<NullableTypesOptions>(
+                new string[] { }, () => { result2 = false; });
 
-            result.Should().BeTrue();
+            result2.Should().BeTrue();
             options.DoubleValue.Should().NotHaveValue();
         }
 
         [Fact]
         public void Passing_bad_value_to_a_nullable_double_option_fails()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "--double", "9,999" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "--double", "9,999" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -146,9 +157,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Passing_no_value_to_a_nullable_double_option_fails()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "-d" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "-d" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -156,25 +168,24 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parse_string_option_and_nullable_value_types()
         {
-            var options = new NullableTypesOptions();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "--string", "alone" }, options);
+            var result = true;
+            var options = parser.ParseArguments<NullableTypesOptions>(new[] { "--string", "alone" }, () => { result = false; });
 
             result.Should().BeTrue();
             options.StringValue.Should().Be("alone");
 
             options = new NullableTypesOptions();
             parser = new CommandLine.Parser();
-            result = parser.ParseArguments(
-                new string[] { "-d1.789", "--int", "10099", "-stogether", "--enum", "Read" }, options);
+            var result2 = true;
+            options = parser.ParseArguments<NullableTypesOptions>(
+                new[] { "-d1.789", "--int", "10099", "-stogether", "--enum", "Read" }, () => { result2 = false; });
 
-            result.Should().BeTrue();
+            result2.Should().BeTrue();
             options.DoubleValue.Should().Be(1.789D);
             options.IntegerValue.Should().Be(10099);
             options.StringValue.Should().Be("together");
             options.EnumValue.Should().Be(FileAccess.Read);
         }
-
     }
 }
-
