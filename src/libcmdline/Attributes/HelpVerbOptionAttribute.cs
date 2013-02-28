@@ -85,12 +85,12 @@ namespace CommandLine
 
         internal static void InvokeMethod(
             object target,
-            Pair<MethodInfo, HelpVerbOptionAttribute> helpInfo,
+            Tuple<MethodInfo, HelpVerbOptionAttribute> helpInfo,
             string verb,
             out string text)
         {
             text = null;
-            var method = helpInfo.Left;
+            var method = helpInfo.Left();
             if (!CheckMethodSignature(method))
             {
                 throw new MemberAccessException(

@@ -109,22 +109,22 @@ namespace CommandLine.Parsing
 
             var map = new OptionMap(list.Count, settings);
 
-            foreach (var pair in list)
+            foreach (Tuple<PropertyInfo, BaseOptionAttribute> pair in list)
             {
-                if (pair.Left != null && pair.Right != null)
+                if (pair.Left() != null && pair.Right() != null)
                 {
                     string uniqueName;
-                    if (pair.Right.AutoLongName)
+                    if (pair.Right().AutoLongName)
                     {
-                        uniqueName = pair.Left.Name.ToLowerInvariant();
-                        pair.Right.LongName = uniqueName;
+                        uniqueName = pair.Left().Name.ToLowerInvariant();
+                        pair.Right().LongName = uniqueName;
                     }
                     else
                     {
-                        uniqueName = pair.Right.UniqueName;
+                        uniqueName = pair.Right().UniqueName;
                     }
 
-                    map[uniqueName] = new OptionInfo(pair.Right, pair.Left, settings.ParsingCulture);
+                    map[uniqueName] = new OptionInfo(pair.Right(), pair.Left(), settings.ParsingCulture);
                 }
             }
 
@@ -134,25 +134,25 @@ namespace CommandLine.Parsing
 
         public static OptionMap Create(
             object target,
-            IList<Pair<PropertyInfo, VerbOptionAttribute>> verbs,
+            IList<Tuple<PropertyInfo, VerbOptionAttribute>> verbs,
             ParserSettings settings)
         {
             var map = new OptionMap(verbs.Count, settings);
 
             foreach (var verb in verbs)
             {
-                var optionInfo = new OptionInfo(verb.Right, verb.Left, settings.ParsingCulture)
+                var optionInfo = new OptionInfo(verb.Right(), verb.Left(), settings.ParsingCulture)
                 {
-                    HasParameterLessCtor = verb.Left.PropertyType.GetConstructor(Type.EmptyTypes) != null
+                    HasParameterLessCtor = verb.Left().PropertyType.GetConstructor(Type.EmptyTypes) != null
                 };
 
-                if (!optionInfo.HasParameterLessCtor && verb.Left.GetValue(target, null) == null)
+                if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(target, null) == null)
                 {
                     throw new ParserException("Type {0} must have a parameterless constructor or" +
-                        " be already initialized to be used as a verb command.".FormatInvariant(verb.Left.PropertyType));
+                        " be already initialized to be used as a verb command.".FormatInvariant(verb.Left().PropertyType));
                 }
 
-                map[verb.Right.UniqueName] = optionInfo;
+                map[verb.Right().UniqueName] = optionInfo;
             }
 
             map.RawOptions = target;
@@ -166,7 +166,7 @@ namespace CommandLine.Parsing
 
         public void SetDefaults()
         {
-            foreach (OptionInfo option in _map.Values)
+            foreach (var option in _map.Values)
             {
                 option.SetDefault(RawOptions);
             }
@@ -180,7 +180,7 @@ namespace CommandLine.Parsing
                 return;
             }
 
-            var property = list[0].Left;
+            var property = list[0].Left();
 
             // This method can be called when parser state is still not intialized
             if (property.GetValue(options, null) == null)

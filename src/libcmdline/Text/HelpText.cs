@@ -344,7 +344,7 @@ namespace CommandLine.Text
                 return;
             }
 
-            var parserState = (IParserState)list[0].Left.GetValue(options, null);
+            var parserState = (IParserState)list[0].Left().GetValue(options, null);
             if (parserState == null || parserState.Errors.Count == 0)
             {
                 return;
@@ -448,7 +448,7 @@ namespace CommandLine.Text
                 return string.Empty; // Or exception?
             }
 
-            var parserState = (IParserState)list[0].Left.GetValue(options, null);
+            var parserState = (IParserState)list[0].Left().GetValue(options, null);
             if (parserState == null || parserState.Errors.Count == 0)
             {
                 return string.Empty;

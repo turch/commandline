@@ -102,15 +102,15 @@ namespace CommandLine.Tests.Unit.Infrastructure
             var list = ReflectionHelper.RetrievePropertyList<MockAttribute>(target);
 
             list.Should().HaveCount(n => n == 2);
-            list[0].Left.Name.Should().Be("StringField");
-            list[1].Left.Name.Should().Be("BooleanField");
+            list[0].Item1.Name.Should().Be("StringField");
+            list[1].Item1.Name.Should().Be("BooleanField");
 
             PrintFieldList<MockAttribute>(list);
 
             var anotherList = ReflectionHelper.RetrievePropertyList<AnotherMockAttribute>(target);
 
             anotherList.Should().HaveCount(n => n == 1);
-            anotherList[0].Left.Name.Should().Be("IntField");
+            anotherList[0].Item1.Name.Should().Be("IntField");
 
             PrintFieldList<AnotherMockAttribute>(anotherList);
         }
@@ -122,7 +122,7 @@ namespace CommandLine.Tests.Unit.Infrastructure
             var pair = ReflectionHelper.RetrieveMethod<MockAttribute>(target);
 
             pair.Should().NotBeNull();
-            pair.Left.Name.Should().Be("DoNothing");
+            pair.Item1.Name.Should().Be("DoNothing");
         }
 
         [Fact]
@@ -137,13 +137,13 @@ namespace CommandLine.Tests.Unit.Infrastructure
             list[2].StringValue.Should().Be("applied to Z");
         }
 
-        private static void PrintFieldList<TAttribute>(IList<Pair<PropertyInfo, TAttribute>> list)
+        private static void PrintFieldList<TAttribute>(IList<Tuple<PropertyInfo, TAttribute>> list)
                 where TAttribute : Attribute
         {
-            Console.WriteLine("Attribute: {0}", list[0].Right.GetType());
+            Console.WriteLine("Attribute: {0}", list[0].Item2.GetType());
             foreach (var pair in list)
             {
-                Console.WriteLine("\tField: {0}", pair.Left.Name);
+                Console.WriteLine("\tField: {0}", pair.Item1.Name);
             }
         }
     }

@@ -29,6 +29,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using CommandLine.Extensions;
 using CommandLine.Infrastructure;
 using CommandLine.Parsing;
 using CommandLine.Text;
@@ -210,7 +211,7 @@ namespace CommandLine
 
             var pair = ReflectionHelper.RetrieveOptionProperty<VerbOptionAttribute>(target, verb);
             found = pair != null;
-            return found ? pair.Left.GetValue(target, null) : target;
+            return found ? pair.Left().GetValue(target, null) : target;
         }
 
         private static T SetParserStateIfNeeded<T>(T options, IEnumerable<ParsingError> errors)
@@ -221,7 +222,7 @@ namespace CommandLine
                 return options;
             }
 
-            var property = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options)[0].Left;
+            var property = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options)[0].Left();
 
             var parserState = property.GetValue(options, null);
             if (parserState != null)
@@ -258,7 +259,7 @@ namespace CommandLine
             return options;
         }
 
-        private static void DisplayHelpText<T>(T options, Pair<MethodInfo, HelpOptionAttribute> pair, TextWriter helpWriter)
+        private static void DisplayHelpText<T>(T options, Tuple<MethodInfo, HelpOptionAttribute> pair, TextWriter helpWriter)
             where T : new()
         {
             string helpText;
@@ -281,7 +282,7 @@ namespace CommandLine
             // TODO: refactoring following query in TargetCapabilitiesExtensions?
             if (pair != null && helpWriter != null)
             {
-                if (this.TryParseHelp(args, pair.Right))
+                if (this.TryParseHelp(args, pair.Right()))
                 {
                     DisplayHelpText(options, pair, helpWriter);
                     return new Tuple<bool, T>(false, options);
@@ -433,13 +434,13 @@ namespace CommandLine
             return false;
         }
 
-        private bool TryParseHelpVerb<T>(string[] args, T options, Pair<MethodInfo, HelpVerbOptionAttribute> helpInfo, OptionMap optionMap)
+        private bool TryParseHelpVerb<T>(string[] args, T options, Tuple<MethodInfo, HelpVerbOptionAttribute> helpInfo, OptionMap optionMap)
             where T : new()
         {
             var helpWriter = _settings.HelpWriter;
             if (helpInfo != null && helpWriter != null)
             {
-                if (string.Compare(args[0], helpInfo.Right.LongName, GetStringComparison(_settings)) == 0)
+                if (string.Compare(args[0], helpInfo.Right().LongName, GetStringComparison(_settings)) == 0)
                 {
                     // User explicitly requested help
                     var verb = args.FirstOrDefault();
@@ -464,7 +465,7 @@ namespace CommandLine
             return false;
         }
 
-        private void DisplayHelpVerbText<T>(T options, Pair<MethodInfo, HelpVerbOptionAttribute> helpInfo, string verb)
+        private void DisplayHelpVerbText<T>(T options, Tuple<MethodInfo, HelpVerbOptionAttribute> helpInfo, string verb)
             where T : new()
         {
             string helpText;

@@ -44,14 +44,14 @@ namespace CommandLine.Infrastructure
             get; set;
         }
 
-        public static IList<Pair<PropertyInfo, TAttribute>> RetrievePropertyList<TAttribute>(object target)
+        public static IList<Tuple<PropertyInfo, TAttribute>> RetrievePropertyList<TAttribute>(object target)
                 where TAttribute : Attribute
         {
-            var key = new Pair<Type, object>(typeof(Pair<PropertyInfo, TAttribute>), target);
+            var key = new Tuple<Type, object>(typeof(Tuple<PropertyInfo, TAttribute>), target);
             var cached = ReflectionCache.Instance[key];
             if (cached == null)
             {
-                IList<Pair<PropertyInfo, TAttribute>> list = new List<Pair<PropertyInfo, TAttribute>>();
+                IList<Tuple<PropertyInfo, TAttribute>> list = new List<Tuple<PropertyInfo, TAttribute>>();
                 if (target != null)
                 {
                     var propertiesInfo = target.GetType().GetProperties();
@@ -72,7 +72,7 @@ namespace CommandLine.Infrastructure
                         var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
                         if (attribute != null)
                         {
-                            list.Add(new Pair<PropertyInfo, TAttribute>(property, (TAttribute)attribute));
+                            list.Add(new Tuple<PropertyInfo, TAttribute>(property, (TAttribute)attribute));
                         }
                     }
                 }
@@ -81,13 +81,13 @@ namespace CommandLine.Infrastructure
                 return list;
             }
 
-            return (IList<Pair<PropertyInfo, TAttribute>>)cached;
+            return (IList<Tuple<PropertyInfo, TAttribute>>)cached;
         }
 
-        public static Pair<MethodInfo, TAttribute> RetrieveMethod<TAttribute>(object target)
+        public static Tuple<MethodInfo, TAttribute> RetrieveMethod<TAttribute>(object target)
                 where TAttribute : Attribute
         {
-            var key = new Pair<Type, object>(typeof(Pair<MethodInfo, TAttribute>), target);
+            var key = new Tuple<Type, object>(typeof(Tuple<MethodInfo, TAttribute>), target);
             var cached = ReflectionCache.Instance[key];
             if (cached == null)
             {
@@ -105,7 +105,7 @@ namespace CommandLine.Infrastructure
                         continue;
                     }
 
-                    var data = new Pair<MethodInfo, TAttribute>(method, (TAttribute)attribute);
+                    var data = new Tuple<MethodInfo, TAttribute>(method, (TAttribute)attribute);
                     ReflectionCache.Instance[key] = data;
                     return data;
                 }
@@ -113,13 +113,13 @@ namespace CommandLine.Infrastructure
                 return null;
             }
 
-            return (Pair<MethodInfo, TAttribute>)cached;
+            return (Tuple<MethodInfo, TAttribute>)cached;
         }
 
         public static TAttribute RetrieveMethodAttributeOnly<TAttribute>(object target)
                 where TAttribute : Attribute
         {
-            var key = new Pair<Type, object>(typeof(TAttribute), target);
+            var key = new Tuple<Type, object>(typeof(TAttribute), target);
             var cached = ReflectionCache.Instance[key];
             if (cached == null)
             {
@@ -151,7 +151,7 @@ namespace CommandLine.Infrastructure
         public static IList<TAttribute> RetrievePropertyAttributeList<TAttribute>(object target)
                 where TAttribute : Attribute
         {
-            var key = new Pair<Type, object>(typeof(IList<TAttribute>), target);
+            var key = new Tuple<Type, object>(typeof(IList<TAttribute>), target);
             var cached = ReflectionCache.Instance[key];
             if (cached == null)
             {
@@ -197,10 +197,10 @@ namespace CommandLine.Infrastructure
             return (TAttribute)a[0];
         }
 
-        public static Pair<PropertyInfo, TAttribute> RetrieveOptionProperty<TAttribute>(object target, string uniqueName)
+        public static Tuple<PropertyInfo, TAttribute> RetrieveOptionProperty<TAttribute>(object target, string uniqueName)
                 where TAttribute : BaseOptionAttribute
         {
-            var key = new Pair<Type, object>(typeof(Pair<PropertyInfo, BaseOptionAttribute>), target);
+            var key = new Tuple<Type, object>(typeof(Tuple<PropertyInfo, BaseOptionAttribute>), target);
             var cached = ReflectionCache.Instance[key];
             if (cached == null)
             {
@@ -231,13 +231,13 @@ namespace CommandLine.Infrastructure
                         continue;
                     }
 
-                    var found = new Pair<PropertyInfo, TAttribute>(property, (TAttribute)attribute);
+                    var found = new Tuple<PropertyInfo, TAttribute>(property, (TAttribute)attribute);
                     ReflectionCache.Instance[key] = found;
                     return found;
                 }
             }
 
-            return (Pair<PropertyInfo, TAttribute>)cached;
+            return (Tuple<PropertyInfo, TAttribute>)cached;
         }
 
         public static bool IsNullableType(Type type)

@@ -32,7 +32,7 @@ namespace CommandLine.Infrastructure
     internal sealed class ReflectionCache
     {
         private static readonly ReflectionCache Singleton;
-        private readonly IDictionary<Pair<Type, object>, WeakReference> _cache;
+        private readonly IDictionary<Tuple<Type, object>, WeakReference> _cache;
 
         [SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "Singleton, by design")]
         static ReflectionCache()
@@ -42,7 +42,7 @@ namespace CommandLine.Infrastructure
 
         private ReflectionCache()
         {
-            _cache = new Dictionary<Pair<Type, object>, WeakReference>();
+            _cache = new Dictionary<Tuple<Type, object>, WeakReference>();
         }
 
         public static ReflectionCache Instance
@@ -50,7 +50,7 @@ namespace CommandLine.Infrastructure
             get { return Singleton; }
         }
 
-        public object this[Pair<Type, object> key]
+        public object this[Tuple<Type, object> key]
         {
             get
             {

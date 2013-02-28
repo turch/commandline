@@ -26,6 +26,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
+using CommandLine.Extensions;
 using CommandLine.Infrastructure;
 #endregion
 
@@ -111,7 +112,7 @@ namespace CommandLine
             }
 
             var pairZero = list[0];
-            return pairZero.Right;
+            return pairZero.Right();
         }
 
         private static PropertyInfo GetProperty(object target, out Type concreteType)
@@ -129,8 +130,8 @@ namespace CommandLine
             }
 
             var pairZero = list[0];
-            concreteType = pairZero.Right.ConcreteType;
-            return pairZero.Left;
+            concreteType = pairZero.Right().ConcreteType;
+            return pairZero.Left();
         }
     }
 }

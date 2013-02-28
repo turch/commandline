@@ -74,6 +74,7 @@
     <Compile Include="Attributes\ValueListAttribute.cs" />
     <Compile Include="Attributes\ValueOptionAttribute.cs" />
     <Compile Include="Extensions\CharExtensions.cs" />
+    <Compile Include="Extensions\TupleExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Infrastructure\PopsicleSetter.cs" />
     <Compile Include="Infrastructure\SR.strings.cs">
@@ -86,7 +87,6 @@
     <Compile Include="Infrastructure\ReflectionCache.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Infrastructure\ReflectionHelper.cs" />
-    <Compile Include="Infrastructure\Pair.cs" />
     <Compile Include="Parsing\TargetCapabilitiesExtensions.cs">
       <SubType>Code</SubType>
     </Compile>

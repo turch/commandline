@@ -22,11 +22,14 @@
 // THE SOFTWARE.
 #endregion
 #region Using Directives
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
+using CommandLine.Extensions;
 using CommandLine.Infrastructure;
 
 #endregion
@@ -42,7 +45,7 @@ namespace CommandLine.Parsing
         private readonly object _target;
         private IList<string> _valueList;
         private ValueListAttribute _valueListAttribute;
-        private IList<Pair<PropertyInfo, ValueOptionAttribute>> _valueOptionAttributeList;
+        private IList<Tuple<PropertyInfo, ValueOptionAttribute>> _valueOptionAttributeList;
         private int _valueOptionIndex;
 
         public ValueMapper(object target, CultureInfo parsingCulture)
@@ -75,7 +78,7 @@ namespace CommandLine.Parsing
             {
                 var valueOption = _valueOptionAttributeList[_valueOptionIndex++];
 
-                var propertyWriter = new PropertyWriter(valueOption.Left, _parsingCulture);
+                var propertyWriter = new PropertyWriter(valueOption.Left(), _parsingCulture);
 
                 return ReflectionHelper.IsNullableType(propertyWriter.Property.PropertyType) ?
                     propertyWriter.WriteNullable(item, _target) :
@@ -111,8 +114,8 @@ namespace CommandLine.Parsing
             var list = ReflectionHelper.RetrievePropertyList<ValueOptionAttribute>(_target);
 
             // default is index 0, so skip sorting if all have it
-            _valueOptionAttributeList = list.All(x => x.Right.Index == 0)
-                ? list : list.OrderBy(x => x.Right.Index).ToList();
+            _valueOptionAttributeList = list.All(x => x.Right().Index == 0)
+                ? list : list.OrderBy(x => x.Right().Index).ToList();
         }
     }
 }

@@ -25,6 +25,7 @@
 using System;
 using System.Reflection;
 
+using CommandLine.Extensions;
 using CommandLine.Infrastructure;
 
 #endregion
@@ -108,11 +109,11 @@ namespace CommandLine
 
         internal static void InvokeMethod(
             object target,
-            Pair<MethodInfo, HelpOptionAttribute> pair,
+            Tuple<MethodInfo, HelpOptionAttribute> pair,
             out string text)
         {
             text = null;
-            var method = pair.Left;
+            var method = pair.Left();
             
             if (!CheckMethodSignature(method))
             {
