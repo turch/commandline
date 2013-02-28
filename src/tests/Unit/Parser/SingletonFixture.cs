@@ -42,9 +42,9 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parse_string_integer_bool_options()
         {
-            var options = new SimpleOptions();
-            bool result = CommandLine.Parser.Default.ParseArguments(
-                    new string[] { "-s", "another string", "-i100", "--switch" }, options);
+            var result = true;
+            var options = CommandLine.Parser.Default.ParseArguments<SimpleOptions>(
+                    new[] { "-s", "another string", "-i100", "--switch" }, () => { result = false; });
 
             result.Should().BeTrue();
             options.StringValue.Should().Be("another string");
@@ -56,17 +56,19 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Default_doesnt_support_mutually_exclusive_options()
         {
-            var options = new OptionsWithMultipleSet();
-            bool result = CommandLine.Parser.Default.ParseArguments(
-                new string[] { "-r1", "-g2", "-b3", "-h4", "-s5", "-v6" }, options);
+            var result = true;
+            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithMultipleSet>(
+                new[] { "-r1", "-g2", "-b3", "-h4", "-s5", "-v6" }, () => { result = false; });
 
-            result.Should().BeTrue(); // enabling MutuallyExclusive option it would fails
+            result.Should().BeTrue();
         }
 
         [Fact]
         public void Default_parsing_culture_is_invariant()
         {
-            CommandLine.Parser.Default.Settings.ParsingCulture.Should().Be(CultureInfo.InvariantCulture);
+            var options = CommandLine.Parser.Default.ParseArguments<NumberSetOptions>(new[] { "-f0.1234" }, () => { });
+
+            options.FloatValue.ShouldBeEquivalentTo(0.1234f);
         }
     }
 }

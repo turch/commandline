@@ -114,6 +114,9 @@
     <Compile Include="Unit\Parser\NullableTypesParsingFixture.cs" />
     <Compile Include="Unit\Parser\OptionArrayAttributeParsingFixture.cs" />
     <Compile Include="Unit\Parser\ParserFixture.cs" />
+    <Compile Include="Unit\Parser\ParserSettingsFixture.cs" />
+    <Compile Include="Unit\Parser\ParserStateFixture.cs" />
+    <Compile Include="Unit\Parser\SingletonFixture.cs" />
     <Compile Include="Unit\Parser\UnknownArgumentsFixture.cs" />
     <Compile Include="Unit\Parser\ValueListAttributeParsingFixture.cs" />
     <Compile Include="Unit\Parser\ValueOptionAttributeParsingFixture.cs" />

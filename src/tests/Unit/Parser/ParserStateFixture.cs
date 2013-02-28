@@ -64,10 +64,9 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parser_state_instance_should_not_pre_built()
         {
-            var options = new FakeOptionsWithPreBuiltParserState();
-
             Assert.ThrowsDelegate act = () => new CommandLine.Parser(
-                with => with.HelpWriter = new StringWriter()).ParseArguments(new[] { "--bar" }, options);
+                with => with.HelpWriter = new StringWriter())
+                    .ParseArguments<FakeOptionsWithPreBuiltParserState>(new[] { "--bar" }, ()=>{});
 
             Assert.Throws<InvalidOperationException>(act);
         }
@@ -75,10 +74,9 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parser_state_attribute_should_be_applied_to_a_property_of_the_correct_type()
         {
-            var options = new FakeOptionsWithParserStateAttributeAppliedInWrongWay();
-
             Assert.ThrowsDelegate act = () => new CommandLine.Parser(
-                with => with.HelpWriter = new StringWriter()).ParseArguments(new[] { "--foo" }, options);
+                with => with.HelpWriter = new StringWriter())
+                    .ParseArguments<FakeOptionsWithParserStateAttributeAppliedInWrongWay>(new[] { "--foo" }, () => {});
 
             Assert.Throws<InvalidOperationException>(act);
         }
@@ -86,10 +84,9 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Parser_state_attribute_should_be_applied_to_a_property_of_the_correct_type_also_if_not_initialized()
         {
-            var options = new FakeOptionsWithParserStateAttributeAppliedInWrongWayAndNotInitialized();
-
             Assert.ThrowsDelegate act = () => new CommandLine.Parser(
-                with => with.HelpWriter = new StringWriter()).ParseArguments(new[] { "--foo" }, options);
+                with => with.HelpWriter = new StringWriter()).ParseArguments<FakeOptionsWithParserStateAttributeAppliedInWrongWayAndNotInitialized>(
+                    new[] { "--foo" }, () => {});
 
             Assert.Throws<InvalidOperationException>(act);
         }
