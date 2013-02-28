@@ -117,24 +117,24 @@ namespace CommandLine
         }
 
         /// <summary>
-        /// Parses a <see cref="System.String"/> array of command line arguments, setting values in <paramref name="options"/>
-        /// parameter instance's public fields decorated with appropriate attributes. If parsing fails, the method invokes
-        /// the <paramref name="onFail"/> delegate, if null exits with <see cref="Parser.DefaultExitCodeFail"/>.
+        /// Parses a <see cref="System.String"/> array of command line arguments returning values as an instance
+        /// of type <typeparamref name="T"/>. Type public fields should be decorated with appropriate attributes.
+        /// If parsing fails, the method invokes the <paramref name="onFail"/> delegate.
         /// </summary>
         /// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        /// <param name="options">An object's instance used to receive values.
-        /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
         /// <param name="onFail">The <see cref="Action"/> delegate executed when parsing fails.</param>
-        /// <returns>True if parsing process succeed.</returns>
+        /// <typeparam name="T">An object's type used to receive values.
+        /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</typeparam>
+        /// <returns>An instance of type <typeparamref name="T"/> with parsed values.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="onFail"/> is null.</exception>
         public T ParseArguments<T>(string[] args, Action onFail)
             where T : new()
         {
             Assumes.NotNull(args, "args", SR.ArgumentNullException_ArgsStringArrayCannotBeNull);
-            //Assumes.NotNull(options, "options", SR.ArgumentNullException_OptionsInstanceCannotBeNull);
+            Assumes.NotNull(onFail, "onFail", SR.ArgumentNullException_OnFailDelegateCannotBeNull);
 
-            var resultAndOptions = DoParseArguments<T>(args);
+            var resultAndOptions = this.ParseArguments<T>(args);
             var result = resultAndOptions.Item1;
             var options = resultAndOptions.Item2;
 
@@ -149,35 +149,34 @@ namespace CommandLine
         }
 
         /// <summary>
-        /// Parses a <see cref="System.String"/> array of command line arguments with verb commands, setting values in <paramref name="options"/>
-        /// parameter instance's public fields decorated with appropriate attributes. If parsing fails, the method invokes
-        /// the <paramref name="onFail"/> delegate, if null exits with <see cref="Parser.DefaultExitCodeFail"/>.
+        /// Parses a <see cref="System.String"/> array of command line arguments returning values as an instance
+        /// of type <typeparamref name="T"/>. Type public fields should be decorated with appropriate attributes.
+        /// If parsing fails, the method invokes the <paramref name="onFail"/> delegate.
         /// This overload supports verb commands.
         /// </summary>
         /// <param name="args">A <see cref="System.String"/> array of command line arguments.</param>
-        /// <param name="options">An instance used to receive values.
-        /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</param>
         /// <param name="onVerbCommand">Delegate executed to capture verb command name and instance.</param>
         /// <param name="onFail">The <see cref="Action"/> delegate executed when parsing fails.</param>
-        /// <returns>True if parsing process succeed.</returns>
+        /// <typeparam name="T">An object's type used to receive values.
+        /// Parsing rules are defined using <see cref="CommandLine.BaseOptionAttribute"/> derived types.</typeparam>
+        /// <returns>An instance of type  <typeparamref name="T"/> with parsed values.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="args"/> is null.</exception>
-        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="options"/> is null.</exception>
         /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="onVerbCommand"/> is null.</exception>
+        /// <exception cref="System.ArgumentNullException">Thrown if <paramref name="onFail"/> is null.</exception>
         public T ParseArguments<T>(string[] args, Action<string, object> onVerbCommand, Action onFail)
             where T : new()
         {
             Assumes.NotNull(args, "args", SR.ArgumentNullException_ArgsStringArrayCannotBeNull);
-            //Assumes.NotNull(options, "options", SR.ArgumentNullException_OptionsInstanceCannotBeNull);
             Assumes.NotNull(onVerbCommand, "onVerbCommand", SR.ArgumentNullException_OnVerbDelegateCannotBeNull);
+            Assumes.NotNull(onFail, "onFail", SR.ArgumentNullException_OnFailDelegateCannotBeNull);
 
-            var resultAndOptionsAndVerbInstance = DoParseArgumentsVerbs<T>(args);
+            var resultAndOptionsAndVerbInstance = this.ParseArgumentsVerbs<T>(args);
 
             var result = resultAndOptionsAndVerbInstance.Item1;
             var options = resultAndOptionsAndVerbInstance.Item2;
             var verbInstance = resultAndOptionsAndVerbInstance.Item3;
 
-            //TODO: evaluate mutually activation of delegates
-
+            // TODO: mutually activate delegates?
             onVerbCommand(args.FirstOrDefault() ?? string.Empty, result ? verbInstance : null);
 
             if (!result)
@@ -259,12 +258,20 @@ namespace CommandLine
             return options;
         }
 
+        private static void DisplayHelpText<T>(T options, Pair<MethodInfo, HelpOptionAttribute> pair, TextWriter helpWriter)
+            where T : new()
+        {
+            string helpText;
+            HelpOptionAttribute.InvokeMethod(options, pair, out helpText); // TODO: refactor this
+            helpWriter.Write(helpText);
+        }
+
         private static StringComparison GetStringComparison(ParserSettings settings)
         {
             return settings.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
         }
 
-        private Tuple<bool, T> DoParseArguments<T>(string[] args)
+        private Tuple<bool, T> ParseArguments<T>(string[] args)
             where T : new()
         {
             var options = new T();
@@ -280,7 +287,7 @@ namespace CommandLine
                     return new Tuple<bool, T>(false, options);
                 }
 
-                var optionsAndResult= this.DoParseArgumentsCore(args, options);
+                var optionsAndResult = this.ParseArgumentsCore(args, options);
                 var result = optionsAndResult.Item1;
                 options = optionsAndResult.Item2;
 
@@ -291,18 +298,10 @@ namespace CommandLine
                 }
             }
 
-            return DoParseArgumentsCore(args, options);
+            return this.ParseArgumentsCore(args, options);
         }
 
-        private static void DisplayHelpText<T>(T options, Pair<MethodInfo, HelpOptionAttribute> pair, TextWriter helpWriter)
-            where T : new()
-        {
-            string helpText;
-            HelpOptionAttribute.InvokeMethod(options, pair, out helpText); // TODO: refactor this
-            helpWriter.Write(helpText);
-        }
-
-        private Tuple<bool,T> DoParseArgumentsCore<T>(string[] args, T options)
+        private Tuple<bool, T> ParseArgumentsCore<T>(string[] args, T options)
             where T : new()
         {
             var hadError = false;
@@ -349,7 +348,7 @@ namespace CommandLine
             return new Tuple<bool, T>(!hadError, options);
         }
 
-        private Tuple<bool, T, object> DoParseArgumentsVerbs<T>(string[] args)
+        private Tuple<bool, T, object> ParseArgumentsVerbs<T>(string[] args)
             where T : new()
         {
             var options = new T();
@@ -394,7 +393,7 @@ namespace CommandLine
                 verbInstance = verbOption.CreateInstance(options);
             }
 
-            var resultAndVerbInstance = DoParseArgumentsCore(args.Skip(1).ToArray(), verbInstance);
+            var resultAndVerbInstance = this.ParseArgumentsCore(args.Skip(1).ToArray(), verbInstance);
             var result = resultAndVerbInstance.Item1;
             verbInstance = resultAndVerbInstance.Item2;
 

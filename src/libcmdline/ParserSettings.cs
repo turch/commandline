@@ -229,6 +229,9 @@ namespace CommandLine
             }
         }
 
+        /// <summary>
+        ///  Gets or sets a value indicating whether to invoke <see cref="CommandLine.Text.HelpText.AutoBuild(object,Action{CommandLine.Text.HelpText},bool)"/> if help method is not defined.
+        /// </summary>
         public bool DynamicAutoBuild
         {
             get

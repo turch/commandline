@@ -1,5 +1,4 @@
 ﻿ArgumentNullException_ArgsStringArrayCannotBeNull = The arguments string array cannot be null.
-ArgumentNullException_OptionsInstanceCannotBeNull = The target options instance cannot be null.
 ArgumentNullException_ParserSettingsInstanceCannotBeNull = The command line parser settings instance cannot be null.
 ArgumentNullException_AttributeCannotBeNull = The attribute is mandatory.
 ArgumentNullException_PropertyCannotBeNull = The property is mandatory.
@@ -16,3 +15,4 @@ ArgumentNullException_ParserSettingsDelegateCannotBeNull = The command line pars
 InvalidOperationException_ParserSettingsInstanceCanBeUsedOnce = The command line parserSettings instance cannnot be used more than once.
 InvalidOperationException_ParserStateInstanceCannotBeNotNull = ParserState instance cannot be supplied.
 InvalidOperationException_ParserStateInstanceBadApplied = Cannot apply ParserStateAttribute to a property that does not implement IParserState or is not accessible.
+ArgumentNullException_OnFailDelegateCannotBeNull = Delegate executed to capture failure event cannot be null.

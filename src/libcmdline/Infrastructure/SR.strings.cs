@@ -13,8 +13,6 @@ namespace CommandLine.Infrastructure
 
         public const string ArgumentNullException_ArgsStringArrayCannotBeNull = "The arguments string array cannot be null.";
 
-        public const string ArgumentNullException_OptionsInstanceCannotBeNull = "The target options instance cannot be null.";
-
         public const string ArgumentNullException_ParserSettingsInstanceCannotBeNull = "The command line parser settings instance cannot be null.";
 
         public const string ArgumentNullException_AttributeCannotBeNull = "The attribute is mandatory.";
@@ -46,6 +44,8 @@ namespace CommandLine.Infrastructure
         public const string InvalidOperationException_ParserStateInstanceCannotBeNotNull = "ParserState instance cannot be supplied.";
 
         public const string InvalidOperationException_ParserStateInstanceBadApplied = "Cannot apply ParserStateAttribute to a property that does not implement IParserState or is not accessible.";
+
+        public const string ArgumentNullException_OnFailDelegateCannotBeNull = "Delegate executed to capture failure event cannot be null.";
 
     }
 }
