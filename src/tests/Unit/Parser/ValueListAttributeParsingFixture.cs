@@ -41,10 +41,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Value_list_attribute_isolates_non_option_values()
         {
-            var options = new SimpleOptionsWithValueList();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(
-                new string[] { "--switch", "file1.ext", "file2.ext", "file3.ext", "-s", "out.ext" }, options);
+            var result = true;
+            var options = parser.ParseArguments<SimpleOptionsWithValueList>(
+                new[] { "--switch", "file1.ext", "file2.ext", "file3.ext", "-s", "out.ext" }, () => { result = false; });
 
             result.Should().BeTrue();
 
@@ -59,9 +59,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Value_list_with_max_elem_inside_bounds()
         {
-            var options = new OptionsWithValueListMaximumThree();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "file.a", "file.b", "file.c" }, options);
+            var result = true;
+            var options = parser.ParseArguments<OptionsWithValueListMaximumThree>(
+                new[] { "file.a", "file.b", "file.c" }, () => { result = false; });
 
             result.Should().BeTrue();
 
@@ -76,10 +77,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Value_list_with_max_elem_outside_bounds()
         {
-            var options = new OptionsWithValueListMaximumThree();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(
-                    new string[] { "file.a", "file.b", "file.c", "file.d" }, options);
+            var result = true;
+            var options = parser.ParseArguments<OptionsWithValueListMaximumThree>(
+                    new[] { "file.a", "file.b", "file.c", "file.d" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -87,9 +88,10 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Value_list_with_max_elem_set_to_zero_succeeds()
         {
-            var options = new OptionsWithValueListMaximumZero();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { }, options);
+            var result = true;
+            var options = parser.ParseArguments<OptionsWithValueListMaximumZero>(
+                new string[] { }, () => { result = false; });
 
             result.Should().BeTrue();
 
@@ -100,12 +102,12 @@ namespace CommandLine.Tests.Unit.Parser
         [Fact]
         public void Value_list_with_max_elem_set_to_zero_failes()
         {
-            var options = new OptionsWithValueListMaximumZero();
             var parser = new CommandLine.Parser();
-            var result = parser.ParseArguments(new string[] { "some", "value" }, options);
+            var result = true;
+            var options = parser.ParseArguments<OptionsWithValueListMaximumZero>(
+                new[] { "some", "value" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
     }
 }
-
