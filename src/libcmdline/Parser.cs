@@ -311,8 +311,7 @@ namespace CommandLine
             var hadError = false;
             var optionMap = OptionMap.Create(options, _settings);
             optionMap.SetDefaults();
-            var valueMapper = new ValueMapper<T>(options, _settings.ParsingCulture);
-            //var canReceiveValues = options.CanReceiveUnboundValues();
+            var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
 
             var arguments = new StringArrayEnumerator(args);
             while (arguments.MoveNext())
@@ -339,9 +338,9 @@ namespace CommandLine
                         arguments.MoveNext();
                     }
                 }
-                else if (valueMapper.CanReceiveValues)
+                else if (unboundValues.CanWrite)
                 {
-                    if (!valueMapper.MapValueItem(argument))
+                    if (!unboundValues.WriteValue(argument))
                     {
                         hadError = true;
                     }

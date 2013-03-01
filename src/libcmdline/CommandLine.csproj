@@ -95,7 +95,7 @@
     <Compile Include="Parsing\PropertyWriter.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Parsing\ValueMapper.cs" />
+    <Compile Include="UnboundValues.cs" />
     <Compile Include="Parsing\LongOptionParser.cs" />
     <Compile Include="Parsing\OptionGroupParser.cs" />
     <Compile Include="Parsing\OptionInfo.cs" />
