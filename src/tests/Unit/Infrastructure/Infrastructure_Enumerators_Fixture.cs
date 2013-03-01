@@ -37,7 +37,7 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Tests.Unit.Infrastructure
 {
-    public class EnumeratorsFixture
+    public class Infrastructure_Enumerators_Fixture
     {
         [Fact]
         public void String_iteration()

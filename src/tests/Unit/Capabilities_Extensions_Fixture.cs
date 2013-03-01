@@ -23,7 +23,7 @@ namespace CommandLine.Tests.Unit
         }
     }
 
-    public class CapabilitiesExtensionsFixture
+    public class Capabilities_Extensions_Fixture
     {
         [Fact]
         public void Should_detect_if_target_has_verbs()

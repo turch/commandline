@@ -33,12 +33,12 @@ using Xunit;
 using FluentAssertions;
 #endregion
 
-namespace CommandLine.Tests.Unit.Parser
+namespace CommandLine.Tests.Unit
 {
     using System;
     using System.Globalization;
 
-    public class ParserSettingsFixture
+    public class ParserSettings_Fixture
     {
         [Fact]
         public void Setting_help_writer_using_lambda()

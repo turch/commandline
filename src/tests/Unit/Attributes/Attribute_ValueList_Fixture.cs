@@ -1,6 +1,6 @@
 #region License
 //
-// Command Line Library: ValueListParsingFixture.cs
+// Command Line Library: ValueListAttributeFixture.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@gmail.com)
@@ -29,15 +29,79 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+
+using CommandLine.Tests.Fakes;
+
 using Xunit;
 using FluentAssertions;
-using CommandLine.Tests.Fakes;
 #endregion
 
-namespace CommandLine.Tests.Unit.Parser
+namespace CommandLine.Tests.Unit.Attributes
 {
-    public class ValueListAttributeParsingFixture : ParserBaseFixture
+    public class Attribute_ValueList_Fixture : BaseFixture
     {
+        #region Mock Objects
+        private class MockSpecializedList : List<string>
+        {
+        }
+
+        private class MockOptions
+        {
+            [ValueList(typeof(List<string>))]
+            public IList<string> Values { get; set; }
+        }
+        #endregion
+
+        [Fact]
+        public void Will_throw_exception_if_concrete_type_is_null()
+        {
+            Assert.Throws<ArgumentNullException>(
+                () => new ValueListAttribute(null));
+        }
+
+        [Fact]
+        public void Will_throw_exception_if_concrete_type_is_incompatible()
+        {
+             Assert.Throws<ParserException>(
+                () => new ValueListAttribute(new List<object>().GetType()));
+        }
+
+        [Fact]
+        public void Concrete_type_is_generic_list_of_string()
+        {
+            new ValueListAttribute(new List<string>().GetType());
+        }
+
+        [Fact]
+        public void Concrete_type_is_generic_list_of_string_sub_type()
+        {
+            new ValueListAttribute(new MockSpecializedList().GetType());
+        }
+
+        [Fact]
+        public void Get_generic_list_of_string_interface_reference()
+        {
+            var options = new MockOptions();
+
+            IList<string> values = ValueListAttribute.GetReference(options);
+            values.Should().NotBeNull();
+            values.GetType().Should().Be(typeof(List<string>));
+        }
+
+        [Fact]
+        public void Use_generic_list_of_string_interface_reference()
+        {
+            var options = new MockOptions();
+
+            var values = ValueListAttribute.GetReference(options);
+            values.Add("value0");
+            values.Add("value1");
+            values.Add("value2");
+
+            base.ElementsShouldBeEqual(new string[] { "value0", "value1", "value2" }, options.Values);
+        }
+
         [Fact]
         public void Value_list_attribute_isolates_non_option_values()
         {

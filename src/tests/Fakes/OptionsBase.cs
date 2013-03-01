@@ -26,6 +26,8 @@
 // THE SOFTWARE.
 //
 #endregion
+
+using CommandLine.Tests.Helpers;
 using CommandLine.Tests.Unit;
 
 namespace CommandLine.Tests.Fakes

@@ -37,7 +37,7 @@ using CommandLine.Tests.Fakes;
 
 namespace CommandLine.Tests.Unit.Parser
 {
-    public class NullableTypesParsingFixture : ParserBaseFixture
+    public class Parser_Nullables_Fixture : ParserBaseFixture
     {
         [Fact]
         public void Parse_nullable_integer_option()

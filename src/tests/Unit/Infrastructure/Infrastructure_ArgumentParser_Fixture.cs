@@ -39,7 +39,7 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Tests.Unit.Infrastructure
 {
-    public class ArgumentParserFixture : BaseFixture
+    public class Infrastructure_ArgumentParser_Fixture : BaseFixture
     {
         [Fact]
         public void Get_next_input_values()

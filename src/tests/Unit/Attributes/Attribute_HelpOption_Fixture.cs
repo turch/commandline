@@ -36,7 +36,7 @@ using FluentAssertions;
 
 namespace CommandLine.Tests.Unit.Attributes
 {
-    public class HelpOptionAttributeFixture : ParserBaseFixture
+    public class Attribute_HelpOption_Fixture : ParserBaseFixture
     {
         #region Mock Objects
         private class MockOptions

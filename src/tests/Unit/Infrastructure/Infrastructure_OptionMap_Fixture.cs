@@ -39,7 +39,7 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Tests.Unit.Infrastructure
 {
-    public class OptionMapFixture
+    public class Infrastructure_OptionMap_Fixture
     {
         #region Helper Nested Class
         class OptionMapBuilder

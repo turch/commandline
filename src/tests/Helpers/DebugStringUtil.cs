@@ -33,7 +33,7 @@ using System.Reflection;
 using System.Text;
 #endregion
 
-namespace CommandLine.Tests.Unit
+namespace CommandLine.Tests.Helpers
 {
     static class DebugStringUtil
     {

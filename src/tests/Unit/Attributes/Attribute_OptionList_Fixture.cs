@@ -8,7 +8,7 @@ using Xunit;
 
 namespace CommandLine.Tests.Unit.Attributes
 {
-    public class OptionListAttributeFixture
+    public class Attribute_OptionList_Fixture
     {
 
         [Fact]

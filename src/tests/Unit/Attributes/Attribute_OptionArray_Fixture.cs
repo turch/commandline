@@ -36,10 +36,10 @@ using FluentAssertions;
 using CommandLine.Tests.Fakes;
 #endregion
 
-namespace CommandLine.Tests.Unit.Parser
+namespace CommandLine.Tests.Unit.Attributes
 {
-    //TODO: this is one of the oldest test class and need to be heavily refactored
-    public class OptionArrayAttributeParsingFixture : ParserBaseFixture
+    // TODO: this is one of the oldest test class and need to be heavily refactored
+    public class Attribute_OptionArray_Fixture : ParserBaseFixture
     {
         [Fact]
         public void Parse_string_array_option_using_short_name()
@@ -416,6 +416,52 @@ namespace CommandLine.Tests.Unit.Parser
             base.ElementsShouldBeEqual(new uint[] {10, 20, 30, 40}, options.ArrayOne);
             base.ElementsShouldBeEqual(new uint[] {11, 22, 33, 44}, options.ArrayTwo);
             options.SomeBooleanValue.Should().BeTrue();
+        }
+
+        /// <summary>
+        /// https://github.com/gsscoder/commandline/issues/6
+        /// </summary>
+        [Fact]
+        public void Should_correctly_parse_two_consecutive_arrays()
+        {
+            // Given
+            var parser = new CommandLine.Parser();
+            var result = true;
+            var argumets = new[] { "--source", @"d:/document.docx", "--output", @"d:/document.xlsx",
+                    "--headers", "1", "2", "3", "4",              // first array
+                    "--content", "5", "6", "7", "8", "--verbose"  // second array
+                };
+
+            // When
+            var options = parser.ParseArguments<OptionsWithTwoArrays>(argumets, () => { result = false; });
+
+            // Than
+            result.Should().BeTrue();
+            options.Should().NotBeNull();
+            options.Headers.Should().HaveCount(c => c == 4);
+            options.Headers.Should().ContainInOrder(new uint[] { 1, 2, 3, 4 });
+            options.Content.Should().HaveCount(c => c == 4);
+            options.Content.Should().ContainInOrder(new uint[] { 5, 6, 7, 8 });
+        }
+
+        [Fact]
+        public void Should_use_property_name_as_long_name_if_omitted()
+        {
+            // Given
+            var parser = new CommandLine.Parser();
+            var result = true;
+            var arguments = new[] {
+                "--offsets", "-2", "-1", "0", "1" , "2"
+            };
+
+            // When
+            var options = parser.ParseArguments<OptionsWithImplicitLongName>(arguments, () => { result = false; });
+
+            // Than
+            result.Should().BeTrue();
+            options.Should().NotBeNull();
+            options.Offsets.Should().HaveCount(c => c == 5);
+            options.Offsets.Should().ContainInOrder(new[] { -2, -1, 0, 1, 2 });
         }
     }
 }

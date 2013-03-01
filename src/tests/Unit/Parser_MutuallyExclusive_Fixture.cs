@@ -32,9 +32,9 @@ using FluentAssertions;
 using CommandLine.Tests.Fakes;
 #endregion
 
-namespace CommandLine.Tests.Unit.Parser
+namespace CommandLine.Tests.Unit
 {
-    public class MutuallyExclusiveParsingFixture : ParserBaseFixture
+    public class Parser_MutuallyExclusive_Fixture : ParserBaseFixture
     {
         [Fact]
         public void Parsing_one_mutually_exclusive_option_succeeds()

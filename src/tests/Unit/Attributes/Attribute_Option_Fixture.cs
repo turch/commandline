@@ -8,7 +8,7 @@ using System.Text;
 
 namespace CommandLine.Tests.Unit.Attributes
 {
-    public class OptionAttributeFixture
+    public class Attribute_Option_Fixture
     {
         [Fact]
         public void Should_use_property_name_as_long_name_if_omitted()

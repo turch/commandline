@@ -39,7 +39,7 @@ using FluentAssertions;
 
 namespace CommandLine.Tests.Unit.Text
 {
-    public class VerbsHelpTextFixture : ParserBaseFixture
+    public class Text_Verbs_Help_Fixture : ParserBaseFixture
     {
         [Fact]
         public void Failed_parsing_prints_help_index()

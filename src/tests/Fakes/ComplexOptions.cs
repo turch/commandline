@@ -27,6 +27,8 @@
 //
 #endregion
 using System.ComponentModel;
+
+using CommandLine.Tests.Helpers;
 using CommandLine.Tests.Unit;
 
 namespace CommandLine.Tests.Fakes

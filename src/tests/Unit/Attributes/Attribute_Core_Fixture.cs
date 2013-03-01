@@ -33,7 +33,7 @@ using Xunit;
 
 namespace CommandLine.Tests.Unit.Attributes
 {
-    public class AttributesFixture
+    public class Attribute_Core_Fixture
     {
         class CustomOptionAttribute : BaseOptionAttribute
         {

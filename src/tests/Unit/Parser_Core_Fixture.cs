@@ -36,9 +36,9 @@ using Xunit;
 using FluentAssertions;
 #endregion
 
-namespace CommandLine.Tests.Unit.Parser
+namespace CommandLine.Tests.Unit
 {
-    public class ParserFixture : ParserBaseFixture
+    public class Parser_Core_Fixture : ParserBaseFixture
     {
         [Fact]
         public void Will_throw_exception_if_arguments_array_is_null()

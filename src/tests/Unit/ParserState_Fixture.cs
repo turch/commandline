@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using Xunit;
 
-namespace CommandLine.Tests.Unit.Parser
+namespace CommandLine.Tests.Unit
 {
     class FakeParserState : IParserState
     {
@@ -59,7 +59,7 @@ namespace CommandLine.Tests.Unit.Parser
         public StringBuilder EvenWorseParserState { get; set; }
     }
 
-    public class ParserStateFixture
+    public class ParserState_Fixture
     {
         [Fact]
         public void Parser_state_instance_should_not_pre_built()

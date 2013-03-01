@@ -37,7 +37,7 @@ using FluentAssertions;
 
 namespace CommandLine.Tests.Unit.Infrastructure
 {
-    public class ReflectionHelperFixture
+    public class Infrastructure_ReflectionHelper_Fixture
     {
         #region Mock Objects
         private class MockAttribute : Attribute

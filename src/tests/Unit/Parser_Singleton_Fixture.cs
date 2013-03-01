@@ -1,6 +1,6 @@
 #region License
 //
-// Command Line Library: UnknownArguments.cs
+// Command Line Library: SingletonFixture.cs
 //
 // Author:
 //   Giacomo Stelluti Scala (gsscoder@gmail.com)
@@ -28,6 +28,7 @@
 #endregion
 #region Using Directives
 using System;
+using System.Globalization;
 using System.IO;
 using Xunit;
 using FluentAssertions;
@@ -36,32 +37,39 @@ using CommandLine.Tests.Fakes;
 
 namespace CommandLine.Tests.Unit.Parser
 {
-    public class UnknownArgumentsFixture
+    public class Parser_Singleton_Fixture
     {
         [Fact]
-        public void Parse_valid_unknown_arguments()
+        public void Parse_string_integer_bool_options()
         {
-            var args = new[]
-                {
-                    "--plugin", "addonX", "--filename", "input.dat"
-                };
-            var parser = new CommandLine.Parser(with =>
-                {
-                    with.IgnoreUnknownArguments = true;
-                    with.CaseSensitive = true;
-                });
-            var appResult = true;
-            var appOptions = parser.ParseArguments<OptionsForAppWithPlugIns>(args, () => appResult = false);
+            var result = true;
+            var options = CommandLine.Parser.Default.ParseArguments<SimpleOptions>(
+                    new[] { "-s", "another string", "-i100", "--switch" }, () => { result = false; });
 
-            appResult.Should().BeTrue();
-            appOptions.PlugInName.Should().Be("addonX");
+            result.Should().BeTrue();
+            options.StringValue.Should().Be("another string");
+            options.IntegerValue.Should().Be(100);
+            options.BooleanValue.Should().BeTrue();
+            Console.WriteLine(options);
+        }
 
-            var plugInXResult = true;
-            var plugInXOptions = parser.ParseArguments<OptionsOfPlugInX>(args, () => plugInXResult = false);
+        [Fact]
+        public void Default_doesnt_support_mutually_exclusive_options()
+        {
+            var result = true;
+            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithMultipleSet>(
+                new[] { "-r1", "-g2", "-b3", "-h4", "-s5", "-v6" }, () => { result = false; });
 
-            plugInXResult.Should().BeTrue();
-            plugInXOptions.InputFileName.Should().Be("input.dat");
-            plugInXOptions.ReadOffset.Should().Be(10L);
+            result.Should().BeTrue();
+        }
+
+        [Fact]
+        public void Default_parsing_culture_is_invariant()
+        {
+            var options = CommandLine.Parser.Default.ParseArguments<NumberSetOptions>(new[] { "-f0.1234" }, () => { });
+
+            options.FloatValue.ShouldBeEquivalentTo(0.1234f);
         }
     }
 }
+

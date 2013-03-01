@@ -36,8 +36,8 @@ using FluentAssertions;
 #endregion
 
 namespace CommandLine.Tests.Unit.Text
-{  
-    public class MultiLineTextAttributeFixture
+{
+    public class Attribute_MultiLineText_Fixture
     {
         [Fact]
         public void Assembly_license_should_offer_read_only_property_named_value()

@@ -52,27 +52,24 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Unit\CapabilitiesExtensionsFixture.cs" />
+    <Compile Include="Unit\Capabilities_Extensions_Fixture.cs" />
     <Compile Include="Fakes\OptionsWithImplicitLongName.cs" />
     <Compile Include="Fakes\OptionsWithTwoArrays.cs" />
-    <Compile Include="Unit\Attributes\AttributesFixture.cs" />
-    <Compile Include="Unit\Attributes\HelpOptionAttributeFixture.cs" />
-    <Compile Include="Unit\Attributes\OptionArrayAttributeFixture.cs">
+    <Compile Include="Unit\Attributes\Attribute_Core_Fixture.cs" />
+    <Compile Include="Unit\Attributes\Attribute_HelpOption_Fixture.cs" />
+    <Compile Include="Unit\Attributes\Attribute_Option_Fixture.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Unit\Attributes\OptionAttributeFixture.cs">
+    <Compile Include="Unit\Attributes\Attribute_OptionList_Fixture.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Unit\Attributes\OptionListAttributeFixture.cs">
+    <Compile Include="Unit\Attributes\Attribute_ValueList_Fixture.cs" />
+    <Compile Include="Unit\Attributes\Attribute_ValueOption_Fixture.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Unit\Attributes\ValueListAttributeFixture.cs" />
-    <Compile Include="Unit\Attributes\ValueOptionAttributeFixture.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Unit\Infrastructure\ArgumentParserFixture.cs" />
-    <Compile Include="Unit\Infrastructure\EnumeratorsFixture.cs" />
-    <Compile Include="Unit\Infrastructure\OptionMapFixture.cs" />
+    <Compile Include="Unit\Infrastructure\Infrastructure_ArgumentParser_Fixture.cs" />
+    <Compile Include="Unit\Infrastructure\Infrastructure_Enumerators_Fixture.cs" />
+    <Compile Include="Unit\Infrastructure\Infrastructure_OptionMap_Fixture.cs" />
     <Compile Include="Fakes\CommandLineOptionsBase.cs" />
     <Compile Include="Fakes\OptionsWithValueOptionExplicitIndex.cs" />
     <Compile Include="Fakes\OptionsWithValueOptionImplicitIndex.cs" />
@@ -84,7 +81,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit\BaseFixture.cs" />
     <Compile Include="Unit\ParserBaseFixture.cs" />
-    <Compile Include="Unit\DebugStringUtil.cs" />
+    <Compile Include="Helpers\DebugStringUtil.cs" />
     <Compile Include="Fakes\BooleanSetOptions.cs" />
     <Compile Include="Fakes\ComplexOptions.cs" />
     <Compile Include="Fakes\MixedCaseOptions.cs" />
@@ -111,23 +108,21 @@
     <Compile Include="Fakes\SimpleOptionsForAutoBuid.cs" />
     <Compile Include="Fakes\OptionsForPlugInScenario.cs" />
     <Compile Include="Fakes\OptionsWithUIntArray.cs" />
-    <Compile Include="Unit\Parser\MutuallyExclusiveParsingFixture.cs" />
-    <Compile Include="Unit\Parser\NullableTypesParsingFixture.cs" />
-    <Compile Include="Unit\Parser\OptionArrayAttributeParsingFixture.cs" />
-    <Compile Include="Unit\Parser\ParserFixture.cs" />
-    <Compile Include="Unit\Parser\ParserSettingsFixture.cs" />
-    <Compile Include="Unit\Parser\ParserStateFixture.cs" />
-    <Compile Include="Unit\Parser\SingletonFixture.cs" />
-    <Compile Include="Unit\Parser\UnknownArgumentsFixture.cs" />
-    <Compile Include="Unit\Parser\ValueListAttributeParsingFixture.cs" />
-    <Compile Include="Unit\Parser\ValueOptionAttributeParsingFixture.cs" />
-    <Compile Include="Unit\Parser\VerbsFixture.cs" />
-    <Compile Include="Unit\Text\CopyrightInfoFixture.cs" />
+    <Compile Include="Unit\Parser_MutuallyExclusive_Fixture.cs" />
+    <Compile Include="Unit\Parser_Nullables_Fixture.cs" />
+    <Compile Include="Unit\Attributes\Attribute_OptionArray_Fixture.cs" />
+    <Compile Include="Unit\Parser_Core_Fixture.cs" />
+    <Compile Include="Unit\ParserSettings_Fixture.cs" />
+    <Compile Include="Unit\ParserState_Fixture.cs" />
+    <Compile Include="Unit\Parser_Singleton_Fixture.cs" />
+    <Compile Include="Unit\Parser_UnknownArguments_Fixture.cs" />
+    <Compile Include="Unit\Parser_Verbs_Fixture.cs" />
+    <Compile Include="Unit\Text\Text_CopyrightInfo_Fixture.cs" />
     <Compile Include="Unit\Text\HeadingInfoFixture.cs" />
     <Compile Include="Unit\Text\HelpTextFixture.cs" />
-    <Compile Include="Unit\Text\MultiLineTextAttributeFixture.cs" />
-    <Compile Include="Unit\Infrastructure\ReflectionHelperFixture.cs" />
-    <Compile Include="Unit\Text\VerbsHelpTextFixture.cs" />
+    <Compile Include="Unit\Attributes\Attribute_MultiLineText_Fixture.cs" />
+    <Compile Include="Unit\Infrastructure\Infrastructure_ReflectionHelper_Fixture.cs" />
+    <Compile Include="Unit\Text\Text_Verbs_Help_Fixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

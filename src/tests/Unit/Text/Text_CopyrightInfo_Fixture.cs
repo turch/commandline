@@ -37,7 +37,7 @@ using CommandLine.Text;
 
 namespace CommandLine.Tests.Unit.Text
 {
-    public class CopyrightInfoFixture
+    public class Text_CopyrightInfo_Fixture
     {
         #region Mock Objects
         private sealed class CopyleftInfo : CopyrightInfo

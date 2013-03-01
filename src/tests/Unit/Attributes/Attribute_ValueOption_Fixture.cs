@@ -1,18 +1,46 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CommandLine.Tests.Fakes;
-using Xunit;
+﻿using CommandLine.Tests.Fakes;
 using FluentAssertions;
+using Xunit;
 
-namespace CommandLine.Tests.Unit.Parser
+namespace CommandLine.Tests.Unit.Attributes
 {
     /// <summary>
     /// [Enhancement] https://github.com/gsscoder/commandline/issues/33
     /// </summary>
-    public class ValueOptionAttributeParsingFixture : ParserBaseFixture
+    public class Attribute_ValueOption_Fixture : ParserBaseFixture
     {
+        [Fact]
+        public void Index_implicit_by_declaration_order()
+        {
+            var args = "foo bar".Split();
+            var result = true;
+
+            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithValueOptionImplicitIndex>(
+                args, () => { result = false; });
+
+            result.Should().BeTrue();
+            options.Should().NotBeNull();
+            options.A.ShouldBeEquivalentTo("foo");
+            options.B.ShouldBeEquivalentTo("bar");
+            options.C.Should().BeNull();
+        }
+
+        [Fact]
+        public void Index_explicitly_set_on_value_option()
+        {
+            var args = "foo bar".Split();
+            var result = true;
+
+            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithValueOptionExplicitIndex>
+                (args, () => { result = false; });
+
+            result.Should().BeTrue();
+            options.Should().NotBeNull();
+            options.A.Should().BeNull();
+            options.B.ShouldBeEquivalentTo("bar");
+            options.C.ShouldBeEquivalentTo("foo");
+        }
+
         [Fact]
         public void Value_option_attribute_isolates_non_option_values()
         {
@@ -29,7 +57,7 @@ namespace CommandLine.Tests.Unit.Parser
             options.NullableDoubleItem.Should().Be(0.1234D);
             options.StringValue.Should().Be("out.ext");
         }
-        
+
         [Fact]
         public void Value_option_attribute_values_are_not_mandatory()
         {
@@ -76,4 +104,3 @@ namespace CommandLine.Tests.Unit.Parser
         }
     }
 }
-

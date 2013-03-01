@@ -36,7 +36,7 @@ using CommandLine.Tests.Fakes;
 
 namespace CommandLine.Tests.Unit.Parser
 {
-    public class VerbsFixture : ParserBaseFixture
+    public class Parser_Verbs_Fixture : ParserBaseFixture
     {
         [Fact]
         public void Parse_verbs_create_instance()
