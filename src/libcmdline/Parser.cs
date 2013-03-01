@@ -312,7 +312,7 @@ namespace CommandLine
             var optionMap = OptionMap.Create(options, _settings);
             optionMap.SetDefaults();
             var valueMapper = new ValueMapper<T>(options, _settings.ParsingCulture);
-            var canReceiveValues = options.CanReceiveUnboundValues();
+            //var canReceiveValues = options.CanReceiveUnboundValues();
 
             var arguments = new StringArrayEnumerator(args);
             while (arguments.MoveNext())
@@ -339,7 +339,7 @@ namespace CommandLine
                         arguments.MoveNext();
                     }
                 }
-                else if (canReceiveValues)
+                else if (valueMapper.CanReceiveValues)
                 {
                     if (!valueMapper.MapValueItem(argument))
                     {
