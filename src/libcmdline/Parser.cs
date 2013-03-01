@@ -221,7 +221,8 @@ namespace CommandLine
                 return options;
             }
 
-            var property = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options)[0].Left();
+            //var property = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options)[0].Left();
+            var property = (PropertyInfo)Metadata.GetAttributes(options).Single(p => p.Item2 is ParserStateAttribute).Left();
 
             var parserState = property.GetValue(options, null);
             if (parserState != null)
@@ -352,7 +353,13 @@ namespace CommandLine
             var options = new T();
 
             var verbs = ReflectionHelper.RetrievePropertyList<VerbOptionAttribute>(options);
+            //var verbsPair = Metadata.GetAttributes(options).Where(a => a.Item2 is VerbOptionAttribute);
+            //var verbs = verbsPair.Cast<Tuple<PropertyInfo, VerbOptionAttribute>>();
+
+ 
             var helpInfo = ReflectionHelper.RetrieveMethod<HelpVerbOptionAttribute>(options);
+            //var helpInfoPair = Metadata.GetAttributes(options).Single(a => a.Item2 is HelpVerbOptionAttribute);
+            //var helpInfo = new Tuple<MethodInfo, HelpVerbOptionAttribute>((MethodInfo)helpInfoPair.Item1, (HelpVerbOptionAttribute)helpInfoPair.Item2);
 
             if (args.Length == 0)
             {
