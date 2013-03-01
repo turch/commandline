@@ -28,7 +28,7 @@ namespace CommandLine.Tests.Unit
         [Fact]
         public void Should_detect_if_target_has_verbs()
         {
-            new OptionsWithVerbs().AnyVerbs().Should().BeTrue();
+            new OptionsWithVerbs().AnyVerbCommands().Should().BeTrue();
         }
 
         [Fact]
@@ -38,8 +38,8 @@ namespace CommandLine.Tests.Unit
             var options = new OptionsWithVerbs();
 
             // Than
-            options.HasVerbHelp().Should().BeTrue();
-            options.HasHelp().Should().BeFalse();
+            options.HasHelpVerbCommandMethod().Should().BeTrue();
+            options.HasHelpMethod().Should().BeFalse();
         }
 
         [Fact]
@@ -49,8 +49,8 @@ namespace CommandLine.Tests.Unit
             var options = new FakeWithHelp();
 
             // Than
-            options.HasHelp().Should().BeTrue();
-            options.HasVerbHelp().Should().BeFalse();
+            options.HasHelpMethod().Should().BeTrue();
+            options.HasHelpVerbCommandMethod().Should().BeFalse();
         }
 
         [Fact]

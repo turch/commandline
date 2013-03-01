@@ -32,17 +32,17 @@ namespace CommandLine
 {
     internal static class CapabilitiesExtensions
     {
-        public static bool AnyVerbs<T>(this T options)
+        public static bool AnyVerbCommands<T>(this T options)
         {
             return Metadata.GetAttributes(options).Any(a => a.Item2 is VerbOptionAttribute);
         }
 
-        public static bool HasHelp<T>(this T options)
+        public static bool HasHelpMethod<T>(this T options)
         {
             return Metadata.GetAttributes(options).Count(a => a.Item2 is HelpOptionAttribute) == 1;
         }
 
-        public static bool HasVerbHelp<T>(this T options)
+        public static bool HasHelpVerbCommandMethod<T>(this T options)
         {
             return Metadata.GetAttributes(options).Count(a => a.Item2 is HelpVerbOptionAttribute) == 1;
         }

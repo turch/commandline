@@ -488,8 +488,8 @@ namespace CommandLine
             where T : new()
         {
             if (_settings.HelpWriter == null ||
-                options.HasHelp() ||
-                options.HasVerbHelp())
+                options.HasHelpMethod() ||
+                options.HasHelpVerbCommandMethod())
             {
                 return;
             }
@@ -499,7 +499,7 @@ namespace CommandLine
                 HelpText.AutoBuild(
                     options,
                     current => HelpText.DefaultParsingErrorsHandler(options, current),
-                    options.AnyVerbs()));
+                    options.AnyVerbCommands()));
         }
 
         private void HandleDynamicAutoBuild<T>(T options)
