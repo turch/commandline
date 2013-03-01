@@ -52,6 +52,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Unit\CapabilitiesFixture.cs" />
     <Compile Include="Fakes\OptionsWithImplicitLongName.cs" />
     <Compile Include="Fakes\OptionsWithTwoArrays.cs" />
     <Compile Include="Unit\Attributes\AttributesFixture.cs" />

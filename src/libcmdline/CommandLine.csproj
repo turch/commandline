@@ -66,6 +66,7 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Attributes\BaseOptionAttribute.cs" />
+    <Compile Include="Attributes\ITargetDescriptor.cs" />
     <Compile Include="Attributes\OptionAttribute.cs" />
     <Compile Include="Attributes\OptionArrayAttribute.cs" />
     <Compile Include="Attributes\HelpOptionAttribute.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Attributes\ParserStateAttribute.cs" />
     <Compile Include="Attributes\ValueListAttribute.cs" />
     <Compile Include="Attributes\ValueOptionAttribute.cs" />
+    <Compile Include="Capabilities.cs" />
     <Compile Include="Extensions\CharExtensions.cs" />
     <Compile Include="Extensions\TupleExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />

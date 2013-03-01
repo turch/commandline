@@ -32,7 +32,7 @@ namespace CommandLine
     /// <summary>
     /// Provides base properties for creating an attribute, used to define rules for command line parsing.
     /// </summary>
-    public abstract class BaseOptionAttribute : Attribute
+    public abstract class BaseOptionAttribute : Attribute, ITargetDescriptor
     {
         internal const string DefaultMutuallyExclusiveSet = "Default";
         private char? _shortName;
