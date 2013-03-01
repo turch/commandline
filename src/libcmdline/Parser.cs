@@ -201,7 +201,7 @@ namespace CommandLine
         }
 
         [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "By design")]
-        internal static object InternalGetVerbOptionsInstanceByName(string verb, object target, out bool found)
+        internal static object InternalGetVerbOptionsInstanceByName<T>(string verb, T target, out bool found)
         {
             found = false;
             if (string.IsNullOrEmpty(verb))
@@ -209,7 +209,14 @@ namespace CommandLine
                 return target;
             }
 
-            var pair = ReflectionHelper.RetrieveOptionProperty<VerbOptionAttribute>(target, verb);
+            //var pair = ReflectionHelper.RetrieveOptionProperty<VerbOptionAttribute>(target, verb);
+            var pair = Metadata.GetSingle<PropertyInfo, VerbOptionAttribute, T>(
+                target,
+                a =>
+                    {
+                        var verbAttribute = a.Item2 as VerbOptionAttribute;
+                        return verbAttribute != null && string.CompareOrdinal(verbAttribute.UniqueName, verb) == 0;
+                    });
             found = pair != null;
             return found ? pair.Left().GetValue(target, null) : target;
         }
@@ -275,7 +282,8 @@ namespace CommandLine
             where T : new()
         {
             var options = new T();
-            var pair = ReflectionHelper.RetrieveMethod<HelpOptionAttribute>(options);
+            //var pair = ReflectionHelper.RetrieveMethod<HelpOptionAttribute>(options);
+            var pair = Metadata.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
             var helpWriter = _settings.HelpWriter;
 
             // TODO: refactoring following query in TargetCapabilitiesExtensions?

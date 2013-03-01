@@ -184,9 +184,10 @@ namespace CommandLine.Parsing
                 options,
                 a => a.Item2 is ParserStateAttribute);
             //if (list.Count == 0)
-            //{
-            //    return;
-            //}
+            if (list == null)
+            {
+                return;
+            }
 
             //var property = list[0].Left();
             var property = list.Left();

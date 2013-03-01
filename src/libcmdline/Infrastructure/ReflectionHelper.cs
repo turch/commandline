@@ -44,146 +44,146 @@ namespace CommandLine.Infrastructure
             get; set;
         }
 
-        public static IList<Tuple<PropertyInfo, TAttribute>> RetrievePropertyList<TAttribute>(object target)
-                where TAttribute : Attribute
-        {
-            var key = new Tuple<Type, object>(typeof(Tuple<PropertyInfo, TAttribute>), target);
-            var cached = ReflectionCache.Instance[key];
-            if (cached == null)
-            {
-                IList<Tuple<PropertyInfo, TAttribute>> list = new List<Tuple<PropertyInfo, TAttribute>>();
-                if (target != null)
-                {
-                    var propertiesInfo = target.GetType().GetProperties();
+        //public static IList<Tuple<PropertyInfo, TAttribute>> RetrievePropertyList<TAttribute>(object target)
+        //        where TAttribute : Attribute
+        //{
+        //    var key = new Tuple<Type, object>(typeof(Tuple<PropertyInfo, TAttribute>), target);
+        //    var cached = ReflectionCache.Instance[key];
+        //    if (cached == null)
+        //    {
+        //        IList<Tuple<PropertyInfo, TAttribute>> list = new List<Tuple<PropertyInfo, TAttribute>>();
+        //        if (target != null)
+        //        {
+        //            var propertiesInfo = target.GetType().GetProperties();
 
-                    foreach (var property in propertiesInfo)
-                    {
-                        if (property == null || (!property.CanRead || !property.CanWrite))
-                        {
-                            continue;
-                        }
+        //            foreach (var property in propertiesInfo)
+        //            {
+        //                if (property == null || (!property.CanRead || !property.CanWrite))
+        //                {
+        //                    continue;
+        //                }
 
-                        var setMethod = property.GetSetMethod();
-                        if (setMethod == null || setMethod.IsStatic)
-                        {
-                            continue;
-                        }
+        //                var setMethod = property.GetSetMethod();
+        //                if (setMethod == null || setMethod.IsStatic)
+        //                {
+        //                    continue;
+        //                }
 
-                        var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
-                        if (attribute != null)
-                        {
-                            list.Add(new Tuple<PropertyInfo, TAttribute>(property, (TAttribute)attribute));
-                        }
-                    }
-                }
+        //                var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
+        //                if (attribute != null)
+        //                {
+        //                    list.Add(new Tuple<PropertyInfo, TAttribute>(property, (TAttribute)attribute));
+        //                }
+        //            }
+        //        }
 
-                ReflectionCache.Instance[key] = list;
-                return list;
-            }
+        //        ReflectionCache.Instance[key] = list;
+        //        return list;
+        //    }
 
-            return (IList<Tuple<PropertyInfo, TAttribute>>)cached;
-        }
+        //    return (IList<Tuple<PropertyInfo, TAttribute>>)cached;
+        //}
 
-        public static Tuple<MethodInfo, TAttribute> RetrieveMethod<TAttribute>(object target)
-                where TAttribute : Attribute
-        {
-            var key = new Tuple<Type, object>(typeof(Tuple<MethodInfo, TAttribute>), target);
-            var cached = ReflectionCache.Instance[key];
-            if (cached == null)
-            {
-                var info = target.GetType().GetMethods();
-                foreach (var method in info)
-                {
-                    if (method.IsStatic)
-                    {
-                        continue;
-                    }
+        //public static Tuple<MethodInfo, TAttribute> RetrieveMethod<TAttribute>(object target)
+        //        where TAttribute : Attribute
+        //{
+        //    var key = new Tuple<Type, object>(typeof(Tuple<MethodInfo, TAttribute>), target);
+        //    var cached = ReflectionCache.Instance[key];
+        //    if (cached == null)
+        //    {
+        //        var info = target.GetType().GetMethods();
+        //        foreach (var method in info)
+        //        {
+        //            if (method.IsStatic)
+        //            {
+        //                continue;
+        //            }
 
-                    var attribute = Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
-                    if (attribute == null)
-                    {
-                        continue;
-                    }
+        //            var attribute = Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
+        //            if (attribute == null)
+        //            {
+        //                continue;
+        //            }
 
-                    var data = new Tuple<MethodInfo, TAttribute>(method, (TAttribute)attribute);
-                    ReflectionCache.Instance[key] = data;
-                    return data;
-                }
+        //            var data = new Tuple<MethodInfo, TAttribute>(method, (TAttribute)attribute);
+        //            ReflectionCache.Instance[key] = data;
+        //            return data;
+        //        }
 
-                return null;
-            }
+        //        return null;
+        //    }
 
-            return (Tuple<MethodInfo, TAttribute>)cached;
-        }
+        //    return (Tuple<MethodInfo, TAttribute>)cached;
+        //}
 
-        public static TAttribute RetrieveMethodAttributeOnly<TAttribute>(object target)
-                where TAttribute : Attribute
-        {
-            var key = new Tuple<Type, object>(typeof(TAttribute), target);
-            var cached = ReflectionCache.Instance[key];
-            if (cached == null)
-            {
-                var info = target.GetType().GetMethods();
-                foreach (var method in info)
-                {
-                    if (method.IsStatic)
-                    {
-                        continue;
-                    }
+        //public static TAttribute RetrieveMethodAttributeOnly<TAttribute>(object target)
+        //        where TAttribute : Attribute
+        //{
+        //    var key = new Tuple<Type, object>(typeof(TAttribute), target);
+        //    var cached = ReflectionCache.Instance[key];
+        //    if (cached == null)
+        //    {
+        //        var info = target.GetType().GetMethods();
+        //        foreach (var method in info)
+        //        {
+        //            if (method.IsStatic)
+        //            {
+        //                continue;
+        //            }
 
-                    var attribute = Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
-                    if (attribute == null)
-                    {
-                        continue;
-                    }
+        //            var attribute = Attribute.GetCustomAttribute(method, typeof(TAttribute), false);
+        //            if (attribute == null)
+        //            {
+        //                continue;
+        //            }
 
-                    var data = (TAttribute)attribute;
-                    ReflectionCache.Instance[key] = data;
-                    return data;
-                }
+        //            var data = (TAttribute)attribute;
+        //            ReflectionCache.Instance[key] = data;
+        //            return data;
+        //        }
 
-                return null;
-            }
+        //        return null;
+        //    }
 
-            return (TAttribute)cached;
-        }
+        //    return (TAttribute)cached;
+        //}
 
-        public static IList<TAttribute> RetrievePropertyAttributeList<TAttribute>(object target)
-                where TAttribute : Attribute
-        {
-            var key = new Tuple<Type, object>(typeof(IList<TAttribute>), target);
-            var cached = ReflectionCache.Instance[key];
-            if (cached == null)
-            {
-                IList<TAttribute> list = new List<TAttribute>();
-                var info = target.GetType().GetProperties();
+        //public static IList<TAttribute> RetrievePropertyAttributeList<TAttribute>(object target)
+        //        where TAttribute : Attribute
+        //{
+        //    var key = new Tuple<Type, object>(typeof(IList<TAttribute>), target);
+        //    var cached = ReflectionCache.Instance[key];
+        //    if (cached == null)
+        //    {
+        //        IList<TAttribute> list = new List<TAttribute>();
+        //        var info = target.GetType().GetProperties();
 
-                foreach (var property in info)
-                {
-                    if (property == null || (!property.CanRead || !property.CanWrite))
-                    {
-                        continue;
-                    }
+        //        foreach (var property in info)
+        //        {
+        //            if (property == null || (!property.CanRead || !property.CanWrite))
+        //            {
+        //                continue;
+        //            }
 
-                    var setMethod = property.GetSetMethod();
-                    if (setMethod == null || setMethod.IsStatic)
-                    {
-                        continue;
-                    }
+        //            var setMethod = property.GetSetMethod();
+        //            if (setMethod == null || setMethod.IsStatic)
+        //            {
+        //                continue;
+        //            }
 
-                    var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
-                    if (attribute != null)
-                    {
-                        list.Add((TAttribute)attribute);
-                    }
-                }
+        //            var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
+        //            if (attribute != null)
+        //            {
+        //                list.Add((TAttribute)attribute);
+        //            }
+        //        }
 
-                ReflectionCache.Instance[key] = list;
-                return list;
-            }
+        //        ReflectionCache.Instance[key] = list;
+        //        return list;
+        //    }
 
-            return (IList<TAttribute>)cached;
-        }
+        //    return (IList<TAttribute>)cached;
+        //}
 
         public static TAttribute GetAttribute<TAttribute>()
             where TAttribute : Attribute
@@ -197,48 +197,48 @@ namespace CommandLine.Infrastructure
             return (TAttribute)a[0];
         }
 
-        public static Tuple<PropertyInfo, TAttribute> RetrieveOptionProperty<TAttribute>(object target, string uniqueName)
-                where TAttribute : BaseOptionAttribute
-        {
-            var key = new Tuple<Type, object>(typeof(Tuple<PropertyInfo, BaseOptionAttribute>), target);
-            var cached = ReflectionCache.Instance[key];
-            if (cached == null)
-            {
-                if (target == null)
-                {
-                    return null;
-                }
+        //public static Tuple<PropertyInfo, TAttribute> RetrieveOptionProperty<TAttribute>(object target, string uniqueName)
+        //        where TAttribute : BaseOptionAttribute
+        //{
+        //    var key = new Tuple<Type, object>(typeof(Tuple<PropertyInfo, BaseOptionAttribute>), target);
+        //    var cached = ReflectionCache.Instance[key];
+        //    if (cached == null)
+        //    {
+        //        if (target == null)
+        //        {
+        //            return null;
+        //        }
 
-                var propertiesInfo = target.GetType().GetProperties();
+        //        var propertiesInfo = target.GetType().GetProperties();
 
-                foreach (var property in propertiesInfo)
-                {
-                    if (property == null || (!property.CanRead || !property.CanWrite))
-                    {
-                        continue;
-                    }
+        //        foreach (var property in propertiesInfo)
+        //        {
+        //            if (property == null || (!property.CanRead || !property.CanWrite))
+        //            {
+        //                continue;
+        //            }
 
-                    var setMethod = property.GetSetMethod();
-                    if (setMethod == null || setMethod.IsStatic)
-                    {
-                        continue;
-                    }
+        //            var setMethod = property.GetSetMethod();
+        //            if (setMethod == null || setMethod.IsStatic)
+        //            {
+        //                continue;
+        //            }
 
-                    var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
-                    var optionAttr = (TAttribute)attribute;
-                    if (optionAttr == null || string.CompareOrdinal(uniqueName, optionAttr.UniqueName) != 0)
-                    {
-                        continue;
-                    }
+        //            var attribute = Attribute.GetCustomAttribute(property, typeof(TAttribute), false);
+        //            var optionAttr = (TAttribute)attribute;
+        //            if (optionAttr == null || string.CompareOrdinal(uniqueName, optionAttr.UniqueName) != 0)
+        //            {
+        //                continue;
+        //            }
 
-                    var found = new Tuple<PropertyInfo, TAttribute>(property, (TAttribute)attribute);
-                    ReflectionCache.Instance[key] = found;
-                    return found;
-                }
-            }
+        //            var found = new Tuple<PropertyInfo, TAttribute>(property, (TAttribute)attribute);
+        //            ReflectionCache.Instance[key] = found;
+        //            return found;
+        //        }
+        //    }
 
-            return (Tuple<PropertyInfo, TAttribute>)cached;
-        }
+        //    return (Tuple<PropertyInfo, TAttribute>)cached;
+        //}
 
         //public static bool IsNullableType(Type type)
         //{

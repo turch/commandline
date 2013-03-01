@@ -24,6 +24,8 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 using CommandLine.Extensions;
 using CommandLine.Infrastructure;
@@ -262,7 +264,7 @@ namespace CommandLine.Text
         /// An instance of <see cref="CommandLine.Text.HelpText"/> class.
         /// </returns>
         /// <param name='options'>The instance that collected command line arguments parsed with <see cref="Parser"/> class.</param>
-        public static HelpText AutoBuild(object options)
+        public static HelpText AutoBuild<T>(T options)
         {
             return AutoBuild(options, (Action<HelpText>)null);
         }
@@ -276,7 +278,7 @@ namespace CommandLine.Text
         /// <param name='options'>The instance that collected command line arguments parsed with <see cref="Parser"/> class.</param>
         /// <param name='onError'>A delegate used to customize the text block for reporting parsing errors.</param>
         /// <param name="verbsIndex">If true the output style is consistent with verb commands (no dashes), otherwise it outputs options.</param>
-        public static HelpText AutoBuild(object options, Action<HelpText> onError, bool verbsIndex = false)
+        public static HelpText AutoBuild<T>(T options, Action<HelpText> onError, bool verbsIndex = false)
         {
             var auto = new HelpText
             {
@@ -288,7 +290,8 @@ namespace CommandLine.Text
 
             if (onError != null)
             {
-                var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
+                //var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
+                var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
                 if (list != null)
                 {
                     onError(auto);
@@ -336,15 +339,18 @@ namespace CommandLine.Text
         /// <param name="options">The instance that collects parsed arguments parsed and associates <see cref="CommandLine.ParserStateAttribute"/>
         /// to a property of type <see cref="IParserState"/>.</param>
         /// <param name="current">The <see cref="CommandLine.Text.HelpText"/> instance.</param>
-        public static void DefaultParsingErrorsHandler(object options, HelpText current)
+        public static void DefaultParsingErrorsHandler<T>(T options, HelpText current)
         {
-            var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
-            if (list.Count == 0)
+            //var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
+            var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
+            //if (list.Count == 0)
+            if (list == null)
             {
                 return;
             }
 
-            var parserState = (IParserState)list[0].Left().GetValue(options, null);
+            //var parserState = (IParserState)list[0].Left().GetValue(options, null);
+            var parserState = (IParserState)list.Left().GetValue(options, null);
             if (parserState == null || parserState.Errors.Count == 0)
             {
                 return;
@@ -440,15 +446,18 @@ namespace CommandLine.Text
         /// associated to a property of type <see cref="IParserState"/>.</param>
         /// <param name="indent">Number of spaces used to indent text.</param>
         /// <returns>The <see cref="System.String"/> that contains the parsing error message.</returns>
-        public string RenderParsingErrorsText(object options, int indent)
+        public string RenderParsingErrorsText<T>(T options, int indent)
         {
-            var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
-            if (list.Count == 0)
+            //var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
+            var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
+            //if (list.Count == 0)
+            if (list == null)
             {
                 return string.Empty; // Or exception?
             }
 
-            var parserState = (IParserState)list[0].Left().GetValue(options, null);
+            //var parserState = (IParserState)list[0].Left().GetValue(options, null);
+            var parserState = (IParserState)list.Left().GetValue(options, null);
             if (parserState == null || parserState.Errors.Count == 0)
             {
                 return string.Empty;
@@ -626,17 +635,20 @@ namespace CommandLine.Text
             builder.Append(value);
         }
 
-        private void DoAddOptions(object options, string requiredWord, int maximumLength, bool fireEvent = true)
+        private void DoAddOptions<T>(T options, string requiredWord, int maximumLength, bool fireEvent = true)
         {
-            var optionList = ReflectionHelper.RetrievePropertyAttributeList<BaseOptionAttribute>(options);
-            var optionHelp = ReflectionHelper.RetrieveMethodAttributeOnly<HelpOptionAttribute>(options);
+            //var optionList = ReflectionHelper.RetrievePropertyAttributeList<BaseOptionAttribute>(options);
+            var allOptions = Metadata.Get<MemberInfo, BaseOptionAttribute, T>(
+                options,
+                a => a.Item2 is BaseOptionAttribute);
+            //var optionHelp = ReflectionHelper.RetrieveMethodAttributeOnly<HelpOptionAttribute>(options);
+            var optionList = allOptions.Select(a => a.Item2);
+            //if (optionHelp != null)
+            //{
+            //    optionList.Add(optionHelp);
+            //}
 
-            if (optionHelp != null)
-            {
-                optionList.Add(optionHelp);
-            }
-
-            if (optionList.Count == 0)
+            if (optionList.Count() == 0)
             {
                 return;
             }
