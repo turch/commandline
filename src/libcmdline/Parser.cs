@@ -306,7 +306,7 @@ namespace CommandLine
             var hadError = false;
             var optionMap = OptionMap.Create(options, _settings);
             optionMap.SetDefaults();
-            var valueMapper = new ValueMapper(options, _settings.ParsingCulture);
+            var valueMapper = new ValueMapper<T>(options, _settings.ParsingCulture);
 
             var arguments = new StringArrayEnumerator(args);
             while (arguments.MoveNext())

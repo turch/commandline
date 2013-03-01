@@ -39,16 +39,16 @@ namespace CommandLine.Parsing
     /// <summary>
     /// Maps unnamed options to property using <see cref="CommandLine.ValueOptionAttribute"/> and <see cref="CommandLine.ValueListAttribute"/>.
     /// </summary>
-    internal sealed class ValueMapper
+    internal sealed class ValueMapper<T>
     {
         private readonly CultureInfo _parsingCulture;
-        private readonly object _target;
+        private readonly T _target;
         private IList<string> _valueList;
         private ValueListAttribute _valueListAttribute;
-        private IList<Tuple<PropertyInfo, ValueOptionAttribute>> _valueOptionAttributeList;
+        private IEnumerable<Tuple<PropertyInfo, ValueOptionAttribute>> _valueOptionAttributeList;
         private int _valueOptionIndex;
 
-        public ValueMapper(object target, CultureInfo parsingCulture)
+        public ValueMapper(T target, CultureInfo parsingCulture)
         {
             _target = target;
             _parsingCulture = parsingCulture;
@@ -68,15 +68,16 @@ namespace CommandLine.Parsing
 
         private bool IsValueOptionDefined
         {
-            get { return _valueOptionAttributeList.Count > 0; }
+            get { return _valueOptionAttributeList.Count() > 0; }
         }
 
         public bool MapValueItem(string item)
         {
             if (IsValueOptionDefined &&
-                _valueOptionIndex < _valueOptionAttributeList.Count)
+                _valueOptionIndex < _valueOptionAttributeList.Count())
             {
-                var valueOption = _valueOptionAttributeList[_valueOptionIndex++];
+                //var valueOption = _valueOptionAttributeList[_valueOptionIndex++];
+                var valueOption = _valueOptionAttributeList.ElementAt(_valueOptionIndex++);
 
                 return valueOption.Left().PropertyType.IsNullable() ?
                     PropertyWriter.WriteNullable(item, _target, valueOption.Left(), _parsingCulture) :
@@ -110,7 +111,8 @@ namespace CommandLine.Parsing
 
         private void InitializeValueOption()
         {
-            var list = ReflectionHelper.RetrievePropertyList<ValueOptionAttribute>(_target);
+            //var list = ReflectionHelper.RetrievePropertyList<ValueOptionAttribute>(_target);
+            var list = Metadata.Get<PropertyInfo, ValueOptionAttribute, T>(_target, a => a.Item2 is ValueOptionAttribute);
 
             // default is index 0, so skip sorting if all have it
             _valueOptionAttributeList = list.All(x => x.Right().Index == 0)

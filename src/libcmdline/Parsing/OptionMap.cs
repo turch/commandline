@@ -100,15 +100,18 @@ namespace CommandLine.Parsing
             }
         }
 
-        public static OptionMap Create(object target, ParserSettings settings)
+        public static OptionMap Create<T>(T target, ParserSettings settings)
         {
-            var list = ReflectionHelper.RetrievePropertyList<BaseOptionAttribute>(target);
+            //var list = ReflectionHelper.RetrievePropertyList<BaseOptionAttribute>(target);
+            var list = Metadata.Get<PropertyInfo, BaseOptionAttribute, T>(
+                target,
+                a => a.Item1 is PropertyInfo && a.Item2 is BaseOptionAttribute);
             if (list == null)
             {
                 return null;
             }
 
-            var map = new OptionMap(list.Count, settings);
+            var map = new OptionMap(list.Count(), settings);
 
             foreach (var pair in list)
             {
@@ -174,15 +177,19 @@ namespace CommandLine.Parsing
             }
         }
 
-        private static void SetParserStateIfNeeded(object options, OptionInfo option, bool? required, bool? mutualExclusiveness)
+        private static void SetParserStateIfNeeded<T>(T options, OptionInfo option, bool? required, bool? mutualExclusiveness)
         {
-            var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
-            if (list.Count == 0)
-            {
-                return;
-            }
+            //var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
+            var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(
+                options,
+                a => a.Item2 is ParserStateAttribute);
+            //if (list.Count == 0)
+            //{
+            //    return;
+            //}
 
-            var property = list[0].Left();
+            //var property = list[0].Left();
+            var property = list.Left();
 
             // This method can be called when parser state is still not intialized
             if (property.GetValue(options, null) == null)
