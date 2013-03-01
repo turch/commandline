@@ -240,9 +240,9 @@ namespace CommandLine.Infrastructure
             return (Tuple<PropertyInfo, TAttribute>)cached;
         }
 
-        public static bool IsNullableType(Type type)
-        {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
-        }
+        //public static bool IsNullableType(Type type)
+        //{
+        //    return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        //}
     }
 }

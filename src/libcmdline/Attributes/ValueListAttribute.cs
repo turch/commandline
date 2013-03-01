@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-
+using System.Linq;
 using CommandLine.Extensions;
 using CommandLine.Infrastructure;
 #endregion
@@ -100,19 +100,23 @@ namespace CommandLine
 
         internal static ValueListAttribute GetAttribute(object target)
         {
-            var list = ReflectionHelper.RetrievePropertyList<ValueListAttribute>(target);
-            if (list == null || list.Count == 0)
+            //var list = ReflectionHelper.RetrievePropertyList<ValueListAttribute>(target);
+            var list = Metadata.GetAttributes(target).Where(a => a.Item2 is ValueListAttribute);
+            //if (list == null || list.Count == 0)
+            //{
+            //    return null;
+            //}
+
+            //if (list.Count > 1)
+            if (list.Count() > 1)
             {
-                return null;
+                throw new InvalidOperationException(); // TODO: add exception message for developers.
             }
 
-            if (list.Count > 1)
-            {
-                throw new InvalidOperationException();
-            }
-
-            var pairZero = list[0];
-            return pairZero.Right();
+            //var pairZero = list[0];
+            var pairZero = list.SingleOrDefault();
+            //return pairZero.Right();
+            return pairZero == null ? null : pairZero.Right() as ValueListAttribute;
         }
 
         private static PropertyInfo GetProperty(object target, out Type concreteType)

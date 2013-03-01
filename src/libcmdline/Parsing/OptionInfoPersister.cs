@@ -29,6 +29,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Reflection;
 
+using CommandLine.Extensions;
 using CommandLine.Infrastructure;
 
 #endregion
@@ -44,7 +45,7 @@ namespace CommandLine.Parsing
                 return SetValueList(value, options, optionInfo);
             }
 
-            if (ReflectionHelper.IsNullableType(optionInfo.InnerProperty.PropertyType))
+            if (optionInfo.InnerProperty.PropertyType.IsNullable())
             {
                 return optionInfo.ReceivedValue = PropertyWriter.WriteNullable(value, options, optionInfo.InnerProperty, optionInfo.ParsingCulture);
             }
