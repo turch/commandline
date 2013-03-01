@@ -97,8 +97,7 @@ namespace CommandLine.Parsing
             return true;
         }
 
-        public abstract PresentParserState Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
-            where T : new();
+        public abstract PresentParserState Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
 
         /// <summary>
         /// Helper method for testing purpose.

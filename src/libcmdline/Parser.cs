@@ -215,7 +215,6 @@ namespace CommandLine
         }
 
         private static T SetParserStateIfNeeded<T>(T options, IEnumerable<ParsingError> errors)
-            where T : new()
         {
             if (!options.CanReceiveParserState())
             {
@@ -260,7 +259,6 @@ namespace CommandLine
         }
 
         private static void DisplayHelpText<T>(T options, Tuple<MethodInfo, HelpOptionAttribute> pair, TextWriter helpWriter)
-            where T : new()
         {
             string helpText;
             HelpOptionAttribute.InvokeMethod(options, pair, out helpText); // TODO: refactor this
@@ -303,7 +301,6 @@ namespace CommandLine
         }
 
         private Tuple<bool, T> ParseArgumentsCore<T>(string[] args, T options)
-            where T : new()
         {
             var hadError = false;
             var optionMap = OptionMap.Create(options, _settings);
@@ -435,7 +432,6 @@ namespace CommandLine
         }
 
         private bool TryParseHelpVerb<T>(string[] args, T options, Tuple<MethodInfo, HelpVerbOptionAttribute> helpInfo, OptionMap optionMap)
-            where T : new()
         {
             var helpWriter = _settings.HelpWriter;
             if (helpInfo != null && helpWriter != null)
@@ -466,7 +462,6 @@ namespace CommandLine
         }
 
         private void DisplayHelpVerbText<T>(T options, Tuple<MethodInfo, HelpVerbOptionAttribute> helpInfo, string verb)
-            where T : new()
         {
             string helpText;
             if (verb == null)
@@ -485,7 +480,6 @@ namespace CommandLine
         }
 
         private void InvokeAutoBuildIfNeeded<T>(T options)
-            where T : new()
         {
             if (_settings.HelpWriter == null ||
                 options.HasHelpMethod() ||
@@ -503,7 +497,6 @@ namespace CommandLine
         }
 
         private void HandleDynamicAutoBuild<T>(T options)
-            where T : new()
         {
             if (_settings.DynamicAutoBuild)
             {
