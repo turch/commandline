@@ -22,34 +22,34 @@
 // THE SOFTWARE.
 #endregion
 #region Using Directives
+
+using System.Linq;
+
 using CommandLine.Infrastructure;
 #endregion
 
-namespace CommandLine.Parsing
+namespace CommandLine
 {
-    /// <summary>
-    /// Utility extension methods for query target capabilities.
-    /// </summary>
-    internal static class TargetCapabilitiesExtensions
+    internal static class CapabilitiesExtensions
     {
-        public static bool HasVerbs(this object target)
+        public static bool AnyVerbs<T>(this T options)
         {
-            return ReflectionHelper.RetrievePropertyList<VerbOptionAttribute>(target).Count > 0;
+            return Metadata.GetAttributes(options).Any(a => a.Item2 is VerbOptionAttribute);
         }
 
-        public static bool HasHelp(this object target)
+        public static bool HasHelp<T>(this T options)
         {
-            return ReflectionHelper.RetrieveMethod<HelpOptionAttribute>(target) != null;
+            return Metadata.GetAttributes(options).Count(a => a.Item2 is HelpOptionAttribute) == 1;
         }
 
-        public static bool HasVerbHelp(this object target)
+        public static bool HasVerbHelp<T>(this T options)
         {
-            return ReflectionHelper.RetrieveMethod<HelpVerbOptionAttribute>(target) != null;
+            return Metadata.GetAttributes(options).Count(a => a.Item2 is HelpVerbOptionAttribute) == 1;
         }
 
-        public static bool CanReceiveParserState(this object target)
+        public static bool CanReceiveParserState<T>(this T options)
         {
-            return ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(target).Count > 0;
+            return Metadata.GetAttributes(options).Count(a => a.Item2 is ParserStateAttribute) == 1;
         }
     }
 }

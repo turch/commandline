@@ -74,7 +74,9 @@
     <Compile Include="Attributes\ParserStateAttribute.cs" />
     <Compile Include="Attributes\ValueListAttribute.cs" />
     <Compile Include="Attributes\ValueOptionAttribute.cs" />
-    <Compile Include="Capabilities.cs" />
+    <Compile Include="CapabilitiesExtensions.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Extensions\CharExtensions.cs" />
     <Compile Include="Extensions\TupleExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -84,15 +86,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="Metadata.cs" />
     <Compile Include="Parsing\OptionInfoPersister.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
     <Compile Include="Infrastructure\ReflectionCache.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Infrastructure\ReflectionHelper.cs" />
     <Compile Include="Parsing\PropertyWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Parsing\TargetCapabilitiesExtensions.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Parsing\ValueMapper.cs" />

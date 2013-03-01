@@ -499,7 +499,7 @@ namespace CommandLine
                 HelpText.AutoBuild(
                     options,
                     current => HelpText.DefaultParsingErrorsHandler(options, current),
-                    options.HasVerbs()));
+                    options.AnyVerbs()));
         }
 
         private void HandleDynamicAutoBuild<T>(T options)
