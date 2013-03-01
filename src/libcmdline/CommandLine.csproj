@@ -82,7 +82,6 @@
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Infrastructure\PopsicleSetter.cs" />
-    <Compile Include="Infrastructure\ReflectionCache.cs" />
     <Compile Include="Infrastructure\ReflectionHelper.cs" />
     <Compile Include="Infrastructure\SR.strings.cs">
       <AutoGen>True</AutoGen>

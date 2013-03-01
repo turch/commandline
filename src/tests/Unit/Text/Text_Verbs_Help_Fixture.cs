@@ -136,9 +136,10 @@ namespace CommandLine.Tests.Unit.Text
             Console.WriteLine(helpText);
             var lines = helpText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
             // Verify just significant output
-            lines[5].Trim().Should().Be("add       Add file contents to the index.");
-            lines[6].Trim().Should().Be("commit    Record changes to the repository.");
-            lines[7].Trim().Should().Be("clone     Clone a repository into a new directory.");
+            lines[5].Trim().Should().Be("help      Display more information on a specific command.");
+            lines[6].Trim().Should().Be("add       Add file contents to the index.");
+            lines[7].Trim().Should().Be("commit    Record changes to the repository.");
+            lines[8].Trim().Should().Be("clone     Clone a repository into a new directory.");
         }
     }
 }

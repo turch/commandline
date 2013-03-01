@@ -76,7 +76,6 @@ namespace CommandLine.Parsing
             if (IsValueOptionDefined &&
                 _valueOptionIndex < _valueOptionAttributeList.Count())
             {
-                //var valueOption = _valueOptionAttributeList[_valueOptionIndex++];
                 var valueOption = _valueOptionAttributeList.ElementAt(_valueOptionIndex++);
 
                 return valueOption.Left().PropertyType.IsNullable() ?
@@ -111,7 +110,6 @@ namespace CommandLine.Parsing
 
         private void InitializeValueOption()
         {
-            //var list = ReflectionHelper.RetrievePropertyList<ValueOptionAttribute>(_target);
             var list = Metadata.Get<PropertyInfo, ValueOptionAttribute, T>(_target, a => a.Item2 is ValueOptionAttribute);
 
             // default is index 0, so skip sorting if all have it

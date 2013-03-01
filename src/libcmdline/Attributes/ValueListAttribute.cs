@@ -86,8 +86,6 @@ namespace CommandLine
 
         internal static IList<string> GetReference<T>(T target)
         {
-            //Type concreteType;
-            //var property = GetProperty(target, out concreteType);
             var pair = GetAttribute(target);
             var property = pair.Left();
             var concreteType = pair.Right().ConcreteType;
@@ -101,7 +99,6 @@ namespace CommandLine
             return (IList<string>)property.GetValue(target, null);
         }
 
-        //internal static ValueListAttribute GetAttribute(object target)
         internal static Tuple<PropertyInfo, ValueListAttribute> GetAttribute<T>(T target)
         {
             var list = Metadata.GetAll(target).Where(a => a.Item2 is ValueListAttribute);
@@ -111,30 +108,7 @@ namespace CommandLine
                 throw new InvalidOperationException(); // TODO: add exception message for developers.
             }
 
-            var pairZero = list.SingleOrDefault();
-            //return pairZero == null ? null : pairZero.Right() as ValueListAttribute;
-            return pairZero == null ? null : new Tuple<PropertyInfo, ValueListAttribute>(
-                pairZero.Left() as PropertyInfo,
-                pairZero.Right() as ValueListAttribute);
+            return Metadata.GetSingle<PropertyInfo, ValueListAttribute, T>(target, a => a.Item2 is ValueListAttribute);
         }
-
-        //private static PropertyInfo GetProperty(object target, out Type concreteType)
-        //{
-        //    concreteType = null;
-        //    var list = ReflectionHelper.RetrievePropertyList<ValueListAttribute>(target);
-        //    if (list == null || list.Count == 0)
-        //    {
-        //        return null;
-        //    }
-
-        //    if (list.Count > 1)
-        //    {
-        //        throw new InvalidOperationException();
-        //    }
-
-        //    var pairZero = list[0];
-        //    concreteType = pairZero.Right().ConcreteType;
-        //    return pairZero.Left();
-        //}
     }
 }

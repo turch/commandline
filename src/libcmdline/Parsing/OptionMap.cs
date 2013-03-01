@@ -93,16 +93,13 @@ namespace CommandLine.Parsing
 
                 if (value.HasBothNames)
                 {
-                    // ReSharper disable PossibleInvalidOperationException
                     _names[value.LongName] = new string(value.ShortName.Value, 1);
-                    // ReSharper restore PossibleInvalidOperationException
                 }
             }
         }
 
         public static OptionMap Create<T>(T target, ParserSettings settings)
         {
-            //var list = ReflectionHelper.RetrievePropertyList<BaseOptionAttribute>(target);
             var list = Metadata.Get<PropertyInfo, BaseOptionAttribute, T>(
                 target,
                 a => a.Item1 is PropertyInfo && a.Item2 is BaseOptionAttribute);
@@ -172,24 +169,21 @@ namespace CommandLine.Parsing
         {
             foreach (var option in _map.Values)
             {
-                //option.SetDefault(RawOptions);
                 OptionInfoPersister.SetDefault(RawOptions, option);
             }
         }
 
         private static void SetParserStateIfNeeded<T>(T options, OptionInfo option, bool? required, bool? mutualExclusiveness)
         {
-            //var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
             var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(
                 options,
                 a => a.Item2 is ParserStateAttribute);
-            //if (list.Count == 0)
+
             if (list == null)
             {
                 return;
             }
 
-            //var property = list[0].Left();
             var property = list.Left();
 
             // This method can be called when parser state is still not intialized
