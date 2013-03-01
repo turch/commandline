@@ -11,7 +11,7 @@ namespace CommandLine
     {
         private static readonly Dictionary<object, IEnumerable<Tuple<MemberInfo, object>>> Cache = new Dictionary<object, IEnumerable<Tuple<MemberInfo, object>>>();
 
-        public static IEnumerable<Tuple<MemberInfo, object>> GetAttributes<T>(T options)
+        public static IEnumerable<Tuple<MemberInfo, object>> GetAll<T>(T options)
         {
             IEnumerable<Tuple<MemberInfo, object>> metadata;
 
@@ -38,8 +38,20 @@ namespace CommandLine
             where TMember : MemberInfo
             where TAttribute : ITargetDescriptor
         {
-            var attributes = Metadata.GetAttributes(options).Where(predicate);
+            var attributes = Metadata.GetAll(options).Where(predicate);
             return attributes.Select(a => new Tuple<TMember, TAttribute>((TMember)a.Item1, (TAttribute)a.Item2));
+        }
+
+        public static Tuple<TMember, TAttribute> GetSingle<TMember, TAttribute, T>(T options, Func<Tuple<MemberInfo, object>, bool> predicate)
+            where TMember : MemberInfo
+            where TAttribute : ITargetDescriptor
+        {
+            var attribute = Metadata.GetAll(options).SingleOrDefault(predicate);
+            return attribute != null ?
+                new Tuple<TMember, TAttribute>(
+                    (TMember)attribute.Item1,
+                    (TAttribute)attribute.Item2) :
+                null;
         }
     }
 }

@@ -104,7 +104,7 @@ namespace CommandLine
         //internal static ValueListAttribute GetAttribute(object target)
         internal static Tuple<PropertyInfo, ValueListAttribute> GetAttribute<T>(T target)
         {
-            var list = Metadata.GetAttributes(target).Where(a => a.Item2 is ValueListAttribute);
+            var list = Metadata.GetAll(target).Where(a => a.Item2 is ValueListAttribute);
 
             if (list.Count() > 1)
             {

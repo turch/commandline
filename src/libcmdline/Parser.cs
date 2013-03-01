@@ -222,7 +222,7 @@ namespace CommandLine
             }
 
             //var property = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options)[0].Left();
-            var property = (PropertyInfo)Metadata.GetAttributes(options).Single(p => p.Item2 is ParserStateAttribute).Left();
+            var property = (PropertyInfo)Metadata.GetAll(options).Single(p => p.Item2 is ParserStateAttribute).Left();
 
             var parserState = property.GetValue(options, null);
             if (parserState != null)
@@ -354,7 +354,8 @@ namespace CommandLine
 
             //var verbs = ReflectionHelper.RetrievePropertyList<VerbOptionAttribute>(options);
             var verbs = Metadata.Get<PropertyInfo, VerbOptionAttribute, T>(options, a => a.Item2 is VerbOptionAttribute);
-            var helpInfo = ReflectionHelper.RetrieveMethod<HelpVerbOptionAttribute>(options);
+            //var helpInfo = ReflectionHelper.RetrieveMethod<HelpVerbOptionAttribute>(options);
+            var helpInfo = Metadata.GetSingle<MethodInfo, HelpVerbOptionAttribute, T>(options, a => a.Item2 is HelpVerbOptionAttribute);
 
             if (args.Length == 0)
             {
