@@ -31,12 +31,12 @@ namespace CommandLine.Extensions
     {
         public static T1 Left<T1, T2>(this Tuple<T1, T2> pair)
         {
-            return pair.Item1;
+            return pair != null ? pair.Item1 : default(T1);
         }
 
         public static T2 Right<T1, T2>(this Tuple<T1, T2> pair)
         {
-            return pair.Item2;
+            return pair != null ? pair.Item2 : default(T2);
         }
     }
 }

@@ -84,10 +84,13 @@ namespace CommandLine
             get { return _concreteType; }
         }
 
-        internal static IList<string> GetReference(object target)
+        internal static IList<string> GetReference<T>(T target)
         {
-            Type concreteType;
-            var property = GetProperty(target, out concreteType);
+            //Type concreteType;
+            //var property = GetProperty(target, out concreteType);
+            var pair = GetAttribute(target);
+            var property = pair.Left();
+            var concreteType = pair.Right().ConcreteType;
             if (property == null || concreteType == null)
             {
                 return null;
@@ -98,44 +101,40 @@ namespace CommandLine
             return (IList<string>)property.GetValue(target, null);
         }
 
-        internal static ValueListAttribute GetAttribute(object target)
+        //internal static ValueListAttribute GetAttribute(object target)
+        internal static Tuple<PropertyInfo, ValueListAttribute> GetAttribute<T>(T target)
         {
-            //var list = ReflectionHelper.RetrievePropertyList<ValueListAttribute>(target);
             var list = Metadata.GetAttributes(target).Where(a => a.Item2 is ValueListAttribute);
-            //if (list == null || list.Count == 0)
-            //{
-            //    return null;
-            //}
 
-            //if (list.Count > 1)
             if (list.Count() > 1)
             {
                 throw new InvalidOperationException(); // TODO: add exception message for developers.
             }
 
-            //var pairZero = list[0];
             var pairZero = list.SingleOrDefault();
-            //return pairZero.Right();
-            return pairZero == null ? null : pairZero.Right() as ValueListAttribute;
+            //return pairZero == null ? null : pairZero.Right() as ValueListAttribute;
+            return pairZero == null ? null : new Tuple<PropertyInfo, ValueListAttribute>(
+                pairZero.Left() as PropertyInfo,
+                pairZero.Right() as ValueListAttribute);
         }
 
-        private static PropertyInfo GetProperty(object target, out Type concreteType)
-        {
-            concreteType = null;
-            var list = ReflectionHelper.RetrievePropertyList<ValueListAttribute>(target);
-            if (list == null || list.Count == 0)
-            {
-                return null;
-            }
+        //private static PropertyInfo GetProperty(object target, out Type concreteType)
+        //{
+        //    concreteType = null;
+        //    var list = ReflectionHelper.RetrievePropertyList<ValueListAttribute>(target);
+        //    if (list == null || list.Count == 0)
+        //    {
+        //        return null;
+        //    }
 
-            if (list.Count > 1)
-            {
-                throw new InvalidOperationException();
-            }
+        //    if (list.Count > 1)
+        //    {
+        //        throw new InvalidOperationException();
+        //    }
 
-            var pairZero = list[0];
-            concreteType = pairZero.Right().ConcreteType;
-            return pairZero.Left();
-        }
+        //    var pairZero = list[0];
+        //    concreteType = pairZero.Right().ConcreteType;
+        //    return pairZero.Left();
+        //}
     }
 }

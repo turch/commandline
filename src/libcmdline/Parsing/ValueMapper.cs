@@ -100,7 +100,8 @@ namespace CommandLine.Parsing
 
         private void InitializeValueList()
         {
-            _valueListAttribute = ValueListAttribute.GetAttribute(_target);
+            var pair = ValueListAttribute.GetAttribute(_target);
+            _valueListAttribute = pair.Right();
             if (IsValueListDefined)
             {
                 _valueList = ValueListAttribute.GetReference(_target);
