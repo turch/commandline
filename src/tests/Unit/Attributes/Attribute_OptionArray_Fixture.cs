@@ -49,7 +49,8 @@ namespace CommandLine.Tests.Unit.Attributes
             var options = parser.ParseArguments<SimpleOptionsWithArray>(new[] { "-z", "alfa", "beta", "gamma" }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "alfa", "beta", "gamma" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "alfa", "beta", "gamma" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "alfa", "beta", "gamma" });
         }
 
         [Fact]
@@ -60,7 +61,8 @@ namespace CommandLine.Tests.Unit.Attributes
             var options = parser.ParseArguments<SimpleOptionsWithArray>(new[] { "--strarr", "alfa", "beta", "gamma" }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "alfa", "beta", "gamma" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "alfa", "beta", "gamma" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "alfa", "beta", "gamma" });
         }
 
         [Fact]
@@ -71,7 +73,8 @@ namespace CommandLine.Tests.Unit.Attributes
             var options = parser.ParseArguments<SimpleOptionsWithArray>(new[] { "-zapple", "kiwi" }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "apple", "kiwi" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "apple", "kiwi" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "apple", "kiwi" });
         }
 
         [Fact]
@@ -82,7 +85,8 @@ namespace CommandLine.Tests.Unit.Attributes
             var options = parser.ParseArguments<SimpleOptionsWithArray>(new[] { "--strarr=apple", "kiwi" }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "apple", "kiwi" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "apple", "kiwi" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "apple", "kiwi" });
         }
 
         [Fact]
@@ -93,7 +97,8 @@ namespace CommandLine.Tests.Unit.Attributes
             var options = parser.ParseArguments<SimpleOptionsWithArray>(new[] { "-z", "one", "two", "three", "-s", "after" }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three" });
             options.StringValue.Should().Be("after");
         }
 
@@ -106,7 +111,8 @@ namespace CommandLine.Tests.Unit.Attributes
 
             result.Should().BeTrue();
             options.StringValue.Should().Be("before");
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three" });
         }
 
         [Fact]
@@ -119,7 +125,8 @@ namespace CommandLine.Tests.Unit.Attributes
 
             result.Should().BeTrue();
             options.IntegerValue.Should().Be(191919);
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three" });
             options.BooleanValue.Should().BeTrue();
             options.StringValue.Should().Be("near");
         }
@@ -135,9 +142,11 @@ namespace CommandLine.Tests.Unit.Attributes
             result.Should().BeTrue();
             options.StringValue.Should().Be("here");
             options.IntegerValue.Should().Be(999);
-            base.ElementsShouldBeEqual(new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" });
             options.BooleanValue.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "f1.xml", "f2.xml" }, options.Items);
+            //base.ElementsShouldBeEqual(new[] { "f1.xml", "f2.xml" }, options.Items);
+            options.Items.Should().ContainInOrder(new[] { "f1.xml", "f2.xml" });
         }
 
         [Fact]
@@ -165,7 +174,8 @@ namespace CommandLine.Tests.Unit.Attributes
             var options = parser.ParseArguments<SimpleOptionsWithArray>(new[] { "-y", "1", "2", "3" }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new int[] { 1, 2, 3 }, options.IntegerArrayValue);
+            //base.ElementsShouldBeEqual(new int[] { 1, 2, 3 }, options.IntegerArrayValue);
+            options.IntegerArrayValue.Should().ContainInOrder(new[] { 1, 2, 3 });
         }
 
         [Fact]
@@ -222,7 +232,8 @@ namespace CommandLine.Tests.Unit.Attributes
             var options = parser.ParseArguments<SimpleOptionsWithArray>(new[] { "-q", "0.1", "2.3", "0.9" }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new double[] { .1, 2.3, .9 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { .1, 2.3, .9 }, options.DoubleArrayValue);
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { .1d, 2.3d, .9d });
         }
 
         /****************************************************************************************************/
@@ -239,9 +250,12 @@ namespace CommandLine.Tests.Unit.Attributes
             }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
-            base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
-            base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three", "four" });
+            options.IntegerArrayValue.Should().ContainInOrder(new[] { 1, 2, 3, 4 });
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { .1d, .2d, .3d, .4d });
 
             parser = new CommandLine.Parser();
             var result2 = true;
@@ -252,9 +266,12 @@ namespace CommandLine.Tests.Unit.Attributes
             }, () => result2 = false);
 
             result2.Should().BeTrue();
-            base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
-            base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three", "four" });
+            options.IntegerArrayValue.Should().ContainInOrder(new[] { 1, 2, 3, 4 });
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { .1d, .2d, .3d, .4d });
 
             parser = new CommandLine.Parser();
             var result3 = true;
@@ -265,9 +282,12 @@ namespace CommandLine.Tests.Unit.Attributes
             }, () => result3 = false);
 
             result3.Should().BeTrue();
-            base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
-            base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three", "four" });
+            options.IntegerArrayValue.Should().ContainInOrder(new[] { 1, 2, 3, 4 });
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { .1d, .2d, .3d, .4d });
         }
 
         [Fact]
@@ -283,9 +303,12 @@ namespace CommandLine.Tests.Unit.Attributes
             }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
-            base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
-            base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three", "four" });
+            options.IntegerArrayValue.Should().ContainInOrder(new[] { 1, 2, 3, 4 });
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { .1d, .2d, .3d, .4d });
             options.StringValue.Should().Be("after");
 
             parser = new CommandLine.Parser();
@@ -299,9 +322,12 @@ namespace CommandLine.Tests.Unit.Attributes
 
             result2.Should().BeTrue();
             options.StringValue.Should().Be("before");
-            base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
-            base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three", "four" });
+            options.IntegerArrayValue.Should().ContainInOrder(new[] { 1, 2, 3, 4 });
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { .1d, .2d, .3d, .4d });
 
             parser = new CommandLine.Parser();
             var result3 = true;
@@ -313,10 +339,13 @@ namespace CommandLine.Tests.Unit.Attributes
             }, () => result3 = false);
 
             result3.Should().BeTrue();
-            base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
-            base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
             options.StringValue.Should().Be("near-the-center");
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three", "four" });
+            options.IntegerArrayValue.Should().ContainInOrder(new[] { 1, 2, 3, 4 });
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { .1d, .2d, .3d, .4d });
 
             parser = new CommandLine.Parser();
             var result4 = true;
@@ -331,11 +360,15 @@ namespace CommandLine.Tests.Unit.Attributes
 
             result4.Should().BeTrue();
             options.BooleanValue.Should().BeTrue();
-            base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
-            base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
+            //base.ElementsShouldBeEqual(new[] { "one", "two", "three", "four" }, options.StringArrayValue);
+            //base.ElementsShouldBeEqual(new int[] { 1, 2, 3, 4 }, options.IntegerArrayValue);
             options.IntegerValue.Should().Be(1234);
-            base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { .1, .2, .3, .4 }, options.DoubleArrayValue);
             options.StringValue.Should().Be("I'm really playing with the parser!");
+
+            options.StringArrayValue.Should().ContainInOrder(new[] { "one", "two", "three", "four" });
+            options.IntegerArrayValue.Should().ContainInOrder(new[] { 1, 2, 3, 4 });
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { .1d, .2d, .3d, .4d });
         }
 
         /****************************************************************************************************/
@@ -376,7 +409,8 @@ namespace CommandLine.Tests.Unit.Attributes
             var options = parser.ParseArguments<SimpleOptionsWithArray>(new[] { "-q", "1,2", "1,23", "1,234" }, () => result = false);
 
             result.Should().BeTrue();
-            base.ElementsShouldBeEqual(new double[] { 1.2, 1.23, 1.234 }, options.DoubleArrayValue);
+            //base.ElementsShouldBeEqual(new double[] { 1.2, 1.23, 1.234 }, options.DoubleArrayValue);
+            options.DoubleArrayValue.Should().ContainInOrder(new[] { 1.2d, 1.23d, 1.234d });
         }
 
         /****************************************************************************************************/
@@ -395,8 +429,10 @@ namespace CommandLine.Tests.Unit.Attributes
 
             result.Should().BeTrue();
             options.SomeStringValue.Should().Be("just a string");
-            base.ElementsShouldBeEqual(new uint[] {10, 20, 30, 40}, options.ArrayOne);
-            base.ElementsShouldBeEqual(new uint[] {11, 22, 33, 44}, options.ArrayTwo);
+            //base.ElementsShouldBeEqual(new uint[] {10, 20, 30, 40}, options.ArrayOne);
+            //base.ElementsShouldBeEqual(new uint[] {11, 22, 33, 44}, options.ArrayTwo);
+            options.ArrayOne.Should().ContainInOrder(new uint[] { 10, 20, 30, 40 });
+            options.ArrayTwo.Should().ContainInOrder(new uint[] { 11, 22, 33, 44 });
             options.SomeBooleanValue.Should().BeTrue();
         }
 
@@ -413,8 +449,10 @@ namespace CommandLine.Tests.Unit.Attributes
 
             result.Should().BeTrue();
             options.SomeStringValue.Should().Be("just a string");
-            base.ElementsShouldBeEqual(new uint[] {10, 20, 30, 40}, options.ArrayOne);
-            base.ElementsShouldBeEqual(new uint[] {11, 22, 33, 44}, options.ArrayTwo);
+            //base.ElementsShouldBeEqual(new uint[] {10, 20, 30, 40}, options.ArrayOne);
+            //base.ElementsShouldBeEqual(new uint[] {11, 22, 33, 44}, options.ArrayTwo);
+            options.ArrayOne.Should().ContainInOrder(new uint[] { 10, 20, 30, 40 });
+            options.ArrayTwo.Should().ContainInOrder(new uint[] { 11, 22, 33, 44 });
             options.SomeBooleanValue.Should().BeTrue();
         }
 

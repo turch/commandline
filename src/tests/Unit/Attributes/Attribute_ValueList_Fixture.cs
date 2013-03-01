@@ -39,7 +39,7 @@ using FluentAssertions;
 
 namespace CommandLine.Tests.Unit.Attributes
 {
-    public class Attribute_ValueList_Fixture : BaseFixture
+    public class Attribute_ValueList_Fixture //: BaseFixture
     {
         #region Mock Objects
         private class MockSpecializedList : List<string>
@@ -99,7 +99,8 @@ namespace CommandLine.Tests.Unit.Attributes
             values.Add("value1");
             values.Add("value2");
 
-            base.ElementsShouldBeEqual(new string[] { "value0", "value1", "value2" }, options.Values);
+            //base.ElementsShouldBeEqual(new string[] { "value0", "value1", "value2" }, options.Values);
+            options.Values.Should().ContainInOrder(new[] { "value0", "value1", "value2" });
         }
 
         [Fact]

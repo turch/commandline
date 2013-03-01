@@ -38,7 +38,7 @@ using FluentAssertions;
 namespace CommandLine.Tests.Unit
 {
     // TODO: This class (and derived) need to be refactored.
-    public abstract class ParserBaseFixture : BaseFixture
+    public abstract class ParserBaseFixture //: BaseFixture
     {
         protected ParserBaseFixture()
         {

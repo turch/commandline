@@ -79,7 +79,6 @@
     <Compile Include="Fakes\OptionsWithVerbsHelp.cs" />
     <Compile Include="Fakes\OptionsWithVerbs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Unit\BaseFixture.cs" />
     <Compile Include="Unit\ParserBaseFixture.cs" />
     <Compile Include="Helpers\DebugStringUtil.cs" />
     <Compile Include="Fakes\BooleanSetOptions.cs" />

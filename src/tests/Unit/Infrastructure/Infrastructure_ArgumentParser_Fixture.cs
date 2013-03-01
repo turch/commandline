@@ -39,7 +39,7 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Tests.Unit.Infrastructure
 {
-    public class Infrastructure_ArgumentParser_Fixture : BaseFixture
+    public class Infrastructure_ArgumentParser_Fixture //: BaseFixture
     {
         [Fact]
         public void Get_next_input_values()
@@ -50,7 +50,8 @@ namespace CommandLine.Tests.Unit.Infrastructure
 
             var items = ArgumentParser.InternalWrapperOfGetNextInputValues(ae);
 
-            base.ElementsShouldBeEqual(new string[] { "one", "two" }, items);
+            //base.ElementsShouldBeEqual(new string[] { "one", "two" }, items);
+            items.Should().ContainInOrder(new[] { "one", "two" });
             ae.Current.Should().Be("two");
         }
     }
