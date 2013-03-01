@@ -51,5 +51,11 @@ namespace CommandLine
         {
             return Metadata.GetAll(options).Count(a => a.Item2 is ParserStateAttribute) == 1;
         }
+
+        public static bool CanReceiveUnboundValues<T>(this T options)
+        {
+            return Metadata.GetAll(options).Any(
+                    a => a.Item2 is ValueListAttribute || a.Item2 is ValueOptionAttribute);
+        }
     }
 }

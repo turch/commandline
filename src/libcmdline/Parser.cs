@@ -280,7 +280,6 @@ namespace CommandLine
             where T : new()
         {
             var options = new T();
-            //var pair = ReflectionHelper.RetrieveMethod<HelpOptionAttribute>(options);
             var pair = Metadata.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
             var helpWriter = _settings.HelpWriter;
 
@@ -313,6 +312,7 @@ namespace CommandLine
             var optionMap = OptionMap.Create(options, _settings);
             optionMap.SetDefaults();
             var valueMapper = new ValueMapper<T>(options, _settings.ParsingCulture);
+            var canReceiveValues = options.CanReceiveUnboundValues();
 
             var arguments = new StringArrayEnumerator(args);
             while (arguments.MoveNext())
@@ -339,7 +339,7 @@ namespace CommandLine
                         arguments.MoveNext();
                     }
                 }
-                else if (valueMapper.CanReceiveValues)
+                else if (canReceiveValues)
                 {
                     if (!valueMapper.MapValueItem(argument))
                     {
