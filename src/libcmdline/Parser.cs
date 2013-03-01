@@ -352,14 +352,9 @@ namespace CommandLine
         {
             var options = new T();
 
-            var verbs = ReflectionHelper.RetrievePropertyList<VerbOptionAttribute>(options);
-            //var verbsPair = Metadata.GetAttributes(options).Where(a => a.Item2 is VerbOptionAttribute);
-            //var verbs = verbsPair.Cast<Tuple<PropertyInfo, VerbOptionAttribute>>();
-
- 
+            //var verbs = ReflectionHelper.RetrievePropertyList<VerbOptionAttribute>(options);
+            var verbs = Metadata.Get<PropertyInfo, VerbOptionAttribute, T>(options, a => a.Item2 is VerbOptionAttribute);
             var helpInfo = ReflectionHelper.RetrieveMethod<HelpVerbOptionAttribute>(options);
-            //var helpInfoPair = Metadata.GetAttributes(options).Single(a => a.Item2 is HelpVerbOptionAttribute);
-            //var helpInfo = new Tuple<MethodInfo, HelpVerbOptionAttribute>((MethodInfo)helpInfoPair.Item1, (HelpVerbOptionAttribute)helpInfoPair.Item2);
 
             if (args.Length == 0)
             {

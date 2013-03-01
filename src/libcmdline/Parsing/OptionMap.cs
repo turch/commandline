@@ -24,6 +24,7 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CommandLine.Extensions;
 using CommandLine.Infrastructure;
@@ -134,10 +135,10 @@ namespace CommandLine.Parsing
 
         public static OptionMap Create(
             object target,
-            IList<Tuple<PropertyInfo, VerbOptionAttribute>> verbs,
+            IEnumerable<Tuple<PropertyInfo, VerbOptionAttribute>> verbs,
             ParserSettings settings)
         {
-            var map = new OptionMap(verbs.Count, settings);
+            var map = new OptionMap(verbs.Count(), settings);
 
             foreach (var verb in verbs)
             {
