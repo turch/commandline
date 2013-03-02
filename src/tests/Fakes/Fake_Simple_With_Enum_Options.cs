@@ -2,7 +2,7 @@ using System.IO;
 
 namespace CommandLine.Tests.Fakes
 {
-    class Fake_Simple_Options_With_Enum : Fake_Simple_Options
+    class Fake_Simple_With_Enum_Options : Fake_Simple_Options
     {
         [Option('a', "access", Required = true)]
         public FileAccess FileAccessValue { get; set; }

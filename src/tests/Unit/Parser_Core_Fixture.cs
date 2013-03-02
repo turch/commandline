@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 
 using CommandLine.Tests.Conventions;
+using CommandLine.Tests.Extensions;
 using CommandLine.Tests.Fakes;
 using FluentAssertions;
 using Ploeh.AutoFixture;
@@ -48,11 +49,12 @@ namespace CommandLine.Tests.Unit
         [Theory, AutoData]
         public void Parse_Short_Adjacent_Options_with_Double(Parser sut, double doubleValue)
         {
-            var arguments = new[] { "-ca", string.Concat("-d", doubleValue) };
+            var expected = doubleValue.WithFractionalDigits();
+            var arguments = new[] { "-ca", string.Concat("-d", expected.ToInvariantCulture()) };
 
             var options = sut.ParseArguments<Fake_Booleans_Options>(arguments, () => {});
 
-            Assert.Equal(doubleValue, options.DoubleValue);
+            Assert.Equal(expected, options.DoubleValue);
             Assert.True(options.BooleanA);
             Assert.True(options.BooleanC);
         }
@@ -60,11 +62,12 @@ namespace CommandLine.Tests.Unit
         [Theory, AutoData]
         public void Parse_Short_and_Long_Options_with_Double(Parser sut, double doubleValue)
         {
-            var arguments = new[] { "-b", string.Concat("--double=", doubleValue) };
+            var expected = doubleValue.WithFractionalDigits();
+            var arguments = new[] { "-b", string.Concat("--double=", expected.ToInvariantCulture()) };
             var options = sut.ParseArguments<Fake_Booleans_Options>(arguments, () => {});
 
-            Assert.Equal(doubleValue, options.DoubleValue);
-            Assert.True(options.BooleanA);
+            Assert.Equal(expected, options.DoubleValue);
+            Assert.True(options.BooleanB);
         }
 
         [Theory, AutoData]
@@ -74,7 +77,7 @@ namespace CommandLine.Tests.Unit
             var items = string.Join(":", strings.ToArray());
             var arguments = new[] { "-k", items, "-s", "test-file.txt" };
 
-            var options = sut.ParseArguments<Fake_Simple_Options_With_OptionList>(arguments, () => {});
+            var options = sut.ParseArguments<Fake_Simple_With_OptionList_Options>(arguments, () => {});
 
             Assert.Equal(items.Split(':').ToList(), options.SearchKeywords);
         }
@@ -96,48 +99,42 @@ namespace CommandLine.Tests.Unit
         public void Parse_Options_with_Enumeration(Parser sut, FileAttributes enumValue)
         {
             var arguments = new[] { "-s", "data.bin", "-x", enumValue.ToString() };
-            var options = sut.ParseArguments<Fake_Simple_Options_With_Enum>(arguments, () => { });
+            var options = sut.ParseArguments<Fake_Simple_With_Enum_Options>(arguments, () => { });
 
             Assert.Equal(enumValue, options.FileAttributesValue);
         }
 
         [Theory, ParserWithItalianCultureTestConventions]
-        public void Parse_culture_specific_number(Parser sut, double doubleValue)
+        public void Parse_Culture_specific_Number(Parser sut, double doubleValue)
         {
-            var doubleValueItalianCulture = doubleValue.ToString(new CultureInfo("it-IT"));
-            var arguments = new[] { "-d", doubleValueItalianCulture };
+            var expected = doubleValue.WithFractionalDigits();
+            var arguments = new[] { "-d", expected.ToItalianCulture() };
 
             var options = sut.ParseArguments<Fake_Numbers_Options>(arguments, () => { });
 
-            Assert.Equal(doubleValue, options.DoubleValue);
+            Assert.Equal(expected, options.DoubleValue);
         }
 
-        [Fact]
-        public void Parse_culture_specific_nullable_number()
+        [Theory, ParserWithItalianCultureTestConventions]
+        public void Parse_Culture_specific_Nullable_Number(Parser sut, double doubleValue)
         {
-            var result = true;
-            var actualCulture = Thread.CurrentThread.CurrentCulture;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("it-IT");
-            var parser = new CommandLine.Parser();
-            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--n-double", "12,32982" }, () => { result = false; });
+            var expected = doubleValue.WithFractionalDigits();
+            var arguments = new[] { "--n-double", expected.ToItalianCulture() };
 
-            options.Should().NotBeNull();
-            options.NullableDoubleValue.Should().Be(12.32982D);
+            var options = sut.ParseArguments<Fake_Numbers_Options>(arguments, () => { });
 
-            Thread.CurrentThread.CurrentCulture = actualCulture;
+            Assert.Equal(expected, options.NullableDoubleValue);
         }
 
-        [Fact]
-        public void Parse_options_with_defaults()
+        [Theory, AutoData]
+        public void Parse_options_with_defaults(Parser sut)
         {
-            var parser = new CommandLine.Parser();
-            var result = true;
-            var options = parser.ParseArguments<SimpleOptionsWithDefaults>(new string[] { }, () => { result = false; });
+            var arguments = new string[] {};
+            var options = sut.ParseArguments<Fake_With_Defaults_Options>(arguments, () => { });
 
-            options.Should().NotBeNull();
-            options.StringValue.Should().Be("str");
-            options.IntegerValue.Should().Be(9);
-            options.BooleanValue.Should().BeTrue();
+            Assert.Equal("str", options.StringValue);
+            Assert.Equal(9, options.IntegerValue);
+            Assert.True(options.BooleanValue);
         }
 
         [Fact]
@@ -145,7 +142,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<SimpleOptionsWithDefaultArray>(new[] { "-y", "4", "5", "6" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_With_Defaults_Array_Options>(new[] { "-y", "4", "5", "6" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.StringArrayValue.Should().Equal(new[] { "a", "b", "c" });

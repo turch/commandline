@@ -68,6 +68,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Conventions\ParserWithItalianCultureTestConventionsAttribute.cs" />
+    <Compile Include="Extensions\DoubleExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Unit\Capabilities_Extensions_Fixture.cs" />
     <Compile Include="Fakes\OptionsWithImplicitLongName.cs" />
     <Compile Include="Fakes\OptionsWithTwoArrays.cs" />
@@ -112,13 +114,13 @@
     <Compile Include="Fakes\SimpleOptionsWithArray.cs" />
     <Compile Include="Fakes\SimpleOptionsWithArrayAndValueList.cs" />
     <Compile Include="Fakes\SimpleOptionsWithBadOptionArray.cs" />
-    <Compile Include="Fakes\Fake_Simple_Options_With_Enum.cs" />
+    <Compile Include="Fakes\Fake_Simple_With_Enum_Options.cs" />
     <Compile Include="Fakes\SimpleOptionsWithHelpOption.cs" />
-    <Compile Include="Fakes\Fake_Simple_Options_With_OptionList.cs" />
+    <Compile Include="Fakes\Fake_Simple_With_OptionList_Options.cs" />
     <Compile Include="Fakes\SimpleOptionsWithValueList.cs" />
-    <Compile Include="Fakes\SimpleOptionsWithDefaults.cs" />
+    <Compile Include="Fakes\Fake_With_Defaults_Options.cs" />
     <Compile Include="Fakes\SimpleOptionsWithBadDefaults.cs" />
-    <Compile Include="Fakes\SimpleOptionsWithDefaultArray.cs" />
+    <Compile Include="Fakes\Fake_With_Defaults_Array_Options.cs" />
     <Compile Include="Fakes\OptionsForErrorsScenario.cs" />
     <Compile Include="Fakes\SimpleOptionsForAutoBuid.cs" />
     <Compile Include="Fakes\OptionsForPlugInScenario.cs" />
