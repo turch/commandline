@@ -33,7 +33,7 @@ using System.ComponentModel;
 
 namespace CommandLine.Tests.Fakes
 {
-    class SimpleOptionsWithDefaultArray : SimpleOptions
+    class SimpleOptionsWithDefaultArray : Fake_Simple_Options
     {
         [OptionArray('z', "strarr", DefaultValue = new string[] { "a", "b", "c"})]
         public string[] StringArrayValue { get; set; }

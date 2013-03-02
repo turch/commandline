@@ -33,7 +33,7 @@ using System.ComponentModel;
 
 namespace CommandLine.Tests.Fakes
 {
-    class SimpleOptionsWithOptionList : SimpleOptions
+    class SimpleOptionsWithOptionList : Fake_Simple_Options
     {
         [OptionList('k', "keywords", ':')]
         public IList<string> SearchKeywords { get; set; }

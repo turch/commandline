@@ -31,23 +31,23 @@ using System.ComponentModel;
 
 namespace CommandLine.Tests.Fakes
 {
-    class BooleanSetOptions : OptionsBase
+    class Fake_Booleans_Options //: OptionsBase
     {
-        public BooleanSetOptions()
+        public Fake_Booleans_Options()
         {
-            NonBooleanValue = 0;
+            this.DoubleValue = 0;
         }
 
         [Option('a', "option-a")]
-        public bool BooleanOne { get; set; }
+        public bool BooleanA { get; set; }
 
         [Option('b', "option-b")]
-        public bool BooleanTwo { get; set; }
+        public bool BooleanB { get; set; }
 
         [Option('c', "option-c")]
-        public bool BooleanThree { get; set; }
+        public bool BooleanC { get; set; }
 
         [Option('d', "double")]
-        public double NonBooleanValue { get; set; }
+        public double DoubleValue { get; set; }
     }
 }

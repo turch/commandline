@@ -34,7 +34,7 @@ using System.IO;
 
 namespace CommandLine.Tests.Fakes
 {
-    class SimpleOptionsWithEnum : SimpleOptions
+    class SimpleOptionsWithEnum : Fake_Simple_Options
     {
         public SimpleOptionsWithEnum()
         {

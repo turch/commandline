@@ -43,7 +43,7 @@ namespace CommandLine.Tests.Unit
         public void Parse_string_integer_bool_options()
         {
             var result = true;
-            var options = CommandLine.Parser.Default.ParseArguments<SimpleOptions>(
+            var options = CommandLine.Parser.Default.ParseArguments<Fake_Simple_Options>(
                     new[] { "-s", "another string", "-i100", "--switch" }, () => { result = false; });
 
             result.Should().BeTrue();

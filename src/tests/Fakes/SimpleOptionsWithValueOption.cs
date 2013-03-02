@@ -33,7 +33,7 @@ using System.ComponentModel;
 
 namespace CommandLine.Tests.Fakes
 {
-    class SimpleOptionsWithValueOption : SimpleOptions
+    class SimpleOptionsWithValueOption : Fake_Simple_Options
     {
         [ValueOption(0)]
         public string StringItem { get; set; }

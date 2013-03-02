@@ -29,9 +29,9 @@
 
 namespace CommandLine.Tests.Fakes
 {
-    class SimpleOptions : OptionsBase
+    class Fake_Simple_Options //: OptionsBase
     {
-        public SimpleOptions()
+        public Fake_Simple_Options()
         {
             IntegerValue = 0;
         }

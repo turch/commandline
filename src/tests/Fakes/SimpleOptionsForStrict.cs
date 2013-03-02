@@ -29,7 +29,7 @@
 
 namespace CommandLine.Tests.Fakes
 {
-    class SimpleOptionsForStrict : SimpleOptions
+    class SimpleOptionsForStrict : Fake_Simple_Options
     {
         [HelpOption]
         public string GetUsage()
