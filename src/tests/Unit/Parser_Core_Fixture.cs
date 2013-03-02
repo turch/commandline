@@ -137,185 +137,167 @@ namespace CommandLine.Tests.Unit
             Assert.True(options.BooleanValue);
         }
 
-        [Fact]
-        public void Parse_options_with_default_array()
+        [Theory, AutoData]
+        public void Parse_Options_with_Default_Array(Parser sut)
         {
-            var parser = new CommandLine.Parser();
-            var result = true;
-            var options = parser.ParseArguments<Fake_With_Defaults_Array_Options>(new[] { "-y", "4", "5", "6" }, () => { result = false; });
+            var arguments = new string[] {};
 
-            options.Should().NotBeNull();
-            options.StringArrayValue.Should().Equal(new[] { "a", "b", "c" });
-            options.IntegerArrayValue.Should().Equal(new[] { 4, 5, 6 });
-            options.DoubleArrayValue.Should().Equal(new[] { 1.1, 2.2, 3.3 });
+            var options = sut.ParseArguments<Fake_With_Defaults_Array_Options>(arguments, () => { });
+
+            Assert.Equal(new[] { "a", "b", "c" }, options.StringArrayValue);
+            Assert.Equal(new[] { 1, 2, 3 }, options.IntegerArrayValue);
+            Assert.Equal(new[] { 1.1d, 2.2d, 3.3d }, options.DoubleArrayValue);
         }
 
         [Fact]
-        public void Parse_options_with_bad_defaults()
+        public void Will_throw_Exception_with_Options_having_Bad_Defaults()
         {
             Assert.Throws<ParserException>(
-                () => new CommandLine.Parser().ParseArguments<SimpleOptionsWithBadDefaults>(new string[] { }, () => {}));
+                () => new CommandLine.Parser().ParseArguments<Fake_With_Bad_Defaults_Options>(
+                    new string[] { }, () => {}));
         }
 
         #region #BUG0002
-        [Fact]
-        public void Parsing_non_existent_short_option_fails_without_throwing_an_exception()
+        [Theory, AutoData]
+        public void Parsing_Non_Existent_Short_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Simple_Options>(new[] { "-x" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Simple_Options>(
+                new[] { "-x" }, () => { result = false; });
             
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
-        [Fact]
-        public void Parsing_non_existent_long_option_fails_without_throwing_an_exception()
+        [Theory, AutoData]
+        public void Parsing_Non_Existent_Long_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Simple_Options>(
+            var options = sut.ParseArguments<Fake_Simple_Options>(
                 new[] { "--extend" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
         #endregion
 
         #region #REQ0000
-        [Fact]
-        public void Default_parsing_is_case_sensitive()
+        [Theory, AutoData]
+        public void By_Default_Parser_Is_Case_Sensitive(Parser sut)
         {
-            var parser = new CommandLine.Parser();
-            var result = true;
-            var options = parser.ParseArguments<MixedCaseOptions>(
-                new[] { "-a", "alfa", "--beta-OPTION", "beta" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Mixed_Case_Options>(
+                new[] { "-a", "alfa", "--beta-OPTION", "beta" }, () => { });
 
-            options.Should().NotBeNull();
-            options.AlfaValue.Should().Be("alfa");
-            options.BetaValue.Should().Be("beta");
+            Assert.Equal("alfa", options.AlfaValue);
+            Assert.Equal("beta", options.BetaValue);
         }
 
-        [Fact]
-        public void Using_wrong_case_with_default_fails()
+        [Theory, AutoData]
+        public void By_Default_Parser_Is_Case_Sensitive__reverse_proof(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<MixedCaseOptions>(
+            var options = sut.ParseArguments<Fake_Mixed_Case_Options>(
                 new[] { "-A", "alfa", "--Beta-Option", "beta" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
         [Fact]
-        public void Disabling_case_sensitive()
+        public void Case_Sensitiveness_can_be_Disabled()
         {
             var parser = new CommandLine.Parser(new ParserSettings(false)); //Ref.: #DGN0001
-            var result = true;
-            var options = parser.ParseArguments<MixedCaseOptions>(
-                new[] { "-A", "alfa", "--Beta-Option", "beta" }, () => { result = false; });
 
-            options.Should().NotBeNull();
-            options.AlfaValue.Should().Be("alfa");
-            options.BetaValue.Should().Be("beta");
+            var options = parser.ParseArguments<Fake_Mixed_Case_Options>(
+                new[] { "-A", "alfa", "--Beta-Option", "beta" }, () => {});
+
+            Assert.Equal("alfa", options.AlfaValue);
+            Assert.Equal("beta", options.BetaValue);
         }
         #endregion
 
         #region #BUG0003
-        [Fact]
-        public void Passing_no_value_to_a_string_type_long_option_fails()
+        [Theory, AutoData]
+        public void Not_Passing_a_Value_to_a_String_type_Long_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Simple_Options>(new[] { "--string" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Simple_Options>(
+                new[] { "--string" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
-        [Fact]
-        public void Passing_no_value_to_a_byte_type_long_option_fails()
+        [Theory, AutoData]
+        public void Not_Passing_a_Value_to_a_Byte_type_Long_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--byte" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--byte" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
-        [Fact]
-        public void Passing_no_value_to_a_short_type_long_option_fails()
+        [Theory, AutoData]
+        public void Not_Passing_a_Value_to_a_Short_type_Long_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--short" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--short" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
-        [Fact]
-        public void Passing_no_value_to_an_integer_type_long_option_fails()
+        [Theory, AutoData]
+        public void Not_Passing_a_Value_to_an_Integer_type_Long_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--int" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--int" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
-        [Fact]
-        public void Passing_no_value_to_a_long_type_long_option_fails()
+        [Theory, AutoData]
+        public void Not_Passing_a_Value_a_Long_type_Long_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--long" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--long" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
-        [Fact]
-        public void Passing_no_value_to_a_float_type_long_option_fails()
+        [Theory, AutoData]
+        public void Not_Passing_a_Value_a_Float_type_Long_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--float" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--float" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
 
-        [Fact]
-        public void Passing_no_value_to_a_double_type_long_option_fails()
+        [Theory, AutoData]
+        public void Not_Passing_a_Value_a_Double_type_Long_Option_Fails(Parser sut)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--double" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--double" }, () => { result = false; });
 
-            result.Should().BeFalse();
+            Assert.False(result);
         }
         #endregion
 
         #region #REQ0001
-        [Fact]
-        public void Allow_single_dash_as_option_input_value()
+        [Theory, AutoData]
+        public void Allow_Single_Dash_as_Option_Input_Value(Parser sut)
         {
-            var parser = new CommandLine.Parser();
-            var result = true;
-            var options = parser.ParseArguments<Fake_Simple_Options>(new[] { "--string", "-" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Simple_Options>(new[] { "--string", "-" }, () => { });
 
-            options.Should().NotBeNull();
-            options.StringValue.Should().Be("-");
+            Assert.Equal("-", options.StringValue);
         }
 
-        [Fact]
-        public void Allow_single_dash_as_non_option_value()
+        [Theory, AutoData]
+        public void Allow_Single_Dash_as_Non_Option_Value(Parser sut)
         {
-            var parser = new CommandLine.Parser();
-            var result = true;
-            var options = parser.ParseArguments<SimpleOptionsWithValueList>(
-                new[] { "-sparser.xml", "-", "--switch" }, () => { result = false; });
+            var options = sut.ParseArguments<SimpleOptionsWithValueList>(
+                new[] { "-sparser.xml", "-", "--switch" }, () => {});
 
-            options.Should().NotBeNull();
-            options.StringValue.Should().Be("parser.xml");
-            options.BooleanValue.Should().BeTrue();
-            options.Items.Count.Should().Be(1);
-            options.Items[0].Should().Be("-");
+            Assert.Equal("parser.xml", options.StringValue);
+            Assert.True(options.BooleanValue);
+            Assert.Equal(1, options.Items.Count);
+            Assert.Contains("-", options.Items);
         }
         #endregion
 

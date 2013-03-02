@@ -29,7 +29,7 @@
 
 namespace CommandLine.Tests.Fakes
 {
-    class MixedCaseOptions : OptionsBase
+    class Fake_Mixed_Case_Options : OptionsBase
     {
         [Option('a', "Alfa-Option")]
         public string AlfaValue { get; set; }
