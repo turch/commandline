@@ -1,158 +1,115 @@
-#region License
-//
-// Command Line Library: ParserFixture.cs
-//
-// Author:
-//   Giacomo Stelluti Scala (gsscoder@gmail.com)
-//
-// Copyright (C) 2005 - 2013 Giacomo Stelluti Scala
-//
-// Permission is hereby granted, free of charge, to any person obtaining a copy
-// of this software and associated documentation files (the "Software"), to deal
-// in the Software without restriction, including without limitation the rights
-// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-// copies of the Software, and to permit persons to whom the Software is
-// furnished to do so, subject to the following conditions:
-//
-// The above copyright notice and this permission notice shall be included in
-// all copies or substantial portions of the Software.
-//
-// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-// THE SOFTWARE.
-//
-#endregion
-#region Using Directives
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Threading;
+
+using CommandLine.Tests.Conventions;
 using CommandLine.Tests.Fakes;
-
-using Ploeh.AutoFixture.Xunit;
-
-using Xunit;
 using FluentAssertions;
-
+using Ploeh.AutoFixture;
+using Ploeh.AutoFixture.Xunit;
+using Xunit;
 using Xunit.Extensions;
-
-#endregion
 
 namespace CommandLine.Tests.Unit
 {
     public class Parser_Core_Fixture : ParserBaseFixture
     {
         [Fact]
-        public void Will_throw_exception_if_arguments_array_is_null()
+        public void Will_throw_Exception_if_Arguments_Array_is_Null()
         {
             Assert.Throws<ArgumentNullException>(
                 () => new CommandLine.Parser().ParseArguments<Fake_Simple_Options>(null, () => {}));
         }
 
         [Theory, AutoData]
-        public void Parse_String_option(string stringValue, Parser sut)
+        public void Parse_String_Option(string stringValue, Parser sut)
         {
             var arguments = new[] { "-s", stringValue };
 
-            var options = sut.ParseArguments<Fake_Simple_Options>(arguments, () => { });
+            var options = sut.ParseArguments<Fake_Simple_Options>(arguments, () => {});
 
-            options.StringValue.Should().Be(stringValue);
+            Assert.Equal(stringValue, options.StringValue);
         }
 
         [Theory, AutoData]
-        public void Parse_String_Integer_and_Bool_options(Parser sut, string stringValue, int intValue)
+        public void Parse_String_Integer_and_Bool_Options(Parser sut, string stringValue, int integerValue)
         {
-            var arguments = new[] { "-s", stringValue, string.Concat("-i", intValue), "--switch" };
+            var arguments = new[] { "-s", stringValue, string.Concat("-i", integerValue), "--switch" };
 
-            var options = sut.ParseArguments<Fake_Simple_Options>(arguments, () => { });
+            var options = sut.ParseArguments<Fake_Simple_Options>(arguments, () => {});
 
-            options.StringValue.Should().Be(stringValue);
-            options.IntegerValue.Should().Be(intValue);
-            options.BooleanValue.Should().BeTrue();
+            Assert.Equal(stringValue, options.StringValue);
+            Assert.Equal(integerValue, options.IntegerValue);
+            Assert.True(options.BooleanValue);
         }
 
         [Theory, AutoData]
-        public void Parse_Short_Adjacent_options_with_Double(Parser sut, double doubleValue)
+        public void Parse_Short_Adjacent_Options_with_Double(Parser sut, double doubleValue)
         {
             var arguments = new[] { "-ca", string.Concat("-d", doubleValue) };
 
-            var options = sut.ParseArguments<Fake_Booleans_Options>(arguments, () => { });
+            var options = sut.ParseArguments<Fake_Booleans_Options>(arguments, () => {});
 
-            options.BooleanC.Should().BeTrue();
-            options.BooleanA.Should().BeTrue();
-            options.BooleanB.Should().BeFalse();
-            options.DoubleValue.Should().Be(doubleValue);
+            Assert.Equal(doubleValue, options.DoubleValue);
+            Assert.True(options.BooleanA);
+            Assert.True(options.BooleanC);
         }
 
-        [Fact]
-        public void Parse_Short_and_Long_options_with_Double(Parser sut, double doubleValue)
+        [Theory, AutoData]
+        public void Parse_Short_and_Long_Options_with_Double(Parser sut, double doubleValue)
         {
-            var arguments = new[] { "-b", "--double=9" };
-            var options = sut.ParseArguments<Fake_Booleans_Options>(arguments, () => { });
+            var arguments = new[] { "-b", string.Concat("--double=", doubleValue) };
+            var options = sut.ParseArguments<Fake_Booleans_Options>(arguments, () => {});
 
-            options.BooleanB.Should().BeTrue();
-            options.BooleanA.Should().BeFalse();
-            options.BooleanC.Should().BeFalse();
-            options.DoubleValue.Should().Be(doubleValue);
+            Assert.Equal(doubleValue, options.DoubleValue);
+            Assert.True(options.BooleanA);
         }
- 
-        [Fact]
-        public void Parse_option_list()
-        {
-            var parser = new CommandLine.Parser();
-            var result = true;
-            var options = parser.ParseArguments<SimpleOptionsWithOptionList>(new[] {
-                                "-k", "string1:stringTwo:stringIII", "-s", "test-file.txt" }, () => { result = false; });
 
-            options.Should().NotBeNull();
-            options.SearchKeywords[0].Should().Be("string1");
-            Console.WriteLine(options.SearchKeywords[0]);
-            options.SearchKeywords[1].Should().Be("stringTwo");
-            Console.WriteLine(options.SearchKeywords[1]);
-            options.SearchKeywords[2].Should().Be("stringIII");
-            Console.WriteLine(options.SearchKeywords[2]);
-            options.StringValue.Should().Be("test-file.txt");
-            Console.WriteLine(options.StringValue);
+        [Theory, AutoData]
+        public void Parse_using_OptionList(Parser sut, int count, Generator<string> generator)
+        {
+            var strings = generator.Take(count + 2).Select(a => a.Replace(":", ""));
+            var items = string.Join(":", strings.ToArray());
+            var arguments = new[] { "-k", items, "-s", "test-file.txt" };
+
+            var options = sut.ParseArguments<Fake_Simple_Options_With_OptionList>(arguments, () => {});
+
+            Assert.Equal(items.Split(':').ToList(), options.SearchKeywords);
         }
 
         #region #BUG0000
-        [Fact]
-        public void Short_option_refuses_equal_token()
+        [Theory, AutoData]
+        public void Short_Option_refuses_Equal_Token(Parser sut, int integerValue)
         {
-            var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<Fake_Simple_Options>(new[] { "-i=10" }, () => { result = false; });
-            result.Should().BeFalse();
-            Console.WriteLine(options);
+            var arguments = new[] { string.Concat("-i=", integerValue) };
+
+            var options = sut.ParseArguments<Fake_Simple_Options>(arguments, () => { result = false; });
+
+            Assert.False(result);
         }
         #endregion
 
-        [Fact]
-        public void Parse_enum_options()
+        [Theory, AutoData]
+        public void Parse_Options_with_Enumeration(Parser sut, FileAttributes enumValue)
         {
-            var parser = new CommandLine.Parser();
-            var result = true;
-            var options = parser.ParseArguments<SimpleOptionsWithEnum>(new[] { "-s", "data.bin", "-a", "ReadWrite" }, () => { result = false; });
+            var arguments = new[] { "-s", "data.bin", "-x", enumValue.ToString() };
+            var options = sut.ParseArguments<Fake_Simple_Options_With_Enum>(arguments, () => { });
 
-            options.Should().NotBeNull();
-            options.StringValue.Should().Be("data.bin");
-            options.FileAccess.Should().Be(FileAccess.ReadWrite);
-            Console.WriteLine(options);
+            Assert.Equal(enumValue, options.FileAttributesValue);
         }
 
-        [Fact]
-        public void Parse_culture_specific_number()
+        [Theory, ParserWithItalianCultureTestConventions]
+        public void Parse_culture_specific_number(Parser sut, double doubleValue)
         {
-            var parser = new CommandLine.Parser(with => with.ParsingCulture = new CultureInfo("it-IT"));
-            var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "-d", "10,986" }, () => { result = false; });
+            var doubleValueItalianCulture = doubleValue.ToString(new CultureInfo("it-IT"));
+            var arguments = new[] { "-d", doubleValueItalianCulture };
 
-            options.Should().NotBeNull();
-            options.DoubleValue.Should().Be(10.986D);
+            var options = sut.ParseArguments<Fake_Numbers_Options>(arguments, () => { });
+
+            Assert.Equal(doubleValue, options.DoubleValue);
         }
 
         [Fact]
@@ -162,7 +119,7 @@ namespace CommandLine.Tests.Unit
             var actualCulture = Thread.CurrentThread.CurrentCulture;
             Thread.CurrentThread.CurrentCulture = new CultureInfo("it-IT");
             var parser = new CommandLine.Parser();
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--n-double", "12,32982" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--n-double", "12,32982" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.NullableDoubleValue.Should().Be(12.32982D);
@@ -281,7 +238,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--byte" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--byte" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -291,7 +248,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--short" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--short" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -301,7 +258,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--int" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--int" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -311,7 +268,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--long" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--long" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -321,7 +278,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--float" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--float" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -331,7 +288,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--double" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--double" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -381,7 +338,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "-i-4096" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "-i-4096" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.IntegerValue.Should().Be(-4096);
@@ -391,7 +348,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--int", "-4096" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--int", "-4096" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.IntegerValue.Should().Be(-4096);
@@ -401,7 +358,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--int=-4096" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--int=-4096" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.IntegerValue.Should().Be(-4096);
@@ -413,7 +370,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "-d", "-4096.1024" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "-d", "-4096.1024" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.DoubleValue.Should().Be(-4096.1024D);
@@ -424,7 +381,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "-d-4096.1024" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "-d-4096.1024" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.DoubleValue.Should().Be(-4096.1024D);
@@ -435,7 +392,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--double", "-4096.1024" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--double", "-4096.1024" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.DoubleValue.Should().Be(-4096.1024D);
@@ -446,7 +403,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(new[] { "--double=-4096.1024" }, () => { result = false; });
+            var options = parser.ParseArguments<Fake_Numbers_Options>(new[] { "--double=-4096.1024" }, () => { result = false; });
 
             options.Should().NotBeNull();
             options.DoubleValue.Should().Be(-4096.1024D);
@@ -459,7 +416,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(
+            var options = parser.ParseArguments<Fake_Numbers_Options>(
                 new[] { "-b", short.MaxValue.ToString(CultureInfo.InvariantCulture) }, () => { result = false; });
 
             result.Should().BeFalse();
@@ -470,7 +427,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(
+            var options = parser.ParseArguments<Fake_Numbers_Options>(
                 new[] { "-s", int.MaxValue.ToString(CultureInfo.InvariantCulture) }, () => { result = false; });
 
             result.Should().BeFalse();
@@ -481,7 +438,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(
+            var options = parser.ParseArguments<Fake_Numbers_Options>(
                 new[] { "-i", long.MaxValue.ToString(CultureInfo.InvariantCulture) }, () => { result = false; });
 
             result.Should().BeFalse();
@@ -492,7 +449,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(
+            var options = parser.ParseArguments<Fake_Numbers_Options>(
                 new[] { "-l", float.MaxValue.ToString(CultureInfo.InvariantCulture) }, () => { result = false; });
 
             result.Should().BeFalse();
@@ -503,7 +460,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser();
             var result = true;
-            var options = parser.ParseArguments<NumberSetOptions>(
+            var options = parser.ParseArguments<Fake_Numbers_Options>(
                 new[] { "-f", double.MaxValue.ToString(CultureInfo.InvariantCulture) }, () => { result = false; });
 
             result.Should().BeFalse();

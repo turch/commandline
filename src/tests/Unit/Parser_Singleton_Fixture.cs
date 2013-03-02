@@ -66,7 +66,7 @@ namespace CommandLine.Tests.Unit
         [Fact]
         public void Default_parsing_culture_is_invariant()
         {
-            var options = CommandLine.Parser.Default.ParseArguments<NumberSetOptions>(new[] { "-f0.1234" }, () => { });
+            var options = CommandLine.Parser.Default.ParseArguments<Fake_Numbers_Options>(new[] { "-f0.1234" }, () => { });
 
             options.FloatValue.ShouldBeEquivalentTo(0.1234f);
         }

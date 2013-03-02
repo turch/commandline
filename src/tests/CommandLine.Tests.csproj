@@ -41,8 +41,14 @@
     <Reference Include="FluentAssertions">
       <HintPath>..\..\packages\FluentAssertions.2.0.0.1\lib\net40\FluentAssertions.dll</HintPath>
     </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\..\packages\Moq.3.1.416.3\lib\Moq.dll</HintPath>
+    </Reference>
     <Reference Include="Ploeh.AutoFixture">
       <HintPath>..\..\packages\AutoFixture.3.0.1\lib\net40\Ploeh.AutoFixture.dll</HintPath>
+    </Reference>
+    <Reference Include="Ploeh.AutoFixture.AutoMoq">
+      <HintPath>..\..\packages\AutoFixture.AutoMoq.3.0.1\lib\net40\Ploeh.AutoFixture.AutoMoq.dll</HintPath>
     </Reference>
     <Reference Include="Ploeh.AutoFixture.Xunit">
       <HintPath>..\..\packages\AutoFixture.Xunit.3.0.1\lib\net40\Ploeh.AutoFixture.Xunit.dll</HintPath>
@@ -61,6 +67,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Conventions\ParserWithItalianCultureTestConventionsAttribute.cs" />
     <Compile Include="Unit\Capabilities_Extensions_Fixture.cs" />
     <Compile Include="Fakes\OptionsWithImplicitLongName.cs" />
     <Compile Include="Fakes\OptionsWithTwoArrays.cs" />
@@ -94,7 +101,7 @@
     <Compile Include="Fakes\ComplexOptions.cs" />
     <Compile Include="Fakes\MixedCaseOptions.cs" />
     <Compile Include="Fakes\NullableTypesOptions.cs" />
-    <Compile Include="Fakes\NumberSetOptions.cs" />
+    <Compile Include="Fakes\Fake_Numbers_Options.cs" />
     <Compile Include="Fakes\OptionsBase.cs" />
     <Compile Include="Fakes\OptionsWithDefaultSet.cs" />
     <Compile Include="Fakes\OptionsWithMultipleSet.cs" />
@@ -105,9 +112,9 @@
     <Compile Include="Fakes\SimpleOptionsWithArray.cs" />
     <Compile Include="Fakes\SimpleOptionsWithArrayAndValueList.cs" />
     <Compile Include="Fakes\SimpleOptionsWithBadOptionArray.cs" />
-    <Compile Include="Fakes\SimpleOptionsWithEnum.cs" />
+    <Compile Include="Fakes\Fake_Simple_Options_With_Enum.cs" />
     <Compile Include="Fakes\SimpleOptionsWithHelpOption.cs" />
-    <Compile Include="Fakes\SimpleOptionsWithOptionList.cs" />
+    <Compile Include="Fakes\Fake_Simple_Options_With_OptionList.cs" />
     <Compile Include="Fakes\SimpleOptionsWithValueList.cs" />
     <Compile Include="Fakes\SimpleOptionsWithDefaults.cs" />
     <Compile Include="Fakes\SimpleOptionsWithBadDefaults.cs" />
