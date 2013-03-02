@@ -107,20 +107,19 @@ namespace CommandLine
             set { throw new InvalidOperationException(); }
         }
 
-        internal static void InvokeMethod(
-            object target,
-            Tuple<MethodInfo, HelpOptionAttribute> pair,
+        internal static void Invoke<T>(
+            T options,
+            MethodInfo method,
             out string text)
         {
             text = null;
-            var method = pair.Left();
             
             if (!CheckMethodSignature(method))
             {
                 throw new MemberAccessException();
             }
             
-            text = (string)method.Invoke(target, null);
+            text = (string)method.Invoke(options, null);
         }
 
         private static bool CheckMethodSignature(MethodInfo value)

@@ -83,14 +83,12 @@ namespace CommandLine
             set { throw new InvalidOperationException(SR.InvalidOperationException_DoNotSetRequiredPropertyForVerbCommands); }
         }
 
-        internal static void InvokeMethod(
-            object target,
-            Tuple<MethodInfo, HelpVerbOptionAttribute> helpInfo,
+        internal static void Invoke<T>(
+            T target,
+            MethodInfo method,
             string verb,
             out string text)
         {
-            text = null;
-            var method = helpInfo.Left();
             if (!CheckMethodSignature(method))
             {
                 throw new MemberAccessException(

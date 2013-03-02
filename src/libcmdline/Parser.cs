@@ -264,10 +264,10 @@ namespace CommandLine
             return options;
         }
 
-        private static void DisplayHelpText<T>(T options, Tuple<MethodInfo, HelpOptionAttribute> pair, TextWriter helpWriter)
+        private static void DisplayHelpText<T>(T options, MethodInfo method, TextWriter helpWriter)
         {
             string helpText;
-            HelpOptionAttribute.InvokeMethod(options, pair, out helpText); // TODO: refactor this
+            HelpOptionAttribute.Invoke(options, method, out helpText);
             helpWriter.Write(helpText);
         }
 
@@ -288,7 +288,7 @@ namespace CommandLine
             {
                 if (this.TryParseHelp(args, pair.Right()))
                 {
-                    DisplayHelpText(options, pair, helpWriter);
+                    DisplayHelpText(options, pair.Left(), helpWriter);
                     return new Tuple<bool, T>(false, options);
                 }
 
@@ -298,7 +298,7 @@ namespace CommandLine
 
                 if (!result)
                 {
-                    DisplayHelpText(options, pair, helpWriter);
+                    DisplayHelpText(options, pair.Left(), helpWriter);
                     return new Tuple<bool, T>(false, options);
                 }
             }
@@ -368,7 +368,7 @@ namespace CommandLine
             {
                 if (helpInfo != null || _settings.HelpWriter != null)
                 {
-                    DisplayHelpVerbText(options, helpInfo, null);
+                    DisplayHelpVerbText(options, helpInfo.Left(), null);
                 }
 
                 return new Tuple<bool, T, object>(false, options, null);
@@ -388,7 +388,7 @@ namespace CommandLine
             {
                 if (helpInfo != null)
                 {
-                    DisplayHelpVerbText(options, helpInfo, null);
+                    DisplayHelpVerbText(options, helpInfo.Left(), null);
                 }
 
                 return new Tuple<bool, T, object>(false, options, null);
@@ -408,7 +408,7 @@ namespace CommandLine
             if (!result && helpInfo != null)
             {
                 // Particular verb parsing failed, we try to print its help
-                DisplayHelpVerbText(options, helpInfo, args.First());
+                DisplayHelpVerbText(options, helpInfo.Left(), args.First());
             }
 
             return new Tuple<bool, T, object>(result, options, verbInstance);
@@ -463,7 +463,7 @@ namespace CommandLine
                         }
                     }
 
-                    DisplayHelpVerbText(options, helpInfo, verb);
+                    DisplayHelpVerbText(options, helpInfo.Left(), verb);
                     return true;
                 }
             }
@@ -471,16 +471,16 @@ namespace CommandLine
             return false;
         }
 
-        private void DisplayHelpVerbText<T>(T options, Tuple<MethodInfo, HelpVerbOptionAttribute> helpInfo, string verb)
+        private void DisplayHelpVerbText<T>(T options, MethodInfo method, string verb)
         {
             string helpText;
             if (verb == null)
             {
-                HelpVerbOptionAttribute.InvokeMethod(options, helpInfo, null, out helpText);
+                HelpVerbOptionAttribute.Invoke(options, method, null, out helpText);
             }
             else
             {
-                HelpVerbOptionAttribute.InvokeMethod(options, helpInfo, verb, out helpText);
+                HelpVerbOptionAttribute.Invoke(options, method, verb, out helpText);
             }
 
             if (_settings.HelpWriter != null)
