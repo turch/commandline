@@ -271,11 +271,6 @@ namespace CommandLine
             helpWriter.Write(helpText);
         }
 
-        private static StringComparison GetStringComparison(ParserSettings settings)
-        {
-            return settings.CaseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-        }
-
         private Tuple<bool, T> ParseArguments<T>(string[] args)
             where T : new()
         {
@@ -446,7 +441,7 @@ namespace CommandLine
             var helpWriter = _settings.HelpWriter;
             if (helpInfo != null && helpWriter != null)
             {
-                if (string.Compare(args[0], helpInfo.Right().LongName, GetStringComparison(_settings)) == 0)
+                if (string.Compare(args[0], helpInfo.Right().LongName, _settings.StringComparison) == 0)
                 {
                     // User explicitly requested help
                     var verb = args.FirstOrDefault();

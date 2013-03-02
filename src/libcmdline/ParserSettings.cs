@@ -245,6 +245,14 @@ namespace CommandLine
             }
         }
 
+        internal StringComparison StringComparison
+        {
+            get
+            {
+                return _caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            }
+        }
+
         internal bool Consumed { get; set; }
 
         /// <summary>
