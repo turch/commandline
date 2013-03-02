@@ -32,8 +32,14 @@ using System.Globalization;
 using System.IO;
 using System.Threading;
 using CommandLine.Tests.Fakes;
+
+using Ploeh.AutoFixture.Xunit;
+
 using Xunit;
 using FluentAssertions;
+
+using Xunit.Extensions;
+
 #endregion
 
 namespace CommandLine.Tests.Unit
@@ -53,6 +59,15 @@ namespace CommandLine.Tests.Unit
         //    Assert.Throws<ArgumentNullException>(
         //        () => new CommandLine.Parser().ParseArguments(new[] {}, null));
         //}
+
+        [Theory, AutoData]
+        public void Parse_string(string expectedString, CommandLine.Parser parser)
+        {
+            var options = parser.ParseArguments<SimpleOptions>(
+                new [] { "-s", expectedString }, () => {});
+
+            options.StringValue.Should().Be(expectedString);
+        }
 
         [Fact]
         public void Parse_string_option()

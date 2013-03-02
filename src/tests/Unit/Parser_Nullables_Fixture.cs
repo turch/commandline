@@ -35,7 +35,7 @@ using FluentAssertions;
 using CommandLine.Tests.Fakes;
 #endregion
 
-namespace CommandLine.Tests.Unit.Parser
+namespace CommandLine.Tests.Unit
 {
     public class Parser_Nullables_Fixture : ParserBaseFixture
     {
