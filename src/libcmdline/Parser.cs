@@ -171,7 +171,7 @@ namespace CommandLine
             Assumes.NotNull(onVerbCommand, "onVerbCommand", SR.ArgumentNullException_OnVerbDelegateCannotBeNull);
             Assumes.NotNull(onFail, "onFail", SR.ArgumentNullException_OnFailDelegateCannotBeNull);
 
-            var resultAndOptionsAndVerbInstance = this.ParseArgumentsVerbs<T>(args);
+            var resultAndOptionsAndVerbInstance = this.ParseArgumentsImplVerbs<T>(args);
 
             var result = resultAndOptionsAndVerbInstance.Item1;
             var options = resultAndOptionsAndVerbInstance.Item2;
@@ -292,7 +292,7 @@ namespace CommandLine
                     return new Tuple<bool, T>(false, options);
                 }
 
-                var optionsAndResult = this.ParseArgumentsCore(args, options);
+                var optionsAndResult = this.ParseArgumentsImpl(args, options);
                 var result = optionsAndResult.Item1;
                 options = optionsAndResult.Item2;
 
@@ -303,10 +303,10 @@ namespace CommandLine
                 }
             }
 
-            return this.ParseArgumentsCore(args, options);
+            return this.ParseArgumentsImpl(args, options);
         }
 
-        private Tuple<bool, T> ParseArgumentsCore<T>(string[] args, T options)
+        private Tuple<bool, T> ParseArgumentsImpl<T>(string[] args, T options)
         {
             var hadError = false;
             var optionMap = OptionMap.Create(options, _settings);
@@ -352,7 +352,7 @@ namespace CommandLine
             return new Tuple<bool, T>(!hadError, options);
         }
 
-        private Tuple<bool, T, object> ParseArgumentsVerbs<T>(string[] args)
+        private Tuple<bool, T, object> ParseArgumentsImplVerbs<T>(string[] args)
             where T : new()
         {
             var options = new T();
@@ -401,7 +401,7 @@ namespace CommandLine
                 verbInstance = verbOption.CreateInstance(options);
             }
 
-            var resultAndVerbInstance = this.ParseArgumentsCore(args.Skip(1).ToArray(), verbInstance);
+            var resultAndVerbInstance = this.ParseArgumentsImpl(args.Skip(1).ToArray(), verbInstance);
             var result = resultAndVerbInstance.Item1;
             verbInstance = resultAndVerbInstance.Item2;
 
