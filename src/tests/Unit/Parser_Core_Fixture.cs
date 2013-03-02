@@ -54,50 +54,50 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, AutoData]
-        public void Parse_String_option(string expectedString, Parser parser)
+        public void Parse_String_option(string stringValue, Parser sut)
         {
-            var arguments = new[] { "-s", expectedString };
+            var arguments = new[] { "-s", stringValue };
 
-            var options = parser.ParseArguments<Fake_Simple_Options>(arguments, () => {});
+            var options = sut.ParseArguments<Fake_Simple_Options>(arguments, () => { });
 
-            options.StringValue.Should().Be(expectedString);
+            options.StringValue.Should().Be(stringValue);
         }
 
         [Theory, AutoData]
-        public void Parse_String_Integer_and_Bool_options(string expectedString, int expectedInt, Parser parser)
+        public void Parse_String_Integer_and_Bool_options(Parser sut, string stringValue, int intValue)
         {
-            var arguments = new[] { "-s", expectedString, string.Concat("-i", expectedInt), "--switch" };
+            var arguments = new[] { "-s", stringValue, string.Concat("-i", intValue), "--switch" };
 
-            var options = parser.ParseArguments<Fake_Simple_Options>(arguments, () => {});
+            var options = sut.ParseArguments<Fake_Simple_Options>(arguments, () => { });
 
-            options.StringValue.Should().Be(expectedString);
-            options.IntegerValue.Should().Be(expectedInt);
+            options.StringValue.Should().Be(stringValue);
+            options.IntegerValue.Should().Be(intValue);
             options.BooleanValue.Should().BeTrue();
         }
 
         [Theory, AutoData]
-        public void Parse_Short_Adjacent_options_with_Double(double expectedDouble, Parser parser)
+        public void Parse_Short_Adjacent_options_with_Double(Parser sut, double doubleValue)
         {
-            var arguments = new[] { "-ca", string.Concat("-d", expectedDouble) };
+            var arguments = new[] { "-ca", string.Concat("-d", doubleValue) };
 
-            var options = parser.ParseArguments<Fake_Booleans_Options>(arguments, () => {});
+            var options = sut.ParseArguments<Fake_Booleans_Options>(arguments, () => { });
 
             options.BooleanC.Should().BeTrue();
             options.BooleanA.Should().BeTrue();
             options.BooleanB.Should().BeFalse();
-            options.DoubleValue.Should().Be(expectedDouble);
+            options.DoubleValue.Should().Be(doubleValue);
         }
 
         [Fact]
-        public void Parse_Short_and_Long_options_with_Double(double expectedDouble, Parser parser)
+        public void Parse_Short_and_Long_options_with_Double(Parser sut, double doubleValue)
         {
             var arguments = new[] { "-b", "--double=9" };
-            var options = parser.ParseArguments<Fake_Booleans_Options>(arguments, () => {});
+            var options = sut.ParseArguments<Fake_Booleans_Options>(arguments, () => { });
 
             options.BooleanB.Should().BeTrue();
             options.BooleanA.Should().BeFalse();
             options.BooleanC.Should().BeFalse();
-            options.DoubleValue.Should().Be(expectedDouble);
+            options.DoubleValue.Should().Be(doubleValue);
         }
  
         [Fact]
