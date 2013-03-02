@@ -148,7 +148,7 @@ namespace CommandLine.Text
         /// <param name="copyright">A string with copyright or an instance of <see cref="CommandLine.Text.CopyrightInfo"/>.</param>
         /// <param name="options">The instance that collected command line arguments parsed with <see cref="Parser"/> class.</param>
         /// <exception cref="System.ArgumentException">Thrown when one or more parameters <paramref name="heading"/> are null or empty strings.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "When DoAddOptions is called with fireEvent=false virtual member is not called")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "When AddOptionsImpl is called with fireEvent=false virtual member is not called")]
         public HelpText(string heading, string copyright, object options)
             : this()
         {
@@ -158,7 +158,7 @@ namespace CommandLine.Text
 
             _heading = heading;
             _copyright = copyright;
-            DoAddOptions(options, DefaultRequiredWord, MaximumDisplayWidth, fireEvent: false);
+            this.AddOptionsImpl(options, DefaultRequiredWord, MaximumDisplayWidth, fireEvent: false);
         }
 
         /// <summary>
@@ -341,30 +341,30 @@ namespace CommandLine.Text
         /// <param name="current">The <see cref="CommandLine.Text.HelpText"/> instance.</param>
         public static void DefaultParsingErrorsHandler<T>(T options, HelpText current)
         {
-            //var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
-            var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
-            //if (list.Count == 0)
-            if (list == null)
+            var pair = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
+            if (pair == null)
             {
                 return;
             }
 
-            //var parserState = (IParserState)list[0].Left().GetValue(options, null);
-            var parserState = (IParserState)list.Left().GetValue(options, null);
+            var parserState = (IParserState)pair.Left().GetValue(options, null);
             if (parserState == null || parserState.Errors.Count == 0)
             {
                 return;
             }
 
             var errors = current.RenderParsingErrorsText(options, 2); // indent with two spaces
-            if (!string.IsNullOrEmpty(errors))
+            if (string.IsNullOrEmpty(errors))
             {
-                current.AddPreOptionsLine(string.Concat(Environment.NewLine, current.SentenceBuilder.ErrorsHeadingText));
-                var lines = errors.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-                foreach (var line in lines)
-                {
-                    current.AddPreOptionsLine(line);
-                }
+                return;
+            }
+
+            current.AddPreOptionsLine(string.Concat(Environment.NewLine, current.SentenceBuilder.ErrorsHeadingText));
+            var lines = errors.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+
+            foreach (var line in lines)
+            {
+                current.AddPreOptionsLine(line);
             }
         }
 
@@ -436,7 +436,7 @@ namespace CommandLine.Text
             Assumes.NotNull(options, "options");
             Assumes.NotNullOrEmpty(requiredWord, "requiredWord");
 
-            DoAddOptions(options, requiredWord, maximumLength);
+            this.AddOptionsImpl(options, requiredWord, maximumLength);
         }
 
         /// <summary>
@@ -448,16 +448,13 @@ namespace CommandLine.Text
         /// <returns>The <see cref="System.String"/> that contains the parsing error message.</returns>
         public string RenderParsingErrorsText<T>(T options, int indent)
         {
-            //var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
-            var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
-            //if (list.Count == 0)
-            if (list == null)
+            var pair = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
+            if (pair == null)
             {
-                return string.Empty; // Or exception?
+                return string.Empty;
             }
 
-            //var parserState = (IParserState)list[0].Left().GetValue(options, null);
-            var parserState = (IParserState)list.Left().GetValue(options, null);
+            var parserState = (IParserState)pair.Left().GetValue(options, null);
             if (parserState == null || parserState.Errors.Count == 0)
             {
                 return string.Empty;
@@ -559,7 +556,7 @@ namespace CommandLine.Text
         /// <param name="e">Data for the <see cref="FormatOptionHelpText"/> event.</param>
         protected virtual void OnFormatOptionHelpText(FormatOptionHelpTextEventArgs e)
         {
-            EventHandler<FormatOptionHelpTextEventArgs> handler = FormatOptionHelpText;
+            var handler = FormatOptionHelpText;
 
             if (handler != null)
             {
@@ -579,12 +576,7 @@ namespace CommandLine.Text
 
         private static int GetLength(StringBuilder value)
         {
-            if (value == null)
-            {
-                return 0;
-            }
-
-            return value.Length;
+            return value == null ? 0 : value.Length;
         }
 
         private static void AddLine(StringBuilder builder, string value, int maximumLength)
@@ -635,28 +627,23 @@ namespace CommandLine.Text
             builder.Append(value);
         }
 
-        private void DoAddOptions<T>(T options, string requiredWord, int maximumLength, bool fireEvent = true)
+        private void AddOptionsImpl<T>(T options, string requiredWord, int maximumLength, bool fireEvent = true)
         {
-            //var optionList = ReflectionHelper.RetrievePropertyAttributeList<BaseOptionAttribute>(options);
             var allOptions = Metadata.Get<MemberInfo, BaseOptionAttribute, T>(
                 options,
                 a => a.Item2 is BaseOptionAttribute);
-            //var optionHelp = ReflectionHelper.RetrieveMethodAttributeOnly<HelpOptionAttribute>(options);
             var optionList = allOptions.Select(a => a.Item2);
-            //if (optionHelp != null)
-            //{
-            //    optionList.Add(optionHelp);
-            //}
 
-            if (optionList.Count() == 0)
+            if (!optionList.Any())
             {
                 return;
             }
 
-            int maxLength = GetMaxLength(optionList);
-            this._optionsHelp = new StringBuilder(BuilderCapacity);
-            int remainingSpace = maximumLength - (maxLength + 6);
-            foreach (BaseOptionAttribute option in optionList)
+            var maxLength = GetMaxLength(optionList);
+            _optionsHelp = new StringBuilder(BuilderCapacity);
+            var remainingSpace = maximumLength - (maxLength + 6);
+
+            foreach (var option in optionList)
             {
                 AddOption(requiredWord, maxLength, option, remainingSpace, fireEvent);
             }
@@ -671,6 +658,7 @@ namespace CommandLine.Text
         {
             this._optionsHelp.Append("  ");
             var optionName = new StringBuilder(maxLength);
+
             if (option.HasShortName)
             {
                 if (this._addDashesToOption)
@@ -732,9 +720,9 @@ namespace CommandLine.Text
             {
                 do
                 {
-                    int wordBuffer = 0;
+                    var wordBuffer = 0;
                     var words = option.HelpText.Split(new[] { ' ' });
-                    for (int i = 0; i < words.Length; i++)
+                    for (var i = 0; i < words.Length; i++)
                     {
                         if (words[i].Length < (widthOfHelpText - wordBuffer))
                         {
@@ -786,13 +774,13 @@ namespace CommandLine.Text
 
         private int GetMaxLength(IEnumerable<BaseOptionAttribute> optionList)
         {
-            int length = 0;
-            foreach (BaseOptionAttribute option in optionList)
+            var length = 0;
+            foreach (var option in optionList)
             {
-                int optionLength = 0;
-                bool hasShort = option.HasShortName;
-                bool hasLong = option.HasLongName;
-                int metaLength = 0;
+                var optionLength = 0;
+                var hasShort = option.HasShortName;
+                var hasLong = option.HasLongName;
+                var metaLength = 0;
                 if (option.HasMetaValue)
                 {
                     metaLength = option.MetaValue.Length + 1;
