@@ -8,12 +8,12 @@ namespace CommandLine.Tests.Extensions
 {
     static class ObjectExtensions
     {
-        public static string ToItalianCulture(this object value)
+        public static string ToItalianCultureString(this object value)
         {
             return Convert.ToString(value, new CultureInfo("it-IT"));
         }
 
-        public static string ToInvariantCulture(this object value)
+        public static string ToInvariantString(this object value)
         {
             return Convert.ToString(value, CultureInfo.InvariantCulture);
         }
