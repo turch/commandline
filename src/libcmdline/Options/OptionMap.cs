@@ -169,7 +169,8 @@ namespace CommandLine.Options
         {
             foreach (var option in _map.Values)
             {
-                OptionInfoPersister.SetDefault(RawOptions, option);
+                //OptionInfoPersister.SetDefault(RawOptions, option);
+                option.BindingContext.SetDefault();
             }
         }
 

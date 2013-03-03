@@ -92,7 +92,6 @@
     <Compile Include="Options\BindingContext.cs" />
     <Compile Include="Options\IBindingContext.cs" />
     <Compile Include="Options\OptionInfoFactory.cs" />
-    <Compile Include="Options\OptionInfoPersister.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Options\PropertyWriter.cs">

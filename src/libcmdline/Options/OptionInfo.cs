@@ -62,35 +62,12 @@ namespace CommandLine.Options
 
         public object DefaultValue { get; set; }
 
-        public Attribute InnerAttribute { get; set; }
+        //public Attribute InnerAttribute { get; set; }
 
-        public PropertyInfo InnerProperty { get; set; }
+        //public PropertyInfo InnerProperty { get; set; }
 
         public CultureInfo ParsingCulture { get; set; }
 
         public IBindingContext BindingContext { get; set; }
-
-        //public object GetValue(object target)
-        //{
-        //    return InnerProperty.GetValue(target, null);
-        //}
-
-        //public object CreateInstance(object target)
-        //{
-        //    object instance = null;
-
-        //    try
-        //    {
-        //        instance = Activator.CreateInstance(InnerProperty.PropertyType);
-
-        //        InnerProperty.SetValue(target, instance, null);
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        throw new ParserException(SR.CommandLineParserException_CannotCreateInstanceForVerbCommand, e);
-        //    }
-
-        //    return instance;
-        //}
     }
 }

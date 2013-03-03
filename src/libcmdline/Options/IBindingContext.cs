@@ -10,5 +10,13 @@ namespace CommandLine.Options
         object UnderlyingValue { get; }
 
         object BuildInstanceIntoUnderlyingValue();
+
+        bool SetValue(string value);
+
+        bool SetValue(IList<string> values);
+
+        bool SetValue(bool value);
+
+        void SetDefault();
     }
 }

@@ -17,7 +17,7 @@ namespace CommandLine.Options
         {
             var longName = attribute.LongName;
 
-            return new OptionInfo
+            var optionInfo = new OptionInfo
                 {
                     ShortName = attribute.ShortName,
                     LongName = longName,
@@ -30,13 +30,15 @@ namespace CommandLine.Options
                     IsAttributeArrayCompatible = attribute is OptionArrayAttribute,
                     HasBothNames = attribute.ShortName.HasValue && longName != null,
                     HasParameterLessCtor = property.PropertyType.GetConstructor(Type.EmptyTypes) != null,
-                    ParsingCulture = parsingCulture,
+                    ParsingCulture = parsingCulture
 
-                    BindingContext = new BindingContext<T>(attribute, property, target),
-
-                    InnerProperty = property,
-                    InnerAttribute = attribute,
+                    //InnerProperty = property,
+                    //InnerAttribute = attribute
                 };
+
+            optionInfo.BindingContext = new BindingContext<T>(optionInfo, attribute, property, target);
+
+            return optionInfo;
         }
     }
 }
