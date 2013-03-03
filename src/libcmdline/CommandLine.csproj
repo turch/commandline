@@ -89,6 +89,7 @@
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
     <Compile Include="Metadata.cs" />
+    <Compile Include="Parsing\OptionInfoFactory.cs" />
     <Compile Include="Parsing\OptionInfoPersister.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

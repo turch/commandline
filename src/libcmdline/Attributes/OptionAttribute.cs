@@ -77,7 +77,7 @@ namespace CommandLine
         /// <returns>An <see cref="OptionInfo"/> instance.</returns>
         internal OptionInfo CreateOptionInfo()
         {
-            return new OptionInfo(ShortName, LongName);
+            return new OptionInfo { ShortName = this.ShortName, LongName = this.LongName };
         }
     }
 }

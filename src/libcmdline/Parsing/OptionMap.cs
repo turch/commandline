@@ -125,7 +125,8 @@ namespace CommandLine.Parsing
                         uniqueName = pair.Right().UniqueName;
                     }
 
-                    map[uniqueName] = new OptionInfo(pair.Right(), pair.Left(), settings.ParsingCulture);
+                    //map[uniqueName] = new OptionInfo(pair.Right(), pair.Left(), settings.ParsingCulture);
+                    map[uniqueName] = OptionInfoFactory.FromMetadata(pair.Right(), pair.Left(), settings.ParsingCulture);
                 }
             }
 
@@ -142,10 +143,9 @@ namespace CommandLine.Parsing
 
             foreach (var verb in verbs)
             {
-                var optionInfo = new OptionInfo(verb.Right(), verb.Left(), settings.ParsingCulture)
-                {
-                    HasParameterLessCtor = verb.Left().PropertyType.GetConstructor(Type.EmptyTypes) != null
-                };
+                //var optionInfo = new OptionInfo(verb.Right(), verb.Left(), settings.ParsingCulture)
+                var optionInfo = OptionInfoFactory.FromMetadata(verb.Right(), verb.Left(), settings.ParsingCulture);
+                //optionInfo.HasParameterLessCtor = verb.Left().PropertyType.GetConstructor(Type.EmptyTypes) != null;
 
                 if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(target, null) == null)
                 {

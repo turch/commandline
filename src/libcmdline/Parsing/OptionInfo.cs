@@ -36,151 +36,41 @@ namespace CommandLine.Parsing
     [DebuggerDisplay("ShortName = {ShortName}, LongName = {LongName}")]
     internal sealed class OptionInfo
     {
-        private readonly CultureInfo _parsingCulture;
-        private readonly BaseOptionAttribute _attribute;
-        private readonly PropertyInfo _property;
-        private readonly bool _required;
-        private readonly char? _shortName;
-        private readonly string _longName;
-        private readonly string _mutuallyExclusiveSet;
-        private readonly object _defaultValue;
-        private readonly bool _hasDefaultValue;
+        public char? ShortName { get; set; }
 
-        public OptionInfo(BaseOptionAttribute attribute, PropertyInfo property, CultureInfo parsingCulture)
-        {
-            if (attribute == null)
-            {
-                throw new ArgumentNullException("attribute", SR.ArgumentNullException_AttributeCannotBeNull);
-            }
+        public string LongName { get; set; }
 
-            if (property == null)
-            {
-                throw new ArgumentNullException("property", SR.ArgumentNullException_PropertyCannotBeNull);
-            }
+        public string MutuallyExclusiveSet { get; set; }
 
-            _required = attribute.Required;
-            _shortName = attribute.ShortName;
-            _longName = attribute.LongName;
-            _mutuallyExclusiveSet = attribute.MutuallyExclusiveSet;
-            _defaultValue = attribute.DefaultValue;
-            _hasDefaultValue = attribute.HasDefaultValue;
-            _attribute = attribute;
-            _property = property;
-            _parsingCulture = parsingCulture;
-        }
+        public bool Required { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OptionInfo"/> class. Used for unit testing purpose.
-        /// </summary>
-        /// <param name="shortName">Option short name.</param>
-        /// <param name="longName">Option long name.</param>
-        internal OptionInfo(char? shortName, string longName)
-        {
-            _shortName = shortName;
-            _longName = longName;
-        }
+        public bool IsBoolean { get; set; }
 
-        public char? ShortName
-        {
-            get { return _shortName; }
-        }
+        public bool IsArray { get; set; }
 
-        public string LongName
-        {
-            get { return _longName; }
-        }
+        public bool IsAttributeArrayCompatible { get; set; }
 
-        public string MutuallyExclusiveSet
-        {
-            get { return _mutuallyExclusiveSet; }
-        }
+        public bool IsDefined { get; set; }
 
-        public bool Required
-        {
-            get { return _required; }
-        }
+        public bool ReceivedValue { get; set; }
 
-        public bool IsBoolean
-        {
-            get { return _property.PropertyType == typeof(bool); }
-        }
+        public bool HasBothNames { get; set; }
 
-        public bool IsArray
-        {
-            get { return _property.PropertyType.IsArray; }
-        }
+        public bool HasParameterLessCtor { get; set; }
 
-        public bool IsAttributeArrayCompatible
-        {
-            get { return _attribute is OptionArrayAttribute; }
-        }
+        public Attribute InnerAttribute { get; set; }
 
-        public bool IsDefined
-        {
-            get; set;
-        }
+        public PropertyInfo InnerProperty { get; set; }
 
-        public bool ReceivedValue
-        {
-            get; set;
-        }
+        public CultureInfo ParsingCulture { get; set; }
 
-        public bool HasBothNames
-        {
-            get
-            {
-                return _shortName != null && _longName != null;
-            }
-        }
+        public bool HasDefaultValue { get; set; }
 
-        public bool HasParameterLessCtor
-        {
-            get; set;
-        }
-
-        public Attribute InnerAttribute
-        {
-            get
-            {
-                return _attribute;
-            }
-        }
-
-        public PropertyInfo InnerProperty
-        {
-            get
-            {
-                return _property;
-            }
-        }
-
-        public CultureInfo ParsingCulture
-        {
-            get
-            {
-                return _parsingCulture;
-            }
-        }
-
-        public bool HasDefaultValue
-        {
-            get
-            {
-                return _hasDefaultValue;
-            }
-        }
-
-        public object DefaultValue
-        {
-            get
-            {
-                return _defaultValue;
-            }
-        }
+        public object DefaultValue { get; set; }
 
         public object GetValue(object target)
         {
-            return _property.GetValue(target, null);
+            return InnerProperty.GetValue(target, null);
         }
 
         public object CreateInstance(object target)
@@ -189,9 +79,9 @@ namespace CommandLine.Parsing
 
             try
             {
-                instance = Activator.CreateInstance(_property.PropertyType);
+                instance = Activator.CreateInstance(InnerProperty.PropertyType);
 
-                _property.SetValue(target, instance, null);
+                InnerProperty.SetValue(target, instance, null);
             }
             catch (Exception e)
             {
