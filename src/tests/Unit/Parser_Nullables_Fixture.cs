@@ -62,7 +62,7 @@ namespace CommandLine.Tests.Unit
                 new[] { string.Concat("--enum2=", enumValue.ToInvariantString()) }, () => { result = false; });
 
             result.Should().BeTrue();
-            options.EnumValue.Should().Be(enumValue);
+            options.EnumValueWithMoreValues.Should().Be(enumValue);
         }
 
         [Theory, ParserTestConventions]
@@ -81,7 +81,7 @@ namespace CommandLine.Tests.Unit
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
-                new[] { "-f", enumValue.ToInvariantString() }, () => { result = false; });
+                new[] { "-f", "I_am_Not_a_Correct_Value" }, () => { result = false; });
 
             result.Should().BeFalse();
         }
@@ -102,10 +102,10 @@ namespace CommandLine.Tests.Unit
             var result = true;
             var expected = doubleValue.AsFractional();
             var options = sut.ParseArguments<Fake_Nullables_Options>(
-                new[] { string.Concat("-d", expected) }, () => { result = false; });
+                new[] { string.Concat("-d", expected.ToInvariantString()) }, () => { result = false; });
 
             result.Should().BeTrue();
-            options.DoubleValue.Should().Be(expected);
+            options.DoubleValue.Value.AsRounded().Should().Be(expected);
         }
 
         [Theory, ParserTestConventions]
@@ -124,8 +124,9 @@ namespace CommandLine.Tests.Unit
         {
             var result = true;
             var expected = doubleValue.AsFractional();
+            // passing a bad formatted value for conventions culture
             var options = sut.ParseArguments<Fake_Nullables_Options>(
-                new[] { "--double", expected.ToInvariantString() }, () => { result = false; });
+                new[] { "--double", expected.ToItalianCultureString() }, () => { result = false; });
 
             result.Should().BeFalse();
         }
