@@ -36,7 +36,7 @@ namespace CommandLine.Options
                     //InnerAttribute = attribute
                 };
 
-            optionInfo.BindingContext = new BindingContext<T>(optionInfo, attribute, property, target);
+            optionInfo.BindingContext = new UnderlyingBindingContext<T>(optionInfo, attribute, property, target);
 
             return optionInfo;
         }

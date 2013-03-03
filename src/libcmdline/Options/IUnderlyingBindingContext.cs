@@ -5,11 +5,11 @@ using System.Text;
 
 namespace CommandLine.Options
 {
-    interface IBindingContext
+    interface IUnderlyingBindingContext
     {
-        object UnderlyingValue { get; }
+        object GetValue();
 
-        object BuildInstanceIntoUnderlyingValue();
+        object SetValueWithBuiltInstance();
 
         bool SetValue(string value);
 

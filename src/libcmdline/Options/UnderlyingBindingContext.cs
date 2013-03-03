@@ -10,14 +10,14 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Options
 {
-    sealed class BindingContext<T> : IBindingContext
+    sealed class UnderlyingBindingContext<T> : IUnderlyingBindingContext
     {
         private readonly OptionInfo _optionInfo;
         private readonly BaseOptionAttribute _attribute;
         private readonly PropertyInfo _property;
         private readonly object _target;
 
-        public BindingContext(OptionInfo optionInfo, BaseOptionAttribute attribute, PropertyInfo property, T target)
+        public UnderlyingBindingContext(OptionInfo optionInfo, BaseOptionAttribute attribute, PropertyInfo property, T target)
         {
             _optionInfo = optionInfo;
             _attribute = attribute;
@@ -25,15 +25,12 @@ namespace CommandLine.Options
             _target = target;
         }
 
-        public object UnderlyingValue
+        public object GetValue()
         {
-            get
-            {
-                return _property.GetValue(_target, null);
-            }
+            return _property.GetValue(_target, null);
         }
 
-        public object BuildInstanceIntoUnderlyingValue()
+        public object SetValueWithBuiltInstance()
         {
             object instance;
 

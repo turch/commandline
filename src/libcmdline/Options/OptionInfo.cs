@@ -68,6 +68,6 @@ namespace CommandLine.Options
 
         public CultureInfo ParsingCulture { get; set; }
 
-        public IBindingContext BindingContext { get; set; }
+        public IUnderlyingBindingContext BindingContext { get; set; }
     }
 }

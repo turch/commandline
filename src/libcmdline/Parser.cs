@@ -395,12 +395,11 @@ namespace CommandLine
                 return new Tuple<bool, T, object>(false, options, null);
             }
 
-            var verbInstance = verbOption.BindingContext.UnderlyingValue;
+            var verbInstance = verbOption.BindingContext.GetValue();
             if (verbInstance == null)
             {
                 // Developer has not provided a default value and did not assign an instance
-                //verbInstance = verbOption.CreateInstance(options);
-                verbInstance = verbOption.BindingContext.BuildInstanceIntoUnderlyingValue();
+                verbInstance = verbOption.BindingContext.SetValueWithBuiltInstance();
             }
 
             var resultAndVerbInstance = this.ParseArgumentsImpl(args.Skip(1).ToArray(), verbInstance);
@@ -457,11 +456,10 @@ namespace CommandLine
                         var verbOption = optionMap[verb];
                         if (verbOption != null)
                         {
-                            //if (verbOption.GetValue(options) == null)
-                            if (verbOption.BindingContext.UnderlyingValue == null)
+                            if (verbOption.BindingContext.GetValue() == null)
                             {
                                 // We need to create an instance also to render help
-                                verbOption.BindingContext.BuildInstanceIntoUnderlyingValue();
+                                verbOption.BindingContext.SetValueWithBuiltInstance();
                             }
                         }
                     }
