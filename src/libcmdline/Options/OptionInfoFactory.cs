@@ -9,7 +9,11 @@ namespace CommandLine.Options
 {
     internal static class OptionInfoFactory
     {
-        public static OptionInfo FromMetadata(BaseOptionAttribute attribute, PropertyInfo property, CultureInfo parsingCulture)
+        public static OptionInfo CreateFromMetadata<T>(
+            BaseOptionAttribute attribute,
+            PropertyInfo property,
+            T target,
+            CultureInfo parsingCulture)
         {
             var longName = attribute.LongName;
 
@@ -27,6 +31,8 @@ namespace CommandLine.Options
                     HasBothNames = attribute.ShortName.HasValue && longName != null,
                     HasParameterLessCtor = property.PropertyType.GetConstructor(Type.EmptyTypes) != null,
                     ParsingCulture = parsingCulture,
+
+                    BindingContext = new BindingContext<T>(attribute, property, target),
 
                     InnerProperty = property,
                     InnerAttribute = attribute,

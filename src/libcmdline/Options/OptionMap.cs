@@ -126,7 +126,7 @@ namespace CommandLine.Options
                     }
 
                     //map[uniqueName] = new OptionInfo(pair.Right(), pair.Left(), settings.ParsingCulture);
-                    map[uniqueName] = OptionInfoFactory.FromMetadata(pair.Right(), pair.Left(), settings.ParsingCulture);
+                    map[uniqueName] = OptionInfoFactory.CreateFromMetadata(pair.Right(), pair.Left(), target, settings.ParsingCulture);
                 }
             }
 
@@ -134,8 +134,8 @@ namespace CommandLine.Options
             return map;
         }
 
-        public static OptionMap Create(
-            object target,
+        public static OptionMap Create<T>(
+            T target,
             IEnumerable<Tuple<PropertyInfo, VerbOptionAttribute>> verbs,
             ParserSettings settings)
         {
@@ -144,7 +144,7 @@ namespace CommandLine.Options
             foreach (var verb in verbs)
             {
                 //var optionInfo = new OptionInfo(verb.Right(), verb.Left(), settings.ParsingCulture)
-                var optionInfo = OptionInfoFactory.FromMetadata(verb.Right(), verb.Left(), settings.ParsingCulture);
+                var optionInfo = OptionInfoFactory.CreateFromMetadata(verb.Right(), verb.Left(), target, settings.ParsingCulture);
                 //optionInfo.HasParameterLessCtor = verb.Left().PropertyType.GetConstructor(Type.EmptyTypes) != null;
 
                 if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(target, null) == null)
