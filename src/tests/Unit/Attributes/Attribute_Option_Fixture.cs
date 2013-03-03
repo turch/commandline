@@ -44,9 +44,13 @@ namespace CommandLine.Tests.Unit.Attributes
 
             sut.ParseArguments<Fake_With_Implicit_LongName_Options>(arguments, () => { });
 
-            var lines = sut.Settings.HelpWriter.AsLines();
+            var lines = sut.Settings.HelpWriter.AsLines().Select(a => a.Trim()).ToArray();
 
-
+            lines[2].Should().Be("--download");
+            lines[3].Should().Be("--up-load");
+            lines[4].Should().Be("-b");
+            lines[5].Should().Be("--offsets");
+            lines[6].Should().Be("--segments");
         }
     }
 }

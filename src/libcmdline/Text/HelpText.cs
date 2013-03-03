@@ -290,7 +290,6 @@ namespace CommandLine.Text
 
             if (onError != null)
             {
-                //var list = ReflectionHelper.RetrievePropertyList<ParserStateAttribute>(options);
                 var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
                 if (list != null)
                 {
@@ -632,7 +631,16 @@ namespace CommandLine.Text
             var allOptions = Metadata.Get<MemberInfo, BaseOptionAttribute, T>(
                 options,
                 a => a.Item2 is BaseOptionAttribute);
-            var optionList = allOptions.Select(a => a.Item2);
+            var optionList = allOptions.Select(a =>
+                {
+                    // TODO: used in two points -> refactor
+                    var optionAttr = a.Item2;
+                    if (optionAttr.AutoLongName)
+                    {
+                        optionAttr.LongName = a.Item1.Name.ToLowerInvariant();
+                    }
+                    return optionAttr;
+                });
 
             if (!optionList.Any())
             {
