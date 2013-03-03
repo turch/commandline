@@ -395,7 +395,6 @@ namespace CommandLine
                 return new Tuple<bool, T, object>(false, options, null);
             }
 
-            //var verbInstance = verbOption.GetValue(options);
             var verbInstance = verbOption.BindingContext.UnderlyingValue;
             if (verbInstance == null)
             {
@@ -462,7 +461,6 @@ namespace CommandLine
                             if (verbOption.BindingContext.UnderlyingValue == null)
                             {
                                 // We need to create an instance also to render help
-                                //verbOption.CreateInstance(options);
                                 verbOption.BindingContext.BuildInstanceIntoUnderlyingValue();
                             }
                         }

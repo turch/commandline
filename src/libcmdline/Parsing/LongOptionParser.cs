@@ -62,8 +62,6 @@ namespace CommandLine.Parsing
                 {
                     if (!option.IsArray)
                     {
-                        //valueSetting = option.SetValue(parts[1], options);
-                        //valueSetting = OptionInfoPersister.SetValue(parts[1], options, option);
                         valueSetting = option.BindingContext.SetValue(parts[1]);
                         if (!valueSetting)
                         {
@@ -78,8 +76,6 @@ namespace CommandLine.Parsing
                     var items = ArgumentParser.GetNextInputValues(argumentEnumerator);
                     items.Insert(0, parts[1]);
 
-                    //valueSetting = option.SetValue(items, options);
-                    //valueSetting = OptionInfoPersister.SetValue(items, options, option);
                     valueSetting = option.BindingContext.SetValue(items);
                     if (!valueSetting)
                     {
@@ -92,8 +88,6 @@ namespace CommandLine.Parsing
                 {
                     if (!option.IsArray)
                     {
-                        //valueSetting = option.SetValue(argumentEnumerator.Next, options);
-                        //valueSetting = OptionInfoPersister.SetValue(argumentEnumerator.Next, options, option);
                         valueSetting = option.BindingContext.SetValue(argumentEnumerator.Next);
                         if (!valueSetting)
                         {
@@ -107,8 +101,6 @@ namespace CommandLine.Parsing
 
                     var items = ArgumentParser.GetNextInputValues(argumentEnumerator);
 
-                    //valueSetting = option.SetValue(items, options);
-                    //valueSetting = OptionInfoPersister.SetValue(items, options, option);
                     valueSetting = option.BindingContext.SetValue(items);
                     if (!valueSetting)
                     {
@@ -124,8 +116,6 @@ namespace CommandLine.Parsing
                 return PresentParserState.Failure;
             }
 
-            //valueSetting = option.SetValue(true, options);
-            //valueSetting = OptionInfoPersister.SetValue(true, options, option);
             valueSetting = option.BindingContext.SetValue(true);
             if (!valueSetting)
             {

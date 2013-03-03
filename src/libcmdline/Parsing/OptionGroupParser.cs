@@ -63,8 +63,6 @@ namespace CommandLine.Parsing
                     {
                         if (!option.IsArray)
                         {
-                            //valueSetting = option.SetValue(optionGroup.GetRemainingFromNext(), options);
-                            //valueSetting = OptionInfoPersister.SetValue(optionGroup.GetRemainingFromNext(), options, option);
                             valueSetting = option.BindingContext.SetValue(optionGroup.GetRemainingFromNext());
                             if (!valueSetting)
                             {
@@ -79,8 +77,6 @@ namespace CommandLine.Parsing
                         var items = ArgumentParser.GetNextInputValues(argumentEnumerator);
                         items.Insert(0, optionGroup.GetRemainingFromNext());
 
-                        //valueSetting = option.SetValue(items, options);
-                        //valueSetting = OptionInfoPersister.SetValue(items, options, option);
                         valueSetting = option.BindingContext.SetValue(items);
                         if (!valueSetting)
                         {
@@ -97,8 +93,6 @@ namespace CommandLine.Parsing
 
                     if (!option.IsArray)
                     {
-                        //valueSetting = option.SetValue(argumentEnumerator.Next, options);
-                        //valueSetting = OptionInfoPersister.SetValue(argumentEnumerator.Next, options, option);
                         valueSetting = option.BindingContext.SetValue(argumentEnumerator.Next);
                         if (!valueSetting)
                         {
@@ -112,8 +106,6 @@ namespace CommandLine.Parsing
 
                     var moreItems = ArgumentParser.GetNextInputValues(argumentEnumerator);
 
-                    //valueSetting = option.SetValue(moreItems, options);
-                    //valueSetting = OptionInfoPersister.SetValue(moreItems, options, option);
                     valueSetting = option.BindingContext.SetValue(moreItems);
                     if (!valueSetting)
                     {
@@ -128,8 +120,6 @@ namespace CommandLine.Parsing
                     return PresentParserState.Failure;
                 }
 
-                //if (!option.SetValue(true, options))
-                //if (!OptionInfoPersister.SetValue(true, options, option))
                 if (!option.BindingContext.SetValue(true))
                 {
                     return PresentParserState.Failure;
