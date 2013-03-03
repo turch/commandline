@@ -2,12 +2,9 @@ using System;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Threading;
-
 using CommandLine.Tests.Conventions;
 using CommandLine.Tests.Extensions;
 using CommandLine.Tests.Fakes;
-using FluentAssertions;
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Xunit;
 using Xunit;
@@ -15,7 +12,7 @@ using Xunit.Extensions;
 
 namespace CommandLine.Tests.Unit
 {
-    public class Parser_Core_Fixture : ParserBaseFixture
+    public class Parser_Core_Fixture
     {
         [Fact]
         public void Will_throw_Exception_if_Arguments_Array_is_Null()

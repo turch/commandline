@@ -117,6 +117,11 @@ namespace CommandLine
             get { return DefaultParser; }
         }
 
+        internal ParserSettings Settings
+        {
+            get { return _settings; }
+        }
+
         /// <summary>
         /// Parses a <see cref="System.String"/> array of command line arguments returning values as an instance
         /// of type <typeparamref name="T"/>. Type public fields should be decorated with appropriate attributes.

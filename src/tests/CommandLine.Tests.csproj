@@ -67,10 +67,12 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Conventions\ParserWithHelpTestConventionsAttribute.cs" />
     <Compile Include="Conventions\ParserTestConventionsAttribute.cs" />
     <Compile Include="Conventions\ParserWithItalianCultureTestConventionsAttribute.cs" />
     <Compile Include="Extensions\NumbersExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Fakes\Fake_With_Help_Options.cs" />
     <Compile Include="Unit\Capabilities_Extensions_Fixture.cs" />
     <Compile Include="Fakes\OptionsWithImplicitLongName.cs" />
     <Compile Include="Fakes\OptionsWithTwoArrays.cs" />
@@ -103,7 +105,7 @@
     <Compile Include="Fakes\Fake_Booleans_Options.cs" />
     <Compile Include="Fakes\ComplexOptions.cs" />
     <Compile Include="Fakes\Fake_Mixed_Case_Options.cs" />
-    <Compile Include="Fakes\NullableTypesOptions.cs" />
+    <Compile Include="Fakes\Fake_Nullables_Options.cs" />
     <Compile Include="Fakes\Fake_Numbers_Options.cs" />
     <Compile Include="Fakes\OptionsBase.cs" />
     <Compile Include="Fakes\OptionsWithDefaultSet.cs" />

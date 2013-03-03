@@ -33,13 +33,16 @@ using System.IO;
 
 namespace CommandLine.Tests.Fakes
 {
-    class NullableTypesOptions : OptionsBase
+    class Fake_Nullables_Options
     {
         [Option('i', "int")]
         public int? IntegerValue { get; set; }
 
         [Option('e', "enum")]
         public FileAccess? EnumValue { get; set; }
+
+        [Option('f', "enum2")]
+        public FileAttributes? EnumValueWithMoreValues { get; set; }
 
         [Option('d', "double")]
         public double? DoubleValue { get; set; }
