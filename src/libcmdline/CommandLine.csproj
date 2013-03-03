@@ -78,6 +78,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Extensions\CharExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TupleExtensions.cs" />
     <Compile Include="Extensions\TypeExtensions.cs" />
     <Compile Include="GlobalSuppressions.cs" />
@@ -88,6 +89,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="Kernel\OptionSpec.cs" />
+    <Compile Include="Kernel\ParsedValue.cs" />
+    <Compile Include="Kernel\ParserImpl.cs" />
     <Compile Include="Metadata.cs" />
     <Compile Include="Parsing\OptionInfoPersister.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
