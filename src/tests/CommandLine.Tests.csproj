@@ -67,14 +67,16 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Conventions\ParserWithHelpTestDynamicAutoBuildConventionsAttribute.cs" />
     <Compile Include="Conventions\ParserWithHelpTestConventionsAttribute.cs" />
     <Compile Include="Conventions\ParserTestConventionsAttribute.cs" />
     <Compile Include="Conventions\ParserWithItalianCultureTestConventionsAttribute.cs" />
     <Compile Include="Extensions\NumbersExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
+    <Compile Include="Extensions\TextWriterExtensions.cs" />
     <Compile Include="Fakes\Fake_With_Help_Options.cs" />
     <Compile Include="Unit\Capabilities_Extensions_Fixture.cs" />
-    <Compile Include="Fakes\OptionsWithImplicitLongName.cs" />
+    <Compile Include="Fakes\Fake_With_Implicit_LongName_Options.cs" />
     <Compile Include="Fakes\OptionsWithTwoArrays.cs" />
     <Compile Include="Unit\Attributes\Attribute_Core_Fixture.cs" />
     <Compile Include="Unit\Attributes\Attribute_HelpOption_Fixture.cs" />

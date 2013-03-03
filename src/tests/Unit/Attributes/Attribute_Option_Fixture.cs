@@ -1,4 +1,6 @@
-﻿using CommandLine.Tests.Fakes;
+﻿using CommandLine.Tests.Conventions;
+using CommandLine.Tests.Extensions;
+using CommandLine.Tests.Fakes;
 using FluentAssertions;
 using Xunit;
 using System;
@@ -6,15 +8,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+using Xunit.Extensions;
+
 namespace CommandLine.Tests.Unit.Attributes
 {
     public class Attribute_Option_Fixture
     {
-        [Fact]
-        public void Should_use_property_name_as_long_name_if_omitted()
+        [Theory, ParserTestConventions]
+        public void Use_Property_Name_if_is_Long_Name_if_Omitted(Parser sut)
         {
             // Given
-            var parser = new CommandLine.Parser();
             var result = true;
             var arguments = new[] {
                 "--download", "something",
@@ -23,7 +26,7 @@ namespace CommandLine.Tests.Unit.Attributes
             };
 
             // When
-            var options = parser.ParseArguments<OptionsWithImplicitLongName>(
+            var options = sut.ParseArguments<Fake_With_Implicit_LongName_Options>(
                 arguments, () => { result = false; });
 
             // Than
@@ -32,6 +35,18 @@ namespace CommandLine.Tests.Unit.Attributes
             options.Download.Should().Be("something");
             options.Upload.Should().Be("this");
             options.Bytes.Should().Be(1024);
+        }
+
+        [Theory, ParserWithHelpTestDynamicAutoBuildConventionsAttribute]
+        public void Use_Property_Name_if_is_Long_Name_if_Omitted_when_printing_Help(Parser sut)
+        {
+            var arguments = new[] { "-b", "not_a_number" };
+
+            sut.ParseArguments<Fake_With_Implicit_LongName_Options>(arguments, () => { });
+
+            var lines = sut.Settings.HelpWriter.AsLines();
+
+
         }
     }
 }

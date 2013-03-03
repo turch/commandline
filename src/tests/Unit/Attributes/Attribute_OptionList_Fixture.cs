@@ -22,7 +22,7 @@ namespace CommandLine.Tests.Unit.Attributes
             };
 
             // When
-            var options = parser.ParseArguments<OptionsWithImplicitLongName>(
+            var options = parser.ParseArguments<Fake_With_Implicit_LongName_Options>(
                 arguments, () => { result = false; });
 
             // Than

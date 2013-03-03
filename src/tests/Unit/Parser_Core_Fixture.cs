@@ -438,7 +438,7 @@ namespace CommandLine.Tests.Unit
         /// https://github.com/gsscoder/commandline/issues/15
         /// </summary>
         [Theory, ParserTestConventions]
-        public void Parser_should_report_missing_value(Parser sut)
+        public void Parser_should_Report_Missing_Value(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<ComplexOptions>(new[] { "-i", "-o" }, () => { result = false; });

@@ -2,7 +2,7 @@
 
 namespace CommandLine.Tests.Fakes
 {
-    class OptionsWithImplicitLongName
+    class Fake_With_Implicit_LongName_Options
     {
         [Option]
         public string Download { get; set; }

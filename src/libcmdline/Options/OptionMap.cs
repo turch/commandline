@@ -115,6 +115,7 @@ namespace CommandLine.Options
                 if (pair.Left() != null && pair.Right() != null)
                 {
                     string uniqueName;
+
                     if (pair.Right().AutoLongName)
                     {
                         uniqueName = pair.Left().Name.ToLowerInvariant();
@@ -125,8 +126,11 @@ namespace CommandLine.Options
                         uniqueName = pair.Right().UniqueName;
                     }
 
-                    //map[uniqueName] = new OptionInfo(pair.Right(), pair.Left(), settings.ParsingCulture);
-                    map[uniqueName] = OptionInfoFactory.CreateFromMetadata(pair.Right(), pair.Left(), target, settings.ParsingCulture);
+                    map[uniqueName] = OptionInfoFactory.CreateFromMetadata(
+                        pair.Right(),
+                        pair.Left(),
+                        target,
+                        settings.ParsingCulture);
                 }
             }
 
@@ -143,9 +147,7 @@ namespace CommandLine.Options
 
             foreach (var verb in verbs)
             {
-                //var optionInfo = new OptionInfo(verb.Right(), verb.Left(), settings.ParsingCulture)
                 var optionInfo = OptionInfoFactory.CreateFromMetadata(verb.Right(), verb.Left(), target, settings.ParsingCulture);
-                //optionInfo.HasParameterLessCtor = verb.Left().PropertyType.GetConstructor(Type.EmptyTypes) != null;
 
                 if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(target, null) == null)
                 {
@@ -169,7 +171,6 @@ namespace CommandLine.Options
         {
             foreach (var option in _map.Values)
             {
-                //OptionInfoPersister.SetDefault(RawOptions, option);
                 option.BindingContext.SetDefault();
             }
         }

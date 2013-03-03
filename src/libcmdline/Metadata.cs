@@ -17,13 +17,7 @@ namespace CommandLine
 
             if (!Cache.ContainsKey(options))
             {
-                metadata = from member in options
-                               .GetType()
-                               .GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
-                            let attributes = member.GetCustomAttributes(true)
-                            from attribute in attributes
-                            where attribute is ITargetDescriptor
-                            select new Tuple<MemberInfo, object>(member, attribute);
+                metadata = GetAllImpl(options);
                 Cache.Add(options, metadata);
             }
             else
@@ -52,6 +46,17 @@ namespace CommandLine
                     (TMember)attribute.Item1,
                     (TAttribute)attribute.Item2) :
                 null;
+        }
+
+        private static IEnumerable<Tuple<MemberInfo, object>> GetAllImpl<T>(T options)
+        {
+            return from member in options
+                           .GetType()
+                           .GetMembers(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
+                   let attributes = member.GetCustomAttributes(true)
+                   from attribute in attributes
+                   where attribute is ITargetDescriptor
+                   select new Tuple<MemberInfo, object>(member, attribute);
         }
     }
 }
