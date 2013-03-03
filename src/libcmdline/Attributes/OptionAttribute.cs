@@ -23,6 +23,8 @@
 #endregion
 #region Using Directives
 using System;
+
+using CommandLine.Options;
 using CommandLine.Parsing;
 #endregion
 

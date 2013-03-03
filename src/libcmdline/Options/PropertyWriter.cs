@@ -29,7 +29,7 @@ using System.Globalization;
 using System.Reflection;
 #endregion
 
-namespace CommandLine.Parsing
+namespace CommandLine.Options
 {
     internal static class PropertyWriter
     {

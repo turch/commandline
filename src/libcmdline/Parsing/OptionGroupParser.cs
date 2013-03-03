@@ -22,6 +22,8 @@
 // THE SOFTWARE.
 #endregion
 
+using CommandLine.Options;
+
 namespace CommandLine.Parsing
 {
     internal sealed class OptionGroupParser : ArgumentParser

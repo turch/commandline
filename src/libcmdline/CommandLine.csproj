@@ -89,18 +89,18 @@
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
     <Compile Include="Metadata.cs" />
-    <Compile Include="Parsing\OptionInfoFactory.cs" />
-    <Compile Include="Parsing\OptionInfoPersister.cs" />
+    <Compile Include="Options\OptionInfoFactory.cs" />
+    <Compile Include="Options\OptionInfoPersister.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Parsing\PropertyWriter.cs">
+    <Compile Include="Options\PropertyWriter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UnboundValues.cs" />
     <Compile Include="Parsing\LongOptionParser.cs" />
     <Compile Include="Parsing\OptionGroupParser.cs" />
-    <Compile Include="Parsing\OptionInfo.cs" />
-    <Compile Include="Parsing\OptionMap.cs" />
+    <Compile Include="Options\OptionInfo.cs" />
+    <Compile Include="Options\OptionMap.cs" />
     <Compile Include="Parsing\OneCharStringEnumerator.cs" />
     <Compile Include="Parsing\StringArrayEnumerator.cs" />
     <Compile Include="Parsing\ArgumentParser.cs" />

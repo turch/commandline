@@ -25,6 +25,8 @@
 using System;
 using System.Collections.Generic;
 using CommandLine.Extensions;
+using CommandLine.Options;
+
 #endregion
 
 namespace CommandLine.Parsing

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
-namespace CommandLine.Parsing
+namespace CommandLine.Options
 {
     internal static class OptionInfoFactory
     {

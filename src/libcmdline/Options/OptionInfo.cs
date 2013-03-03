@@ -31,7 +31,7 @@ using System.Reflection;
 using CommandLine.Infrastructure;
 #endregion
 
-namespace CommandLine.Parsing
+namespace CommandLine.Options
 {
     [DebuggerDisplay("ShortName = {ShortName}, LongName = {LongName}")]
     internal sealed class OptionInfo

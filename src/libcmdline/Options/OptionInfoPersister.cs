@@ -34,7 +34,7 @@ using CommandLine.Infrastructure;
 
 #endregion
 
-namespace CommandLine.Parsing
+namespace CommandLine.Options
 {
     internal class OptionInfoPersister
     {
