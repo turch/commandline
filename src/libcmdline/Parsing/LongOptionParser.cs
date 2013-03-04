@@ -44,14 +44,11 @@ namespace CommandLine.Parsing
             {
                 if (!_ignoreUnkwnownArguments)
                 {
-                    // TODO: for make the test pass -> will be refactored
-                    var error = new ParsingError(null, parts[0], false);
-                    error.ViolatesSpecification = true;
-                    PostParsingState.Add(error);
+                    DefineOptionThatViolatesSpecification(null, parts[0]);
+
                     return PresentParserState.Failure;
                 }
                 return PresentParserState.MoveOnNextElement;
-                //return _ignoreUnkwnownArguments ? PresentParserState.MoveOnNextElement : PresentParserState.Failure;
             }
 
             option.IsDefined = true;

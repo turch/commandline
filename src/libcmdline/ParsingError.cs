@@ -34,7 +34,7 @@ namespace CommandLine
             BadOption = new BadOptionInfo();
         }
 
-        internal ParsingError(char? shortName, string longName, bool format)
+        internal ParsingError(char? shortName, string longName, bool format = false)
         {
             BadOption = new BadOptionInfo(shortName, longName);
             ViolatesFormat = format;

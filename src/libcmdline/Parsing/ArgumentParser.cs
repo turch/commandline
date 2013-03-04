@@ -176,6 +176,13 @@ namespace CommandLine.Parsing
             PostParsingState.Add(new ParsingError(option.ShortName, option.LongName, true));
         }
 
+        protected void DefineOptionThatViolatesSpecification(char? shortName, string longName)
+        {
+            var error = new ParsingError(shortName, longName);
+            error.ViolatesSpecification = true;
+            PostParsingState.Add(error);
+        }
+
         private static string ToOption(string value)
         {
             return string.Concat("--", value);
