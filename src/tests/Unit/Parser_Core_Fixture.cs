@@ -5,6 +5,9 @@ using System.Linq;
 using CommandLine.Tests.Conventions;
 using CommandLine.Tests.Extensions;
 using CommandLine.Tests.Fakes;
+
+using FluentAssertions;
+
 using Ploeh.AutoFixture;
 using Ploeh.AutoFixture.Xunit;
 using Xunit;
@@ -452,21 +455,39 @@ namespace CommandLine.Tests.Unit
         /// <summary>
         /// https://github.com/gsscoder/commandline/issues/64
         /// </summary>
-
-        #endregion
         [Theory, ParserTestConventions]
-        public void By_Default_Correct_but_Undefined_options_should_be_Reported_as_Errors(Parser sut)
+        public void By_Default_Correct_but_Undefined_Long_Options_should_be_Reported_as_Errors(Parser sut)
         {
             var result = true;
             var arguments = new[]
                 {
-                    "-s", "im_an_defined",
-                    "--instead_im_undefined"
+                    "-s", "i_am_defined",
+                    "--instead_i_am_undefined"
                 };
             var options = sut.ParseArguments<Fake_Simple_With_ParserState_Options>(arguments, () => { result = false; });
 
-            Assert.False(result);
-            Assert.Equal(options.ParserState.Errors.Count, 1);
+            result.Should().BeFalse();
+            options.ParserState.Errors.Should().HaveCount(c => c == 1);
+            options.ParserState.Errors.ElementAt(0).BadOption.LongName.Should().Be("instead_i_am_undefined");
+            options.ParserState.Errors.ElementAt(0).ViolatesSpecification.Should().BeTrue();
         }
+
+        [Theory, ParserTestConventions]
+        public void By_Default_Correct_but_Undefined_Short_Options_should_be_Reported_as_Errors(Parser sut)
+        {
+            var result = true;
+            var arguments = new[]
+                {
+                    "-s", "i_am_defined",
+                    "-w"
+                };
+            var options = sut.ParseArguments<Fake_Simple_With_ParserState_Options>(arguments, () => { result = false; });
+
+            result.Should().BeFalse();
+            options.ParserState.Errors.Should().HaveCount(c => c == 1);
+            options.ParserState.Errors.ElementAt(0).BadOption.ShortName.Should().Be('w');
+            options.ParserState.Errors.ElementAt(0).ViolatesSpecification.Should().BeTrue();
+        }
+        #endregion
     }
 }
