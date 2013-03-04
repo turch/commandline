@@ -447,5 +447,26 @@ namespace CommandLine.Tests.Unit
             Assert.True(options.LastParserState.Errors.Count > 0);
         }
         #endregion
+
+        #region ISSUE#64
+        /// <summary>
+        /// https://github.com/gsscoder/commandline/issues/64
+        /// </summary>
+
+        #endregion
+        [Theory, ParserTestConventions]
+        public void By_Default_Correct_but_Undefined_options_should_be_Reported_as_Errors(Parser sut)
+        {
+            var result = true;
+            var arguments = new[]
+                {
+                    "-s", "im_an_defined",
+                    "--instead_im_undefined"
+                };
+            var options = sut.ParseArguments<Fake_Simple_With_ParserState_Options>(arguments, () => { result = false; });
+
+            Assert.False(result);
+            Assert.Equal(options.ParserState.Errors.Count, 1);
+        }
     }
 }

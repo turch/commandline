@@ -74,6 +74,7 @@
     <Compile Include="Extensions\NumbersExtensions.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\TextWriterExtensions.cs" />
+    <Compile Include="Fakes\Fake_Simple_With_ParserState_Options.cs" />
     <Compile Include="Fakes\Fake_With_Help_Options.cs" />
     <Compile Include="Unit\Capabilities_Extensions_Fixture.cs" />
     <Compile Include="Fakes\Fake_With_Implicit_LongName_Options.cs" />
