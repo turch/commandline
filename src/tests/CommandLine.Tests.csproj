@@ -142,7 +142,7 @@
     <Compile Include="Unit\Parser_Verbs_Fixture.cs" />
     <Compile Include="Unit\Text\Text_CopyrightInfo_Fixture.cs" />
     <Compile Include="Unit\Text\HeadingInfoFixture.cs" />
-    <Compile Include="Unit\Text\HelpTextFixture.cs" />
+    <Compile Include="Unit\Text\HelpText_Fixture.cs" />
     <Compile Include="Unit\Attributes\Attribute_MultiLineText_Fixture.cs" />
     <Compile Include="Unit\Text\Text_Verbs_Help_Fixture.cs" />
   </ItemGroup>

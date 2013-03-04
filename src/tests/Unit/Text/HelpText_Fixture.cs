@@ -31,18 +31,25 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Globalization;
+
+using Ploeh.AutoFixture.Xunit;
+
 using Xunit;
 using FluentAssertions;
 using CommandLine.Tests.Fakes;
 using CommandLine.Text;
+
+using Xunit.Extensions;
+
 #endregion
 
 namespace CommandLine.Tests.Unit.Text
 {
-    public class HelpTextFixture
+    public class HelpText_Fixture
     {
         #region Mock Objects
         class MockOptions
@@ -380,6 +387,20 @@ namespace CommandLine.Tests.Unit.Text
             Assert.AreEqual(lines[12], "  --switch        ");
             Assert.AreEqual(lines[14], "  --help          Display this help screen.");
         }*/
+
+        #region ISSUE#65
+        [Fact]
+        public void DefaultValue_set_to_Array_should_be_Properly_Printed()
+        {
+            var helpText = HelpText.AutoBuild(new Fake_With_Defaults_Array_Options());
+
+            Trace.WriteLine(helpText);
+
+            var lines = helpText.ToString().Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+
+
+        }
+        #endregion
 
         #region Parsing Errors Subsystem Test, related to Help Text building
         [Fact]
