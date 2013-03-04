@@ -71,5 +71,8 @@ namespace CommandLine
         /// <c>true</c> if violates mutual exclusiveness; otherwise, <c>false</c>.
         /// </value>
         public bool ViolatesMutualExclusiveness { get; set; }
+
+
+        public bool ViolatesSpecification { get; set; }
     }
 }
