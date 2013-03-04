@@ -59,6 +59,8 @@ namespace CommandLine.Text
         /// <value>The sentence 'violates mutual exclusiveness'.</value>
         public abstract string ViolatesMutualExclusivenessText { get; }
 
+        public abstract string ViolatesSpecificationText { get; }
+
         /// <summary>
         /// Gets a string containing the error heading text.
         /// </summary>

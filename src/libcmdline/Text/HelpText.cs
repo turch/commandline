@@ -490,6 +490,12 @@ namespace CommandLine.Text
                     line.Append(_sentenceBuilder.ViolatesFormatText);
                 }
 
+                if (e.ViolatesSpecification)
+                {
+                    line.Append(" ");
+                    line.Append(_sentenceBuilder.ViolatesSpecificationText);
+                }
+
                 if (e.ViolatesMutualExclusiveness)
                 {
                     if (e.ViolatesFormat || e.ViolatesRequired)

@@ -74,6 +74,11 @@ namespace CommandLine.Text
             get { return "violates mutual exclusiveness"; }
         }
 
+        public override string ViolatesSpecificationText
+        {
+            get { return "was specified but it is not valid"; }
+        }
+
         /// <summary>
         /// Gets a string containing the error heading text in english.
         /// </summary>

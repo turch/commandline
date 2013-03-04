@@ -28,9 +28,11 @@
 #endregion
 #region Using Directives
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using CommandLine.Tests;
+using CommandLine.Tests.Extensions;
 using CommandLine.Tests.Fakes;
 using CommandLine.Infrastructure;
 using Xunit;
@@ -79,12 +81,13 @@ namespace CommandLine.Tests.Unit.Text
             result.Should().BeFalse();
 
             var helpText = testWriter.ToString();
-            Console.WriteLine(helpText);
-            var lines = helpText.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            Trace.WriteLine(helpText); // <- REMARKS: this will the new standard for output in tests
+            var lines = testWriter.AsLines();
             // Verify just significant output
-            lines[5].Trim().Should().Be("--no-hardlinks    Optimize the cloning process from a repository on a local");
-            lines[6].Trim().Should().Be("filesystem by copying files.");
-            lines[7].Trim().Should().Be("-q, --quiet       Suppress summary message.");
+            lines[3].Trim().Should().Be("--no_hardlinks option was specified but it is not valid.");
+            lines[7].Trim().Should().Be("--no-hardlinks    Optimize the cloning process from a repository on a local");
+            lines[8].Trim().Should().Be("filesystem by copying files.");
+            lines[9].Trim().Should().Be("-q, --quiet       Suppress summary message.");
 
             invokedVerb.Should().Be("clone");
             invokedVerbInstance.Should().Be(null);
