@@ -323,7 +323,7 @@ namespace CommandLine
                     continue;
                 }
 
-                var parser = ArgumentParser.Create(argument, _settings.IgnoreUnknownArguments);
+                var parser = ArgumentParserFactory.Create(argument, _settings.IgnoreUnknownArguments);
                 if (parser != null)
                 {
                     var result = parser.Parse(arguments, optionMap, options);

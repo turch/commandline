@@ -59,30 +59,30 @@ namespace CommandLine.Parsing
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
         }
 
-        public static ArgumentParser Create(string argument, bool ignoreUnknownArguments = false)
-        {
-            if (argument.IsNumeric())
-            {
-                return null;
-            }
+        //public static ArgumentParser Create(string argument, bool ignoreUnknownArguments = false)
+        //{
+        //    if (argument.IsNumeric())
+        //    {
+        //        return null;
+        //    }
 
-            if (IsDash(argument))
-            {
-                return null;
-            }
+        //    if (IsDash(argument))
+        //    {
+        //        return null;
+        //    }
 
-            if (IsLongOption(argument))
-            {
-                return new LongOptionParser(ignoreUnknownArguments);
-            }
+        //    if (IsLongOption(argument))
+        //    {
+        //        return new LongOptionParser(ignoreUnknownArguments);
+        //    }
 
-            if (IsShortOption(argument))
-            {
-                return new OptionGroupParser(ignoreUnknownArguments);
-            }
+        //    if (IsShortOption(argument))
+        //    {
+        //        return new OptionGroupParser(ignoreUnknownArguments);
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
         public static bool IsInputValue(string argument)
         {
