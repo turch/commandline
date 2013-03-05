@@ -422,7 +422,7 @@ namespace CommandLine
             {
                 if (helpOption.ShortName != null)
                 {
-                    if (ArgumentParser.CompareShort(arg, helpOption.ShortName, caseSensitive))
+                    if (ArgumentComparer.CompareToShort(arg, helpOption.ShortName, caseSensitive))
                     {
                         return true;
                     }
@@ -433,7 +433,7 @@ namespace CommandLine
                     continue;
                 }
 
-                if (ArgumentParser.CompareLong(arg, helpOption.LongName, caseSensitive))
+                if (ArgumentComparer.CompareToLong(arg, helpOption.LongName, caseSensitive))
                 {
                     return true;
                 }

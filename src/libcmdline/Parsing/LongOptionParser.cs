@@ -59,7 +59,7 @@ namespace CommandLine.Parsing
 
             if (!option.IsBoolean)
             {
-                if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentParser.IsInputValue(argumentEnumerator.Next)))
+                if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentComparer.IsInputValue(argumentEnumerator.Next)))
                 {
                     return PresentParserState.Failure;
                 }
