@@ -2,11 +2,6 @@ namespace CommandLine.Tests.Fakes
 {
     class Fake_Simple_Options
     {
-        public Fake_Simple_Options()
-        {
-            IntegerValue = 0;
-        }
-
         [Option('s', "string")]
         public string StringValue { get; set; }
 

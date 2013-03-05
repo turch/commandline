@@ -67,6 +67,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Conventions\HelpTextTestConventionsAttribute.cs" />
     <Compile Include="Conventions\ParserWithHelpTestDynamicAutoBuildConventionsAttribute.cs" />
     <Compile Include="Conventions\ParserWithHelpTestConventionsAttribute.cs" />
     <Compile Include="Conventions\ParserTestConventionsAttribute.cs" />

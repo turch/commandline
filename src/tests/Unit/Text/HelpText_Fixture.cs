@@ -36,6 +36,8 @@ using System.IO;
 using System.Text;
 using System.Globalization;
 
+using CommandLine.Tests.Conventions;
+
 using Ploeh.AutoFixture.Xunit;
 
 using Xunit;
@@ -389,16 +391,21 @@ namespace CommandLine.Tests.Unit.Text
         }*/
 
         #region ISSUE#65
-        [Fact]
+        [Theory, HelpTextTestConventions]
         public void DefaultValue_set_to_Array_should_be_Properly_Printed()
         {
             var helpText = HelpText.AutoBuild(new Fake_With_Defaults_Array_Options());
 
             Trace.WriteLine(helpText);
 
-            var lines = helpText.ToString().Split(new string[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
+            var lines = helpText.ToString().Split(new[] {Environment.NewLine}, StringSplitOptions.RemoveEmptyEntries);
 
-
+            lines[2].Trim().Should().Be("-z, --strarr    (Default: a b c)");
+            lines[3].Trim().Should().Be("-y, --intarr    (Default: 1 2 3)");
+            lines[4].Trim().Should().Be("-q, --dblarr    (Default: 1.1 2.2 3.3)");
+            lines[5].Trim().Should().Be("-s, --string    (Default: str)");
+            lines[6].Trim().Should().Be("-i              (Default: 9)");
+            lines[7].Trim().Should().Be("--switch        (Default: true)");
         }
         #endregion
 

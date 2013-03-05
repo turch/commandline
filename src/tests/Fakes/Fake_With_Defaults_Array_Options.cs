@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace CommandLine.Tests.Fakes
 {
-    class Fake_With_Defaults_Array_Options : Fake_Simple_Options
+    class Fake_With_Defaults_Array_Options : Fake_With_Defaults_Options
     {
         [OptionArray('z', "strarr", DefaultValue = new[] { "a", "b", "c" })]
         public string[] StringArrayValue { get; set; }

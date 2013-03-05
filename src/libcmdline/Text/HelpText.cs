@@ -23,13 +23,13 @@
 #endregion
 #region Using Directives
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using CommandLine.Extensions;
 using CommandLine.Infrastructure;
-
 #endregion
 
 namespace CommandLine.Text
@@ -715,7 +715,8 @@ namespace CommandLine.Text
             this._optionsHelp.Append("    ");
             if (option.HasDefaultValue)
             {
-                option.HelpText = "(Default: {0}) ".FormatLocal(option.DefaultValue) + option.HelpText;
+                //option.HelpText = "(Default: {0}) ".FormatLocal(option.DefaultValue) + option.HelpText;
+                option.HelpText = "(Default: {0}) ".FormatInvariant(FormatDefaultValue(option.DefaultValue)) + option.HelpText;
             }
 
             if (option.Required)
@@ -777,6 +778,32 @@ namespace CommandLine.Text
             {
                 this._optionsHelp.Append(Environment.NewLine);
             }
+        }
+
+        private static string FormatDefaultValue(object value)
+        {
+            if (value is bool)
+            {
+                return value.ToLocalString().ToLowerInvariant();
+            }
+
+            if (value is string)
+            {
+                return value.ToLocalString();
+            }
+
+            var asEnumerable = value as IEnumerable;
+            if (asEnumerable != null)
+            {
+                var builder = new StringBuilder();
+                foreach (var item in asEnumerable)
+                {
+                    builder.Append(item.ToLocalString());
+                    builder.Append(" ");
+                }
+                return builder.Length > 0 ? builder.ToString(0, builder.Length - 1) : string.Empty;
+            }
+            return value.ToLocalString();
         }
 
         private void AddLine(StringBuilder builder, string value)
