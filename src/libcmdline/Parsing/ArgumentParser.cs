@@ -35,10 +35,10 @@ namespace CommandLine.Parsing
     {
         protected ArgumentParser()
         {
-            PostParsingState = new List<ParsingError>();
+            this.ParsingErrors = new List<ParsingError>();
         }
 
-        public List<ParsingError> PostParsingState
+        public List<ParsingError> ParsingErrors
         {
             get; private set;
         }
@@ -58,31 +58,6 @@ namespace CommandLine.Parsing
                 ToOption(option),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
         }
-
-        //public static ArgumentParser Create(string argument, bool ignoreUnknownArguments = false)
-        //{
-        //    if (argument.IsNumeric())
-        //    {
-        //        return null;
-        //    }
-
-        //    if (IsDash(argument))
-        //    {
-        //        return null;
-        //    }
-
-        //    if (IsLongOption(argument))
-        //    {
-        //        return new LongOptionParser(ignoreUnknownArguments);
-        //    }
-
-        //    if (IsShortOption(argument))
-        //    {
-        //        return new OptionGroupParser(ignoreUnknownArguments);
-        //    }
-
-        //    return null;
-        //}
 
         public static bool IsInputValue(string argument)
         {
@@ -173,14 +148,14 @@ namespace CommandLine.Parsing
 
         protected void DefineOptionThatViolatesFormat(OptionInfo option)
         {
-            PostParsingState.Add(new ParsingError(option.ShortName, option.LongName, true));
+            this.ParsingErrors.Add(new ParsingError(option.ShortName, option.LongName, true));
         }
 
         protected void DefineOptionThatViolatesSpecification(char? shortName, string longName)
         {
             var error = new ParsingError(shortName, longName);
             error.ViolatesSpecification = true;
-            PostParsingState.Add(error);
+            this.ParsingErrors.Add(error);
         }
 
         private static string ToOption(string value)

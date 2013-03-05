@@ -284,7 +284,7 @@ namespace CommandLine
             var pair = Metadata.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
             var helpWriter = _settings.HelpWriter;
 
-            // TODO: refactoring following query in TargetCapabilitiesExtensions?
+            // TODO: refactoring following query in CapabilitiesExtensions?
             if (pair != null && helpWriter != null)
             {
                 if (this.TryParseHelp(args, pair.Right()))
@@ -329,7 +329,7 @@ namespace CommandLine
                     var result = parser.Parse(arguments, optionMap, options);
                     if ((result & PresentParserState.Failure) == PresentParserState.Failure)
                     {
-                        options = SetParserStateIfNeeded(options, parser.PostParsingState);
+                        options = SetParserStateIfNeeded(options, parser.ParsingErrors);
                         hadError = true;
                         continue;
                     }
