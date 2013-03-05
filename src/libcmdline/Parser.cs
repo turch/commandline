@@ -327,14 +327,14 @@ namespace CommandLine
                 if (parser != null)
                 {
                     var result = parser.Parse(arguments, optionMap, options);
-                    if ((result & PresentParserState.Failure) == PresentParserState.Failure)
+                    if ((result & ChangeStateType.Failure) == ChangeStateType.Failure)
                     {
                         options = SetParserStateIfNeeded(options, parser.ParsingErrors);
                         hadError = true;
                         continue;
                     }
 
-                    if ((result & PresentParserState.MoveOnNextElement) == PresentParserState.MoveOnNextElement)
+                    if ((result & ChangeStateType.MoveOnNextElement) == ChangeStateType.MoveOnNextElement)
                     {
                         arguments.MoveNext();
                     }

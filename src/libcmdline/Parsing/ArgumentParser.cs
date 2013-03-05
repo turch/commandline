@@ -48,7 +48,7 @@ namespace CommandLine.Parsing
             }
         }
 
-        public abstract PresentParserState Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
+        public abstract ChangeStateType Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
 
         /// <summary>
         /// Helper method for testing purpose.
@@ -84,24 +84,24 @@ namespace CommandLine.Parsing
             return list;
         }
 
-        protected static PresentParserState BooleanToParserState(bool value)
+        protected static ChangeStateType BooleanToParserState(bool value)
         {
             return BooleanToParserState(value, false);
         }
 
-        protected static PresentParserState BooleanToParserState(bool value, bool addMoveNextIfTrue)
+        protected static ChangeStateType BooleanToParserState(bool value, bool addMoveNextIfTrue)
         {
             if (value && !addMoveNextIfTrue)
             {
-                return PresentParserState.Success;
+                return ChangeStateType.Success;
             }
 
             if (value)
             {
-                return PresentParserState.Success | PresentParserState.MoveOnNextElement;
+                return ChangeStateType.Success | ChangeStateType.MoveOnNextElement;
             }
 
-            return PresentParserState.Failure;
+            return ChangeStateType.Failure;
         }
 
         protected static void EnsureOptionAttributeIsArrayCompatible(OptionInfo option)

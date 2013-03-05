@@ -35,7 +35,7 @@ namespace CommandLine.Parsing
             _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
         }
 
-        public override PresentParserState Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        public override ChangeStateType Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
         {
             var parts = argumentEnumerator.Current.Substring(2).Split(new[] { '=' }, 2);
             var option = map[parts[0]];
@@ -46,9 +46,9 @@ namespace CommandLine.Parsing
                 {
                     DefineOptionThatViolatesSpecification(null, parts[0]);
 
-                    return PresentParserState.Failure;
+                    return ChangeStateType.Failure;
                 }
-                return PresentParserState.MoveOnNextElement;
+                return ChangeStateType.MoveOnNextElement;
             }
 
             option.IsDefined = true;
@@ -61,7 +61,7 @@ namespace CommandLine.Parsing
             {
                 if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentComparer.IsAnInvalidOptionName(argumentEnumerator.Next)))
                 {
-                    return PresentParserState.Failure;
+                    return ChangeStateType.Failure;
                 }
 
                 if (parts.Length == 2)
@@ -119,7 +119,7 @@ namespace CommandLine.Parsing
 
             if (parts.Length == 2)
             {
-                return PresentParserState.Failure;
+                return ChangeStateType.Failure;
             }
 
             valueSetting = option.BindingContext.SetValue(true);

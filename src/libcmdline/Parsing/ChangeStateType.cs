@@ -28,7 +28,7 @@ using System;
 namespace CommandLine.Parsing
 {
     [Flags]
-    internal enum PresentParserState : ushort
+    internal enum ChangeStateType : ushort
     {
         Undefined = 0x00,
 

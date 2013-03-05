@@ -35,7 +35,7 @@ namespace CommandLine.Parsing
             _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
         }
 
-        public override PresentParserState Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        public override ChangeStateType Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
         {
             var optionGroup = new OneCharStringEnumerator(argumentEnumerator.Current.Substring(1));
 
@@ -47,9 +47,9 @@ namespace CommandLine.Parsing
                     if (!_ignoreUnkwnownArguments)
                     {
                         DefineOptionThatViolatesSpecification(char.Parse(optionGroup.Current), null);
-                        return PresentParserState.Failure;
+                        return ChangeStateType.Failure;
                     }
-                    return PresentParserState.MoveOnNextElement;
+                    return ChangeStateType.MoveOnNextElement;
                 }
 
                 option.IsDefined = true;
@@ -60,7 +60,7 @@ namespace CommandLine.Parsing
                 {
                     if (argumentEnumerator.IsLast && optionGroup.IsLast)
                     {
-                        return PresentParserState.Failure;
+                        return ChangeStateType.Failure;
                     }
 
                     bool valueSetting;
@@ -93,7 +93,7 @@ namespace CommandLine.Parsing
 
                     if (!argumentEnumerator.IsLast && !ArgumentComparer.IsAnInvalidOptionName(argumentEnumerator.Next))
                     {
-                        return PresentParserState.Failure;
+                        return ChangeStateType.Failure;
                     }
 
                     if (!option.IsArray)
@@ -122,16 +122,16 @@ namespace CommandLine.Parsing
 
                 if (!optionGroup.IsLast && map[optionGroup.Next] == null)
                 {
-                    return PresentParserState.Failure;
+                    return ChangeStateType.Failure;
                 }
 
                 if (!option.BindingContext.SetValue(true))
                 {
-                    return PresentParserState.Failure;
+                    return ChangeStateType.Failure;
                 }
             }
 
-            return PresentParserState.Success;
+            return ChangeStateType.Success;
         }
     }
 }
