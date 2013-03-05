@@ -62,10 +62,6 @@ namespace CommandLine.Options
 
         public object DefaultValue { get; set; }
 
-        //public Attribute InnerAttribute { get; set; }
-
-        //public PropertyInfo InnerProperty { get; set; }
-
         public CultureInfo ParsingCulture { get; set; }
 
         public IUnderlyingBindingContext BindingContext { get; set; }

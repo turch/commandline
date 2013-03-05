@@ -15,7 +15,7 @@ namespace CommandLine.Options
         private readonly OptionInfo _optionInfo;
         private readonly BaseOptionAttribute _attribute;
         private readonly PropertyInfo _property;
-        private readonly object _target;
+        private readonly T _target;
 
         public UnderlyingBindingContext(OptionInfo optionInfo, BaseOptionAttribute attribute, PropertyInfo property, T target)
         {
@@ -110,8 +110,11 @@ namespace CommandLine.Options
         private bool SetValueList(string value)
         {
             _property.SetValue(_target, new List<string>(), null);
+
             var fieldRef = (IList<string>)_property.GetValue(_target, null);
+
             var values = value.Split(((OptionListAttribute)_attribute).Separator);
+
             foreach (var item in values)
             {
                 fieldRef.Add(item);
