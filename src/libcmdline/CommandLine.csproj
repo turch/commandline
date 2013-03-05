@@ -100,8 +100,10 @@
     <Compile Include="Options\IUnderlyingBindingContext.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Parsing\ArgumentComparer.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Parsing\ArgumentParserFactory.cs" />
-    <Compile Include="Parsing\ArgumentComparer.cs" />
     <Compile Include="UnboundValues.cs" />
     <Compile Include="Parsing\LongOptionParser.cs" />
     <Compile Include="Parsing\OptionGroupParser.cs" />

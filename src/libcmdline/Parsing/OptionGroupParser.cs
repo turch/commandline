@@ -91,7 +91,7 @@ namespace CommandLine.Parsing
                         return ArgumentParser.BooleanToParserState(valueSetting, true);
                     }
 
-                    if (!argumentEnumerator.IsLast && !ArgumentComparer.IsInputValue(argumentEnumerator.Next))
+                    if (!argumentEnumerator.IsLast && !ArgumentComparer.IsAnInvalidOptionName(argumentEnumerator.Next))
                     {
                         return PresentParserState.Failure;
                     }

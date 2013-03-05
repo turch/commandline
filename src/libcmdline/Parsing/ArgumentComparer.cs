@@ -9,7 +9,7 @@ namespace CommandLine.Parsing
 {
     internal class ArgumentComparer
     {
-        public static bool CompareToShort(string argument, char? option, bool caseSensitive)
+        public static bool CompareAsShortNameOption(string argument, char? option, bool caseSensitive)
         {
             return string.Compare(
                 argument,
@@ -17,7 +17,7 @@ namespace CommandLine.Parsing
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
         }
 
-        public static bool CompareToLong(string argument, string option, bool caseSensitive)
+        public static bool CompareAsLongNameOption(string argument, string option, bool caseSensitive)
         {
             return string.Compare(
                 argument,
@@ -25,7 +25,7 @@ namespace CommandLine.Parsing
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
         }
 
-        public static bool IsInputValue(string argument)
+        public static bool IsAnInvalidOptionName(string argument)
         {
             if (argument.IsNumeric())
             {

@@ -48,37 +48,6 @@ namespace CommandLine.Parsing
             }
         }
 
-        //public static bool CompareShort(string argument, char? option, bool caseSensitive)
-        //{
-        //    return string.Compare(
-        //        argument,
-        //        ToOption(option),
-        //        caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
-        //}
-
-        //public static bool CompareLong(string argument, string option, bool caseSensitive)
-        //{
-        //    return string.Compare(
-        //        argument,
-        //        ToOption(option),
-        //        caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
-        //}
-
-        //public static bool IsInputValue(string argument)
-        //{
-        //    if (argument.IsNumeric())
-        //    {
-        //        return true;
-        //    }
-
-        //    if (argument.Length > 0)
-        //    {
-        //        return IsDash(argument) || !IsShortOption(argument);
-        //    }
-
-        //    return true;
-        //}
-
         public abstract PresentParserState Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
 
         /// <summary>
@@ -97,7 +66,7 @@ namespace CommandLine.Parsing
 
             while (ae.MoveNext())
             {
-                if (ArgumentComparer.IsInputValue(ae.Current))
+                if (ArgumentComparer.IsAnInvalidOptionName(ae.Current))
                 {
                     list.Add(ae.Current);
                 }
@@ -162,30 +131,5 @@ namespace CommandLine.Parsing
             error.ViolatesSpecification = true;
             this.ParsingErrors.Add(error);
         }
-
-        //private static string ToOption(string value)
-        //{
-        //    return string.Concat("--", value);
-        //}
-
-        //private static string ToOption(char? value)
-        //{
-        //    return string.Concat("-", value);
-        //}
-
-        //private static bool IsDash(string value)
-        //{
-        //    return string.CompareOrdinal(value, "-") == 0;
-        //}
-
-        //private static bool IsShortOption(string value)
-        //{
-        //    return value[0] == '-';
-        //}
-
-        //private static bool IsLongOption(string value)
-        //{
-        //    return value[0] == '-' && value[1] == '-';
-        //}
     }
 }
