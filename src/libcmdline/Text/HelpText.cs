@@ -148,7 +148,7 @@ namespace CommandLine.Text
         /// <param name="copyright">A string with copyright or an instance of <see cref="CommandLine.Text.CopyrightInfo"/>.</param>
         /// <param name="options">The instance that collected command line arguments parsed with <see cref="Parser"/> class.</param>
         /// <exception cref="System.ArgumentException">Thrown when one or more parameters <paramref name="heading"/> are null or empty strings.</exception>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "When AddOptionsImpl is called with fireEvent=false virtual member is not called")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors", Justification = "When AddOptionsImpl is called with fireEvent=false virtual member is not called.")]
         public HelpText(string heading, string copyright, object options)
             : this()
         {

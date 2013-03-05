@@ -25,4 +25,4 @@
 using System.Diagnostics.CodeAnalysis;
 #endregion
 
-[module: SuppressMessage("Microsoft.Usage", "CA2243:AttributeStringLiteralsShouldParseCorrectly", Justification = "Using http://semver.org for informational attribute")]
+[module: SuppressMessage("Microsoft.Usage", "CA2243:AttributeStringLiteralsShouldParseCorrectly", Justification = "Using http://semver.org for informational attribute.")]

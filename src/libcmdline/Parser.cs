@@ -90,7 +90,7 @@ namespace CommandLine
             _settings.Consumed = true;
         }
 
-        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "singleton", Justification = "The constructor that accepts a boolean is designed to support default singleton, the parameter is ignored")]
+        [SuppressMessage("Microsoft.Usage", "CA1801:ReviewUnusedParameters", MessageId = "singleton", Justification = "The constructor that accepts a boolean is designed to support default singleton, the parameter is ignored.")]
         private Parser(bool singleton)
             : this(with =>
                 {
@@ -206,7 +206,7 @@ namespace CommandLine
             GC.SuppressFinalize(this);
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "By design")]
+        [SuppressMessage("Microsoft.Design", "CA1021:AvoidOutParameters", MessageId = "2#", Justification = "By design.")]
         internal static object InternalGetVerbOptionsInstanceByName<T>(string verb, T target, out bool found)
         {
             found = false;

@@ -69,7 +69,7 @@ namespace CommandLine.Options
             return true;
         }
 
-        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "FormatException (thrown by ConvertFromString) is thrown as Exception.InnerException, so we've to catch directly System.Exception")]
+        [SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes", Justification = "FormatException (thrown by ConvertFromString) is thrown as Exception.InnerException, so we've to catch directly System.Exception.")]
         public static bool WriteNullable<T>(string value, T target, PropertyInfo property, CultureInfo parsingCulture)
         {
             var nc = new NullableConverter(property.PropertyType);
