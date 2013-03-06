@@ -8,19 +8,30 @@ using CommandLine.Extensions;
 
 namespace CommandLine.Options
 {
-    internal static class OptionMapFactory
+    internal class OptionMapFactory<T>
     {
-        public static OptionMap Create<T>(T target, ParserSettings settings)
+        private readonly T _options;
+        private readonly ParserSettings _settings;
+
+        public OptionMapFactory(
+            T options,
+            ParserSettings settings)
+        {
+            _options = options;
+            _settings = settings;
+        }
+
+        public OptionMap CreateOptionMap()
         {
             var list = Metadata.Get<PropertyInfo, BaseOptionAttribute, T>(
-                target,
+                _options,
                 a => a.Item1 is PropertyInfo && a.Item2 is BaseOptionAttribute);
             if (list == null)
             {
                 return null;
             }
 
-            var map = new OptionMap(list.Count(), settings);
+            var map = new OptionMap(list.Count(), _settings);
 
             foreach (var pair in list)
             {
@@ -41,27 +52,25 @@ namespace CommandLine.Options
                     map[uniqueName] = OptionInfoFactory.CreateFromMetadata(
                         pair.Right(),
                         pair.Left(),
-                        target,
-                        settings.ParsingCulture);
+                        _options,
+                        _settings.ParsingCulture);
                 }
             }
 
-            map.RawOptions = target;
+            map.RawOptions = _options;
             return map;
         }
 
-        public static OptionMap Create<T>(
-            T target,
-            IEnumerable<Tuple<PropertyInfo, VerbOptionAttribute>> verbs,
-            ParserSettings settings)
+        public OptionMap CreateVerbOptionMap(
+            IEnumerable<Tuple<PropertyInfo, VerbOptionAttribute>> verbs)
         {
-            var map = new OptionMap(verbs.Count(), settings);
+            var map = new OptionMap(verbs.Count(), _settings);
 
             foreach (var verb in verbs)
             {
-                var optionInfo = OptionInfoFactory.CreateFromMetadata(verb.Right(), verb.Left(), target, settings.ParsingCulture);
+                var optionInfo = OptionInfoFactory.CreateFromMetadata(verb.Right(), verb.Left(), _options, _settings.ParsingCulture);
 
-                if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(target, null) == null)
+                if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(_options, null) == null)
                 {
                     throw new ParserException("Type {0} must have a parameterless constructor or" +
                         " be already initialized to be used as a verb command.".FormatInvariant(verb.Left().PropertyType));
@@ -70,7 +79,7 @@ namespace CommandLine.Options
                 map[verb.Right().UniqueName] = optionInfo;
             }
 
-            map.RawOptions = target;
+            map.RawOptions = _options;
             return map;
         }
     }
