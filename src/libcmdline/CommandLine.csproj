@@ -106,6 +106,7 @@
     <Compile Include="Parsing\ArgumentGuard.cs" />
     <Compile Include="Parsing\ArgumentParserFactory.cs" />
     <Compile Include="Parsing\IArgumentEnumeratorExtensions.cs" />
+    <Compile Include="Parsing\NullArgumentParser.cs" />
     <Compile Include="Parsing\Transitions\MoveNextTransition.cs" />
     <Compile Include="Parsing\Transitions\Transition.cs">
       <SubType>Code</SubType>

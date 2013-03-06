@@ -324,30 +324,29 @@ namespace CommandLine
                 }
 
                 var parser = ArgumentParserFactory.Create(argument, _settings.IgnoreUnknownArguments);
-                if (parser != null)
-                {
-                    var result = parser.Parse(arguments, optionMap, options);
-                    //if ((result & ChangeStateTransition.Failure) == ChangeStateTransition.Failure)
-                    if (result is FailureTransition)
-                    {
-                        //options = SetParserStateIfNeeded(options, parser.ParsingErrors);
-                        options = SetParserStateIfNeeded(options, result.ParsingErrors);
-                        hadError = true;
-                        continue;
-                    }
 
-                    //if ((result & ChangeStateTransition.MoveOnNextElement) == ChangeStateTransition.MoveOnNextElement)
-                    if (result is MoveNextTransition)
-                    {
-                        arguments.MoveNext();
-                    }
-                }
-                else if (unboundValues.CanWrite)
+                if (parser is NullArgumentParser &&
+                    unboundValues.CanWrite)
                 {
                     if (!unboundValues.WriteValue(argument))
                     {
                         hadError = true;
                     }
+                    continue;
+                }
+
+                var result = parser.Parse(arguments, optionMap, options);
+
+                if (result is FailureTransition)
+                {
+                    options = SetParserStateIfNeeded(options, result.ParsingErrors);
+                    hadError = true;
+                    continue;
+                }
+
+                if (result is MoveNextTransition)
+                {
+                    arguments.MoveNext();
                 }
             }
 

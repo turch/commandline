@@ -13,7 +13,7 @@ namespace CommandLine.Parsing
         {
             return string.Compare(
                 argument,
-                ToOption(option),
+                AsShortOption(option),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
         }
 
@@ -21,7 +21,7 @@ namespace CommandLine.Parsing
         {
             return string.Compare(
                 argument,
-                ToOption(option),
+                AsLongOption(option),
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
         }
 
@@ -45,17 +45,12 @@ namespace CommandLine.Parsing
             return value[0] == '-';
         }
 
-        private static bool IsLongOption(string value)
-        {
-            return value[0] == '-' && value[1] == '-';
-        }
-
-        private static string ToOption(string value)
+        private static string AsLongOption(string value)
         {
             return string.Concat("--", value);
         }
 
-        private static string ToOption(char? value)
+        private static string AsShortOption(char? value)
         {
             return string.Concat("-", value);
         }

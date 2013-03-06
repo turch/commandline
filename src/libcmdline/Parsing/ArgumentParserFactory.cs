@@ -12,12 +12,14 @@ namespace CommandLine.Parsing
         {
             if (argument.IsNumeric())
             {
-                return null;
+                //return null;
+                return new NullArgumentParser();
             }
 
             if (IsDash(argument))
             {
-                return null;
+                //return null;
+                return new NullArgumentParser();
             }
 
             if (IsLongOption(argument))
@@ -30,7 +32,8 @@ namespace CommandLine.Parsing
                 return new OptionGroupParser(ignoreUnknownArguments);
             }
 
-            return null;
+            //return null;
+            return new NullArgumentParser();
         }
 
         private static bool IsDash(string value)
