@@ -103,7 +103,9 @@
     <Compile Include="Parsing\ArgumentComparer.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Parsing\ArgumentGuard.cs" />
     <Compile Include="Parsing\ArgumentParserFactory.cs" />
+    <Compile Include="Parsing\IArgumentEnumeratorExtensions.cs" />
     <Compile Include="Parsing\Transitions\MoveNextTransition.cs" />
     <Compile Include="Parsing\Transitions\Transition.cs">
       <SubType>Code</SubType>
@@ -117,7 +119,7 @@
     <Compile Include="Options\OptionMap.cs" />
     <Compile Include="Parsing\OneCharStringEnumerator.cs" />
     <Compile Include="Parsing\StringArrayEnumerator.cs" />
-    <Compile Include="Parsing\ArgumentParser.cs" />
+    <Compile Include="Parsing\IArgumentParser.cs" />
     <Compile Include="Parsing\IArgumentEnumerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\HelpText.cs" />

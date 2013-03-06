@@ -25,7 +25,7 @@ namespace CommandLine.Parsing
                 caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase) == 0;
         }
 
-        public static bool IsAnInvalidOptionName(string argument)
+        public static bool IsValue(string argument)
         {
             if (argument.IsNumeric())
             {

@@ -28,7 +28,7 @@ using CommandLine.Options;
 
 namespace CommandLine.Parsing
 {
-    internal sealed class OptionGroupParser : ArgumentParser
+    internal sealed class OptionGroupParser : IArgumentParser
     {
         private readonly bool _ignoreUnkwnownArguments;
 
@@ -37,8 +37,7 @@ namespace CommandLine.Parsing
             _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
         }
 
-        //public override ChangeStateTransition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
-        public override Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        public Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
         {
             var optionGroup = new OneCharStringEnumerator(argumentEnumerator.Current.Substring(1));
 
@@ -49,23 +48,19 @@ namespace CommandLine.Parsing
                 {
                     if (!_ignoreUnkwnownArguments)
                     {
-                        //DefineOptionThatViolatesSpecification(char.Parse(optionGroup.Current), null);
-                        //return ChangeStateTransition.Failure;
                         return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesSpecification(char.Parse(optionGroup.Current), null )});
                     }
-                    //return ChangeStateTransition.MoveOnNextElement;
                     return new MoveNextTransition();
                 }
 
                 option.IsDefined = true;
 
-                ArgumentParser.EnsureOptionArrayAttributeIsNotBoundToScalar(option);
+                ArgumentGuard.EnsureOptionArrayAttributeIsNotBoundToScalar(option);
 
                 if (!option.IsBoolean)
                 {
                     if (argumentEnumerator.IsLast && optionGroup.IsLast)
                     {
-                        //return ChangeStateTransition.Failure;
                         return new FailureTransition(Enumerable.Empty<ParsingError>());
                     }
 
@@ -77,33 +72,28 @@ namespace CommandLine.Parsing
                             valueSetting = option.BindingContext.SetValue(optionGroup.GetRemainingFromNext());
                             if (!valueSetting)
                             {
-                                //DefineOptionThatViolatesFormat(option);
                                 return new FailureTransition(new [] { ParsingError.DefineOptionThatViolatesFormat(option) });
                             }
 
-                            //return ArgumentParser.BooleanToParserState(valueSetting);
                             return new SuccessfulTransition();
                         }
 
-                        ArgumentParser.EnsureOptionAttributeIsArrayCompatible(option);
+                        ArgumentGuard.EnsureOptionAttributeIsArrayCompatible(option);
 
-                        var items = ArgumentParser.GetNextInputValues(argumentEnumerator);
+                        var items = argumentEnumerator.ConsumeNextValues();
                         items.Insert(0, optionGroup.GetRemainingFromNext());
 
                         valueSetting = option.BindingContext.SetValue(items);
                         if (!valueSetting)
                         {
-                            //DefineOptionThatViolatesFormat(option);
                             return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                         }
 
-                        //return ArgumentParser.BooleanToParserState(valueSetting, true);
                         return new MoveNextTransition();
                     }
 
-                    if (!argumentEnumerator.IsLast && !ArgumentComparer.IsAnInvalidOptionName(argumentEnumerator.Next))
+                    if (!argumentEnumerator.IsLast && !ArgumentComparer.IsValue(argumentEnumerator.Next))
                     {
-                        //return ChangeStateTransition.Failure;
                         return new FailureTransition(Enumerable.Empty<ParsingError>());
                     }
 
@@ -112,43 +102,36 @@ namespace CommandLine.Parsing
                         valueSetting = option.BindingContext.SetValue(argumentEnumerator.Next);
                         if (!valueSetting)
                         {
-                            //DefineOptionThatViolatesFormat(option);
                             return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                         }
 
-                        //return ArgumentParser.BooleanToParserState(valueSetting, true);
                         return new MoveNextTransition();
                     }
 
-                    ArgumentParser.EnsureOptionAttributeIsArrayCompatible(option);
+                    ArgumentGuard.EnsureOptionAttributeIsArrayCompatible(option);
 
-                    var moreItems = ArgumentParser.GetNextInputValues(argumentEnumerator);
+                    var moreItems = argumentEnumerator.ConsumeNextValues();
 
                     valueSetting = option.BindingContext.SetValue(moreItems);
                     if (!valueSetting)
                     {
-                        //DefineOptionThatViolatesFormat(option);
                          return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                     }
 
-                    //return ArgumentParser.BooleanToParserState(valueSetting);
                     return new SuccessfulTransition();
                 }
 
                 if (!optionGroup.IsLast && map[optionGroup.Next] == null)
                 {
-                    //return ChangeStateTransition.Failure;
                     return new FailureTransition(Enumerable.Empty<ParsingError>());
                 }
 
                 if (!option.BindingContext.SetValue(true))
                 {
-                    //return ChangeStateTransition.Failure;
                     return new FailureTransition(Enumerable.Empty<ParsingError>());
                 }
             }
 
-            //return ChangeStateTransition.Success;
             return new SuccessfulTransition();
         }
     }

@@ -1,11 +1,7 @@
-#region License
-//
-// Command Line Library: ArgumentParserFixture.cs
-//
-// Author:
-//   Giacomo Stelluti Scala (gsscoder@gmail.com)
-//
-// Copyright (C) 2005 - 2013 Giacomo Stelluti Scala
+﻿#region License
+// <copyright file="ArgumentParser.cs" company="Giacomo Stelluti Scala">
+//   Copyright 2015-2013 Giacomo Stelluti Scala
+// </copyright>
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -24,35 +20,19 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-//
 #endregion
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using CommandLine.Extensions;
+using CommandLine.Options;
 
-using CommandLine.Parsing;
-
-using Xunit;
-using FluentAssertions;
-using CommandLine.Infrastructure;
 #endregion
 
-namespace CommandLine.Tests.Unit.Infrastructure
+namespace CommandLine.Parsing
 {
-    //public class Infrastructure_ArgumentParser_Fixture
-    //{
-        //[Fact]
-        //public void Get_next_input_values()
-        //{
-        //    var ae = new StringArrayEnumerator(new string[] { "--optarr", "one", "two", "--plain", "3" });
-
-        //    ae.MoveNext(); // skip first, working like in a real case
-
-        //    var items = ArgumentParser.InternalWrapperOfGetNextInputValues(ae);
-
-        //    //base.ElementsShouldBeEqual(new string[] { "one", "two" }, items);
-        //    items.Should().ContainInOrder(new[] { "one", "two" });
-        //    ae.Current.Should().Be("two");
-        //}
-    //}
+    internal interface IArgumentParser
+    {
+        Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
+    }
 }

@@ -8,7 +8,7 @@ namespace CommandLine.Parsing
 {
     internal static class ArgumentParserFactory
     {
-        public static ArgumentParser Create(string argument, bool ignoreUnknownArguments = false)
+        public static IArgumentParser Create(string argument, bool ignoreUnknownArguments = false)
         {
             if (argument.IsNumeric())
             {
