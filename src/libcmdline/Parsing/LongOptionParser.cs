@@ -22,6 +22,8 @@
 // THE SOFTWARE.
 #endregion
 
+using System.Linq;
+
 using CommandLine.Options;
 
 namespace CommandLine.Parsing
@@ -35,7 +37,8 @@ namespace CommandLine.Parsing
             _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
         }
 
-        public override ChangeStateType Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        //public override ChangeStateTransition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        public override Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
         {
             var parts = argumentEnumerator.Current.Substring(2).Split(new[] { '=' }, 2);
             var option = map[parts[0]];
@@ -44,11 +47,12 @@ namespace CommandLine.Parsing
             {
                 if (!_ignoreUnkwnownArguments)
                 {
-                    DefineOptionThatViolatesSpecification(null, parts[0]);
-
-                    return ChangeStateType.Failure;
+                    //DefineOptionThatViolatesSpecification(null, parts[0]);
+                    //return ChangeStateTransition.Failure;
+                    return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesSpecification(null, parts[0]) });
                 }
-                return ChangeStateType.MoveOnNextElement;
+                //return ChangeStateTransition.MoveOnNextElement;
+                return new MoveNextTransition();
             }
 
             option.IsDefined = true;
@@ -61,7 +65,8 @@ namespace CommandLine.Parsing
             {
                 if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentComparer.IsAnInvalidOptionName(argumentEnumerator.Next)))
                 {
-                    return ChangeStateType.Failure;
+                    //return ChangeStateTransition.Failure;
+                    return new FailureTransition(Enumerable.Empty<ParsingError>());
                 }
 
                 if (parts.Length == 2)
@@ -71,10 +76,11 @@ namespace CommandLine.Parsing
                         valueSetting = option.BindingContext.SetValue(parts[1]);
                         if (!valueSetting)
                         {
-                            DefineOptionThatViolatesFormat(option);
+                            //DefineOptionThatViolatesFormat(option);
+                            return new FailureTransition(new [] { ParsingError.DefineOptionThatViolatesFormat(option) });
                         }
-
-                        return ArgumentParser.BooleanToParserState(valueSetting);
+                        //return ArgumentParser.BooleanToParserState(valueSetting);
+                        return new SuccessfulTransition(); //return new MoveNextTransition();
                     }
 
                     ArgumentParser.EnsureOptionAttributeIsArrayCompatible(option);
@@ -85,10 +91,11 @@ namespace CommandLine.Parsing
                     valueSetting = option.BindingContext.SetValue(items);
                     if (!valueSetting)
                     {
-                        DefineOptionThatViolatesFormat(option);
+                        //DefineOptionThatViolatesFormat(option);
+                        return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                     }
-
-                    return ArgumentParser.BooleanToParserState(valueSetting);
+                    //return ArgumentParser.BooleanToParserState(valueSetting);
+                    return new SuccessfulTransition(); //return new MoveNextTransition();
                 }
                 else
                 {
@@ -97,10 +104,11 @@ namespace CommandLine.Parsing
                         valueSetting = option.BindingContext.SetValue(argumentEnumerator.Next);
                         if (!valueSetting)
                         {
-                            DefineOptionThatViolatesFormat(option);
+                            //DefineOptionThatViolatesFormat(option);
+                            return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                         }
-
-                        return ArgumentParser.BooleanToParserState(valueSetting, true);
+                        //return ArgumentParser.BooleanToParserState(valueSetting, true);
+                        return new MoveNextTransition();
                     }
 
                     ArgumentParser.EnsureOptionAttributeIsArrayCompatible(option);
@@ -110,25 +118,29 @@ namespace CommandLine.Parsing
                     valueSetting = option.BindingContext.SetValue(items);
                     if (!valueSetting)
                     {
-                        DefineOptionThatViolatesFormat(option);
+                        //DefineOptionThatViolatesFormat(option);
+                        return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                     }
 
-                    return ArgumentParser.BooleanToParserState(valueSetting);
+                    //return ArgumentParser.BooleanToParserState(valueSetting);
+                    return new SuccessfulTransition();
                 }
             }
 
             if (parts.Length == 2)
             {
-                return ChangeStateType.Failure;
+                //return ChangeStateTransition.Failure;
+                return new FailureTransition(Enumerable.Empty<ParsingError>());
             }
 
             valueSetting = option.BindingContext.SetValue(true);
             if (!valueSetting)
             {
-                DefineOptionThatViolatesFormat(option);
+                //DefineOptionThatViolatesFormat(option);
+                return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
             }
-
-            return ArgumentParser.BooleanToParserState(valueSetting);
+            //return ArgumentParser.BooleanToParserState(valueSetting);
+            return new SuccessfulTransition();
         }
     }
 }

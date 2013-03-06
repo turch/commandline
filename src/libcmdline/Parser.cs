@@ -327,14 +327,17 @@ namespace CommandLine
                 if (parser != null)
                 {
                     var result = parser.Parse(arguments, optionMap, options);
-                    if ((result & ChangeStateType.Failure) == ChangeStateType.Failure)
+                    //if ((result & ChangeStateTransition.Failure) == ChangeStateTransition.Failure)
+                    if (result is FailureTransition)
                     {
-                        options = SetParserStateIfNeeded(options, parser.ParsingErrors);
+                        //options = SetParserStateIfNeeded(options, parser.ParsingErrors);
+                        options = SetParserStateIfNeeded(options, result.ParsingErrors);
                         hadError = true;
                         continue;
                     }
 
-                    if ((result & ChangeStateType.MoveOnNextElement) == ChangeStateType.MoveOnNextElement)
+                    //if ((result & ChangeStateTransition.MoveOnNextElement) == ChangeStateTransition.MoveOnNextElement)
+                    if (result is MoveNextTransition)
                     {
                         arguments.MoveNext();
                     }

@@ -33,22 +33,23 @@ namespace CommandLine.Parsing
 {
     internal abstract class ArgumentParser
     {
-        private readonly IList<ParsingError> _parsingErrors; 
+        //private readonly IList<ParsingError> _parsingErrors; 
 
-        protected ArgumentParser()
-        {
-            _parsingErrors = new List<ParsingError>();
-        }
+        //protected ArgumentParser()
+        //{
+        //    _parsingErrors = new List<ParsingError>();
+        //}
 
-        public IList<ParsingError> ParsingErrors
-        {
-            get
-            {
-                return _parsingErrors;
-            }
-        }
+        //public IList<ParsingError> ParsingErrors
+        //{
+        //    get
+        //    {
+        //        return _parsingErrors;
+        //    }
+        //}
 
-        public abstract ChangeStateType Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
+        //public abstract ChangeStateTransition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
+        public abstract Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
 
         /// <summary>
         /// Helper method for testing purpose.
@@ -84,25 +85,25 @@ namespace CommandLine.Parsing
             return list;
         }
 
-        protected static ChangeStateType BooleanToParserState(bool value)
-        {
-            return BooleanToParserState(value, false);
-        }
+        //protected static ChangeStateTransition BooleanToParserState(bool value)
+        //{
+        //    return BooleanToParserState(value, false);
+        //}
 
-        protected static ChangeStateType BooleanToParserState(bool value, bool addMoveNextIfTrue)
-        {
-            if (value && !addMoveNextIfTrue)
-            {
-                return ChangeStateType.Success;
-            }
+        //protected static ChangeStateTransition BooleanToParserState(bool value, bool addMoveNextIfTrue)
+        //{
+        //    if (value && !addMoveNextIfTrue)
+        //    {
+        //        return ChangeStateTransition.Success;
+        //    }
 
-            if (value)
-            {
-                return ChangeStateType.Success | ChangeStateType.MoveOnNextElement;
-            }
+        //    if (value)
+        //    {
+        //        return ChangeStateTransition.Success | ChangeStateTransition.MoveOnNextElement;
+        //    }
 
-            return ChangeStateType.Failure;
-        }
+        //    return ChangeStateTransition.Failure;
+        //}
 
         protected static void EnsureOptionAttributeIsArrayCompatible(OptionInfo option)
         {
@@ -120,16 +121,16 @@ namespace CommandLine.Parsing
             }
         }
 
-        protected void DefineOptionThatViolatesFormat(OptionInfo option)
-        {
-            this.ParsingErrors.Add(new ParsingError(option.ShortName, option.LongName, true));
-        }
+        //protected void DefineOptionThatViolatesFormat(OptionInfo option)
+        //{
+        //    this.ParsingErrors.Add(new ParsingError(option.ShortName, option.LongName, true));
+        //}
 
-        protected void DefineOptionThatViolatesSpecification(char? shortName, string longName)
-        {
-            var error = new ParsingError(shortName, longName);
-            error.ViolatesSpecification = true;
-            this.ParsingErrors.Add(error);
-        }
+        //protected void DefineOptionThatViolatesSpecification(char? shortName, string longName)
+        //{
+        //    var error = new ParsingError(shortName, longName);
+        //    error.ViolatesSpecification = true;
+        //    this.ParsingErrors.Add(error);
+        //}
     }
 }

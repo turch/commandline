@@ -104,7 +104,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Parsing\ArgumentParserFactory.cs" />
-    <Compile Include="Parsing\ChangeState.cs" />
+    <Compile Include="Parsing\Transitions\MoveNextTransition.cs" />
+    <Compile Include="Parsing\Transitions\Transition.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Parsing\Transitions\FailureTransition.cs" />
+    <Compile Include="Parsing\Transitions\SuccessfulTransition.cs" />
     <Compile Include="UnboundValues.cs" />
     <Compile Include="Parsing\LongOptionParser.cs" />
     <Compile Include="Parsing\OptionGroupParser.cs" />
@@ -114,7 +119,6 @@
     <Compile Include="Parsing\StringArrayEnumerator.cs" />
     <Compile Include="Parsing\ArgumentParser.cs" />
     <Compile Include="Parsing\IArgumentEnumerator.cs" />
-    <Compile Include="Parsing\ChangeStateType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\HelpText.cs" />
     <Compile Include="Text\BaseSentenceBuilder.cs" />

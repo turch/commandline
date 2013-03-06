@@ -142,10 +142,8 @@ namespace CommandLine.Tests.Unit.Attributes
             result.Should().BeTrue();
             options.StringValue.Should().Be("here");
             options.IntegerValue.Should().Be(999);
-            //base.ElementsShouldBeEqual(new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" }, options.StringArrayValue);
             options.StringArrayValue.Should().ContainInOrder(new[] { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" });
             options.BooleanValue.Should().BeTrue();
-            //base.ElementsShouldBeEqual(new[] { "f1.xml", "f2.xml" }, options.Items);
             options.Items.Should().ContainInOrder(new[] { "f1.xml", "f2.xml" });
         }
 

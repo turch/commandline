@@ -28,7 +28,7 @@ using System;
 namespace CommandLine.Parsing
 {
     [Flags]
-    internal enum ChangeStateType : ushort
+    internal enum ChangeStateTransition : ushort
     {
         Undefined = 0x00,
 

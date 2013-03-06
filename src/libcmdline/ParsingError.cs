@@ -22,6 +22,8 @@
 // THE SOFTWARE.
 #endregion
 
+using CommandLine.Options;
+
 namespace CommandLine
 {
     /// <summary>
@@ -38,6 +40,18 @@ namespace CommandLine
         {
             BadOption = new BadOptionInfo(shortName, longName);
             ViolatesFormat = format;
+        }
+
+        internal static ParsingError DefineOptionThatViolatesSpecification(char? shortName, string longName)
+        {
+            var error = new ParsingError(shortName, longName);
+            error.ViolatesSpecification = true;
+            return error;
+        }
+
+        internal static ParsingError DefineOptionThatViolatesFormat(OptionInfo option)
+        {
+             return new ParsingError(option.ShortName, option.LongName, true);
         }
 
         /// <summary>

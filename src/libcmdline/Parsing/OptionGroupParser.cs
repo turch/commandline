@@ -22,6 +22,8 @@
 // THE SOFTWARE.
 #endregion
 
+using System.Linq;
+
 using CommandLine.Options;
 
 namespace CommandLine.Parsing
@@ -35,7 +37,8 @@ namespace CommandLine.Parsing
             _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
         }
 
-        public override ChangeStateType Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        //public override ChangeStateTransition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        public override Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
         {
             var optionGroup = new OneCharStringEnumerator(argumentEnumerator.Current.Substring(1));
 
@@ -46,10 +49,12 @@ namespace CommandLine.Parsing
                 {
                     if (!_ignoreUnkwnownArguments)
                     {
-                        DefineOptionThatViolatesSpecification(char.Parse(optionGroup.Current), null);
-                        return ChangeStateType.Failure;
+                        //DefineOptionThatViolatesSpecification(char.Parse(optionGroup.Current), null);
+                        //return ChangeStateTransition.Failure;
+                        return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesSpecification(char.Parse(optionGroup.Current), null )});
                     }
-                    return ChangeStateType.MoveOnNextElement;
+                    //return ChangeStateTransition.MoveOnNextElement;
+                    return new MoveNextTransition();
                 }
 
                 option.IsDefined = true;
@@ -60,7 +65,8 @@ namespace CommandLine.Parsing
                 {
                     if (argumentEnumerator.IsLast && optionGroup.IsLast)
                     {
-                        return ChangeStateType.Failure;
+                        //return ChangeStateTransition.Failure;
+                        return new FailureTransition(Enumerable.Empty<ParsingError>());
                     }
 
                     bool valueSetting;
@@ -71,10 +77,12 @@ namespace CommandLine.Parsing
                             valueSetting = option.BindingContext.SetValue(optionGroup.GetRemainingFromNext());
                             if (!valueSetting)
                             {
-                                DefineOptionThatViolatesFormat(option);
+                                //DefineOptionThatViolatesFormat(option);
+                                return new FailureTransition(new [] { ParsingError.DefineOptionThatViolatesFormat(option) });
                             }
 
-                            return ArgumentParser.BooleanToParserState(valueSetting);
+                            //return ArgumentParser.BooleanToParserState(valueSetting);
+                            return new SuccessfulTransition();
                         }
 
                         ArgumentParser.EnsureOptionAttributeIsArrayCompatible(option);
@@ -85,15 +93,18 @@ namespace CommandLine.Parsing
                         valueSetting = option.BindingContext.SetValue(items);
                         if (!valueSetting)
                         {
-                            DefineOptionThatViolatesFormat(option);
+                            //DefineOptionThatViolatesFormat(option);
+                            return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                         }
 
-                        return ArgumentParser.BooleanToParserState(valueSetting, true);
+                        //return ArgumentParser.BooleanToParserState(valueSetting, true);
+                        return new MoveNextTransition();
                     }
 
                     if (!argumentEnumerator.IsLast && !ArgumentComparer.IsAnInvalidOptionName(argumentEnumerator.Next))
                     {
-                        return ChangeStateType.Failure;
+                        //return ChangeStateTransition.Failure;
+                        return new FailureTransition(Enumerable.Empty<ParsingError>());
                     }
 
                     if (!option.IsArray)
@@ -101,10 +112,12 @@ namespace CommandLine.Parsing
                         valueSetting = option.BindingContext.SetValue(argumentEnumerator.Next);
                         if (!valueSetting)
                         {
-                            DefineOptionThatViolatesFormat(option);
+                            //DefineOptionThatViolatesFormat(option);
+                            return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                         }
 
-                        return ArgumentParser.BooleanToParserState(valueSetting, true);
+                        //return ArgumentParser.BooleanToParserState(valueSetting, true);
+                        return new MoveNextTransition();
                     }
 
                     ArgumentParser.EnsureOptionAttributeIsArrayCompatible(option);
@@ -114,24 +127,29 @@ namespace CommandLine.Parsing
                     valueSetting = option.BindingContext.SetValue(moreItems);
                     if (!valueSetting)
                     {
-                        DefineOptionThatViolatesFormat(option);
+                        //DefineOptionThatViolatesFormat(option);
+                         return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
                     }
 
-                    return ArgumentParser.BooleanToParserState(valueSetting);
+                    //return ArgumentParser.BooleanToParserState(valueSetting);
+                    return new SuccessfulTransition();
                 }
 
                 if (!optionGroup.IsLast && map[optionGroup.Next] == null)
                 {
-                    return ChangeStateType.Failure;
+                    //return ChangeStateTransition.Failure;
+                    return new FailureTransition(Enumerable.Empty<ParsingError>());
                 }
 
                 if (!option.BindingContext.SetValue(true))
                 {
-                    return ChangeStateType.Failure;
+                    //return ChangeStateTransition.Failure;
+                    return new FailureTransition(Enumerable.Empty<ParsingError>());
                 }
             }
 
-            return ChangeStateType.Success;
+            //return ChangeStateTransition.Success;
+            return new SuccessfulTransition();
         }
     }
 }
