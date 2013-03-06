@@ -90,6 +90,7 @@
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
     <Compile Include="Metadata.cs" />
+    <Compile Include="Options\OptionMapFactory.cs" />
     <Compile Include="Options\UnderlyingBindingContext.cs" />
     <Compile Include="Options\OptionInfoFactory.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
