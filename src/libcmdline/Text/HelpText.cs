@@ -290,7 +290,7 @@ namespace CommandLine.Text
 
             if (onError != null)
             {
-                var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
+                var list = MetadataQuery.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
                 if (list != null)
                 {
                     onError(auto);
@@ -340,7 +340,7 @@ namespace CommandLine.Text
         /// <param name="current">The <see cref="CommandLine.Text.HelpText"/> instance.</param>
         public static void DefaultParsingErrorsHandler<T>(T options, HelpText current)
         {
-            var pair = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
+            var pair = MetadataQuery.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
             if (pair == null)
             {
                 return;
@@ -447,7 +447,7 @@ namespace CommandLine.Text
         /// <returns>The <see cref="System.String"/> that contains the parsing error message.</returns>
         public string RenderParsingErrorsText<T>(T options, int indent)
         {
-            var pair = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
+            var pair = MetadataQuery.GetSingle<PropertyInfo, ParserStateAttribute, T>(options, a => a.Item2 is ParserStateAttribute);
             if (pair == null)
             {
                 return string.Empty;
@@ -634,7 +634,7 @@ namespace CommandLine.Text
 
         private void AddOptionsImpl<T>(T options, string requiredWord, int maximumLength, bool fireEvent = true)
         {
-            var allOptions = Metadata.Get<MemberInfo, BaseOptionAttribute, T>(
+            var allOptions = MetadataQuery.Get<MemberInfo, BaseOptionAttribute, T>(
                 options,
                 a => a.Item2 is BaseOptionAttribute);
             var optionList = allOptions.Select(a =>

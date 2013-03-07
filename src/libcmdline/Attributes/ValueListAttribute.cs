@@ -101,14 +101,14 @@ namespace CommandLine
 
         internal static Tuple<PropertyInfo, ValueListAttribute> GetAttribute<T>(T target)
         {
-            var list = Metadata.GetAll(target).Where(a => a.Item2 is ValueListAttribute);
+            var list = MetadataQuery.GetAll(target).Where(a => a.Item2 is ValueListAttribute);
 
             if (list.Count() > 1)
             {
                 throw new InvalidOperationException(); // TODO: add exception message for developers.
             }
 
-            return Metadata.GetSingle<PropertyInfo, ValueListAttribute, T>(target, a => a.Item2 is ValueListAttribute);
+            return MetadataQuery.GetSingle<PropertyInfo, ValueListAttribute, T>(target, a => a.Item2 is ValueListAttribute);
         }
     }
 }

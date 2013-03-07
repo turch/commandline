@@ -215,7 +215,7 @@ namespace CommandLine
                 return target;
             }
 
-            var pair = Metadata.GetSingle<PropertyInfo, VerbOptionAttribute, T>(
+            var pair = MetadataQuery.GetSingle<PropertyInfo, VerbOptionAttribute, T>(
                 target,
                 a =>
                     {
@@ -233,7 +233,7 @@ namespace CommandLine
                 return options;
             }
 
-            var property = (PropertyInfo)Metadata.GetAll(options).Single(a => a.Item2 is ParserStateAttribute).Left();
+            var property = (PropertyInfo)MetadataQuery.GetAll(options).Single(a => a.Item2 is ParserStateAttribute).Left();
 
             var parserState = property.GetValue(options, null);
             if (parserState != null)
@@ -281,7 +281,7 @@ namespace CommandLine
             where T : new()
         {
             var options = new T();
-            var pair = Metadata.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
+            var pair = MetadataQuery.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
             var helpWriter = _settings.HelpWriter;
 
             // TODO: refactoring following query in CapabilitiesExtensions?
@@ -360,10 +360,10 @@ namespace CommandLine
         {
             var options = new T();
 
-            var verbs = Metadata.Get<PropertyInfo, VerbOptionAttribute, T>(
+            var verbs = MetadataQuery.Get<PropertyInfo, VerbOptionAttribute, T>(
                 options,
                 a => a.Item2 is VerbOptionAttribute);
-            var helpInfo = Metadata.GetSingle<MethodInfo, HelpVerbOptionAttribute, T>(
+            var helpInfo = MetadataQuery.GetSingle<MethodInfo, HelpVerbOptionAttribute, T>(
                 options,
                 a => a.Item2 is HelpVerbOptionAttribute);
 

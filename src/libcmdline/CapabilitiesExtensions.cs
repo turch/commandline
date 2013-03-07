@@ -34,22 +34,22 @@ namespace CommandLine
     {
         public static bool AnyVerbCommands<T>(this T options)
         {
-            return Metadata.GetAll(options).Any(a => a.Item2 is VerbOptionAttribute);
+            return MetadataQuery.GetAll(options).Any(a => a.Item2 is VerbOptionAttribute);
         }
 
         public static bool HasHelpMethod<T>(this T options)
         {
-            return Metadata.GetAll(options).Count(a => a.Item2 is HelpOptionAttribute) == 1;
+            return MetadataQuery.GetAll(options).Count(a => a.Item2 is HelpOptionAttribute) == 1;
         }
 
         public static bool HasHelpVerbCommandMethod<T>(this T options)
         {
-            return Metadata.GetAll(options).Count(a => a.Item2 is HelpVerbOptionAttribute) == 1;
+            return MetadataQuery.GetAll(options).Count(a => a.Item2 is HelpVerbOptionAttribute) == 1;
         }
 
         public static bool CanReceiveParserState<T>(this T options)
         {
-            return Metadata.GetAll(options).Count(a => a.Item2 is ParserStateAttribute) == 1;
+            return MetadataQuery.GetAll(options).Count(a => a.Item2 is ParserStateAttribute) == 1;
         }
 
         //public static bool CanReceiveUnboundValues<T>(this T options)

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CommandLine
 {
-    static class Metadata
+    static class MetadataQuery
     {
         private static readonly Dictionary<object, IEnumerable<Tuple<MemberInfo, object>>> Cache = new Dictionary<object, IEnumerable<Tuple<MemberInfo, object>>>();
 
@@ -32,7 +32,7 @@ namespace CommandLine
             where TMember : MemberInfo
             where TAttribute : ITargetDescriptor
         {
-            var attributes = Metadata.GetAll(options).Where(predicate);
+            var attributes = MetadataQuery.GetAll(options).Where(predicate);
             return attributes.Select(a => new Tuple<TMember, TAttribute>((TMember)a.Item1, (TAttribute)a.Item2));
         }
 
@@ -40,7 +40,7 @@ namespace CommandLine
             where TMember : MemberInfo
             where TAttribute : ITargetDescriptor
         {
-            var attribute = Metadata.GetAll(options).SingleOrDefault(predicate);
+            var attribute = MetadataQuery.GetAll(options).SingleOrDefault(predicate);
             return attribute != null ?
                 new Tuple<TMember, TAttribute>(
                     (TMember)attribute.Item1,

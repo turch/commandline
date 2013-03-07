@@ -113,7 +113,7 @@ namespace CommandLine.Options
 
         private static void SetParserStateIfNeeded<T>(T options, OptionInfo option, bool? required, bool? mutualExclusiveness)
         {
-            var list = Metadata.GetSingle<PropertyInfo, ParserStateAttribute, T>(
+            var list = MetadataQuery.GetSingle<PropertyInfo, ParserStateAttribute, T>(
                 options,
                 a => a.Item2 is ParserStateAttribute);
 

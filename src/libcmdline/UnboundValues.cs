@@ -107,7 +107,7 @@ namespace CommandLine
 
         private static IEnumerable<Tuple<PropertyInfo, ValueOptionAttribute>> SetValueOptionList(T options)
         {
-            return Metadata.Get<PropertyInfo, ValueOptionAttribute, T>(
+            return MetadataQuery.Get<PropertyInfo, ValueOptionAttribute, T>(
                 options,
                 a => a.Item2 is ValueOptionAttribute)
                     .OrderBy(x => x.Right().Index);

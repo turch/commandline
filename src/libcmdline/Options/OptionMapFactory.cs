@@ -23,7 +23,7 @@ namespace CommandLine.Options
 
         public OptionMap CreateOptionMap()
         {
-            var list = Metadata.Get<PropertyInfo, BaseOptionAttribute, T>(
+            var list = MetadataQuery.Get<PropertyInfo, BaseOptionAttribute, T>(
                 _options,
                 a => a.Item1 is PropertyInfo && a.Item2 is BaseOptionAttribute);
             if (list == null)
