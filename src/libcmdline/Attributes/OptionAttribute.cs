@@ -34,7 +34,7 @@ namespace CommandLine
     /// Models an option specification.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class OptionAttribute : BaseOptionAttribute
+    public sealed class OptionAttribute : BaseOptionAttribute, IOptionAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.OptionAttribute"/> class.

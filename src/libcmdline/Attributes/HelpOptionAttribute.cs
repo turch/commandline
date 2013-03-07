@@ -38,7 +38,7 @@ namespace CommandLine
     /// return value.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public sealed class HelpOptionAttribute : BaseOptionAttribute
+    public sealed class HelpOptionAttribute : BaseOptionAttribute, IOptionAttribute
     {
         private const string DefaultHelpText = "Display this help screen.";
 

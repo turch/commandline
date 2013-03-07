@@ -31,7 +31,7 @@ namespace CommandLine
     /// Models an option that can accept multiple values as separated arguments.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class OptionArrayAttribute : BaseOptionAttribute
+    public sealed class OptionArrayAttribute : BaseOptionAttribute, IOptionAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.OptionArrayAttribute"/> class.
