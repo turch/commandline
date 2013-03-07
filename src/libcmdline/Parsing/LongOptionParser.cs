@@ -28,23 +28,21 @@ using CommandLine.Options;
 
 namespace CommandLine.Parsing
 {
-    internal sealed class LongOptionParser : IArgumentParser
+    internal sealed class LongOptionParser<T> : ArgumentParser<T>
     {
-        private readonly bool _ignoreUnkwnownArguments;
-
-        public LongOptionParser(bool ignoreUnkwnownArguments)
+        public LongOptionParser(T options, OptionMap map, ParserSettings settings)
+            : base(options, map, settings)
         {
-            _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
         }
 
-        public Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        public override Transition Parse(IArgumentEnumerator argumentEnumerator)
         {
             var parts = argumentEnumerator.Current.Substring(2).Split(new[] { '=' }, 2);
-            var option = map[parts[0]];
+            var option = Map[parts[0]];
 
             if (option == null)
             {
-                if (!_ignoreUnkwnownArguments)
+                if (!Settings.IgnoreUnknownArguments)
                 {
                     return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesSpecification(null, parts[0]) });
                 }

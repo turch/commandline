@@ -121,7 +121,7 @@
     <Compile Include="Options\OptionMap.cs" />
     <Compile Include="Parsing\OneCharStringEnumerator.cs" />
     <Compile Include="Parsing\StringArrayEnumerator.cs" />
-    <Compile Include="Parsing\IArgumentParser.cs" />
+    <Compile Include="Parsing\ArgumentParser.cs" />
     <Compile Include="Parsing\IArgumentEnumerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Text\HelpText.cs" />

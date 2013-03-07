@@ -7,9 +7,14 @@ using CommandLine.Options;
 
 namespace CommandLine.Parsing
 {
-    internal sealed class NullArgumentParser : IArgumentParser
+    internal sealed class NullArgumentParser<T> : ArgumentParser<T>
     {
-        public Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        public NullArgumentParser(T options, OptionMap map, ParserSettings settings)
+            : base(options, map, settings)
+        {
+        }
+
+        public override Transition Parse(IArgumentEnumerator argumentEnumerator)
         {
             return new SuccessfulTransition();
         }

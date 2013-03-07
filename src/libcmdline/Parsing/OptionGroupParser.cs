@@ -28,25 +28,23 @@ using CommandLine.Options;
 
 namespace CommandLine.Parsing
 {
-    internal sealed class OptionGroupParser : IArgumentParser
+    internal sealed class OptionGroupParser<T> : ArgumentParser<T>
     {
-        private readonly bool _ignoreUnkwnownArguments;
-
-        public OptionGroupParser(bool ignoreUnkwnownArguments)
+        public OptionGroupParser(T options, OptionMap map, ParserSettings settings)
+            : base(options, map, settings)
         {
-            _ignoreUnkwnownArguments = ignoreUnkwnownArguments;
         }
 
-        public Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options)
+        public override Transition Parse(IArgumentEnumerator argumentEnumerator)
         {
             var optionGroup = new OneCharStringEnumerator(argumentEnumerator.Current.Substring(1));
 
             while (optionGroup.MoveNext())
             {
-                var option = map[optionGroup.Current];
+                var option = Map[optionGroup.Current];
                 if (option == null)
                 {
-                    if (!_ignoreUnkwnownArguments)
+                    if (!Settings.IgnoreUnknownArguments)
                     {
                         return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesSpecification(char.Parse(optionGroup.Current), null )});
                     }
@@ -121,7 +119,7 @@ namespace CommandLine.Parsing
                     return new SuccessfulTransition();
                 }
 
-                if (!optionGroup.IsLast && map[optionGroup.Next] == null)
+                if (!optionGroup.IsLast && Map[optionGroup.Next] == null)
                 {
                     return new FailureTransition(Enumerable.Empty<ParsingError>());
                 }

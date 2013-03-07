@@ -31,8 +31,34 @@ using CommandLine.Options;
 
 namespace CommandLine.Parsing
 {
-    internal interface IArgumentParser
+    internal abstract class ArgumentParser<T>
     {
-        Transition Parse<T>(IArgumentEnumerator argumentEnumerator, OptionMap map, T options);
+        private readonly T _options;
+        private readonly OptionMap _map;
+        private readonly ParserSettings _settings;
+
+        protected ArgumentParser(T options, OptionMap map, ParserSettings settings)
+        {
+            _options = options;
+            _map = map;
+            _settings = settings;
+        }
+
+        protected T Options 
+        {
+            get { return _options; }
+        }
+
+        protected OptionMap Map
+        {
+            get { return _map; }
+        }
+
+        protected  ParserSettings Settings
+        {
+            get { return _settings; }
+        }
+
+        public abstract Transition Parse(IArgumentEnumerator argumentEnumerator);
     }
 }

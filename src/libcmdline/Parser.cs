@@ -323,9 +323,9 @@ namespace CommandLine
                     continue;
                 }
 
-                var parser = ArgumentParserFactory.Create(argument, _settings.IgnoreUnknownArguments);
+                var parser = new ArgumentParserFactory<T>(options, optionMap, _settings).Create(argument);
 
-                if (parser is NullArgumentParser &&
+                if (parser is NullArgumentParser<T> &&
                     unboundValues.CanWrite)
                 {
                     if (!unboundValues.WriteValue(argument))
@@ -335,7 +335,7 @@ namespace CommandLine
                     continue;
                 }
 
-                var result = parser.Parse(arguments, optionMap, options);
+                var result = parser.Parse(arguments);
 
                 if (result is FailureTransition)
                 {
