@@ -5,7 +5,12 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal class EqualToken : IToken
+    internal class Tokenizer
     {
+        public Tokenizer(IEnumerable<IProperty> property)
+        {
+            
+        }
+
     }
 }

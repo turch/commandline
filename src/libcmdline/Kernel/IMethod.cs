@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal class EqualToken : IToken
+    internal interface IMethod
     {
     }
 }
