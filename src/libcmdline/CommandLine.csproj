@@ -91,14 +91,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="Kernel\EqualToken.cs" />
     <Compile Include="Kernel\IToken.cs" />
+    <Compile Include="Kernel\LongOptionToken.cs" />
     <Compile Include="Kernel\OptionToken.cs" />
+    <Compile Include="Kernel\ShortOptionToken.cs" />
     <Compile Include="Kernel\Token.cs" />
     <Compile Include="Kernel\IProperty.cs" />
     <Compile Include="Kernel\IPropertyQuery.cs" />
     <Compile Include="Kernel\OptionProperty.cs" />
     <Compile Include="Kernel\OptionPropertyQuery.cs" />
-    <Compile Include="Kernel\TokenCollection.cs" />
+    <Compile Include="Kernel\WhiteSpaceToken.cs" />
     <Compile Include="MetadataQuery.cs" />
     <Compile Include="Options\OptionMapFactory.cs" />
     <Compile Include="Options\UnderlyingBindingContext.cs" />

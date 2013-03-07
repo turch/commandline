@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    //internal class TokenCollection : IEnumerable<
-    //{
-    //}
+    internal class EqualToken : IToken
+    {
+    }
 }
