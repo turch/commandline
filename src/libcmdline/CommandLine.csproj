@@ -89,6 +89,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="Kernel\IProperty.cs" />
+    <Compile Include="Kernel\IPropertyQuery.cs" />
+    <Compile Include="Kernel\OptionProperty.cs" />
+    <Compile Include="Kernel\OptionPropertyQuery.cs" />
     <Compile Include="MetadataQuery.cs" />
     <Compile Include="Options\OptionMapFactory.cs" />
     <Compile Include="Options\UnderlyingBindingContext.cs" />
@@ -163,6 +167,7 @@
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
