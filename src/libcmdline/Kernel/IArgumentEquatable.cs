@@ -5,12 +5,8 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal class Tokenizer
+    public interface IArgumentEquatable
     {
-        public Tokenizer(IEnumerable<IProperty> property)
-        {
-            
-        }
-
+        bool EqualsTo(string rawArgument);
     }
 }

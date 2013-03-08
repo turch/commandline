@@ -19,6 +19,5 @@ namespace CommandLine.Kernel
                 throw new ArgumentNullException("property");
             }
         }
-
     }
 }

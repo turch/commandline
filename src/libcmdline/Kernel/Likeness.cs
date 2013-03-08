@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal class WhiteSpaceToken : IToken
-    {
-    }
+    //class OptionLikeness<T> : IEquatable<T>
+    //{
+    //}
 }
