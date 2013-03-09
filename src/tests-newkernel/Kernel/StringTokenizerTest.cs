@@ -20,5 +20,24 @@ namespace CommandLineUnitTest.Kernel
             Assert.IsAssignableFrom<IStringTokenizer>(sut);
             // Teardown
         }
+
+        [Fact]
+        public void TokenizeLongOptionWithEqualSignInASingleString()
+        {
+            // Fixture setup
+            var expectedTokens = new IToken[]
+                {
+                    new LongOptionToken("long-option"),
+                    new EqualToken(),
+                    new ValueToken("a-value"), 
+                }.AsEnumerable();
+            var argument = "--long-option=a-value";
+            // Exercise system
+            var sut = new StringTokenizer();
+            var result = sut.ToTokenEnumerable(argument);
+            // Verify outcome
+            Assert.True(expectedTokens.SequenceEqual(expectedTokens));
+            // Teardown
+        }
     }
 }
