@@ -18,6 +18,11 @@ namespace CommandLine.Kernel
                 throw new ArgumentNullException("argument");
             }
 
+            if (argument.Equals("=", StringComparison.Ordinal))
+            {
+                return new IToken[] { new EqualToken() };
+            }
+
             if (argument.Length > 2 && argument.Substring(0, 2) == "--")
             {
                 if (argument.Contains("="))

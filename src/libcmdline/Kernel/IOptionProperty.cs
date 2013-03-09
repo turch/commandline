@@ -5,7 +5,8 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    //class OptionLikeness<T> : IEquatable<T>
-    //{
-    //}
+    internal interface IOptionProperty
+    {
+        bool EqualsToken(Token token);
+    }
 }

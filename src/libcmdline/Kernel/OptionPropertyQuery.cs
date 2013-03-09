@@ -5,9 +5,9 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class OptionPropertyQuery : IPropertyQuery
+    internal sealed class OptionPropertyQuery : IOptionPropertyQuery
     {
-        public IEnumerable<IProperty> SelectProperties(Type type)
+        public IEnumerable<IOptionProperty> SelectProperties(Type type)
         {
             if (type == null)
             {
@@ -17,7 +17,7 @@ namespace CommandLine.Kernel
             return from pi in type.GetProperties()
                    let attributes = pi.GetCustomAttributes(typeof(IOptionAttribute), true)
                    where attributes.Length > 0
-                   select new OptionProperty(pi) as IProperty;
+                   select new OptionProperty(pi) as IOptionProperty;
         }
     }
 }

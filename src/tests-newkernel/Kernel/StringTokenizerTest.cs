@@ -22,7 +22,7 @@ namespace CommandLineUnitTest.Kernel
         }
 
         [Fact]
-        public void TokenizeLongOptionWithEqualSignInASingleString()
+        public void TokenizeLongOptionWithEqualSign()
         {
             // Fixture setup
             var expectedTokens = new IToken[]

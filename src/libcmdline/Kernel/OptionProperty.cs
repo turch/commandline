@@ -10,7 +10,7 @@ namespace CommandLine.Kernel
     /// <summary>
     /// Encapsulates a property that defines an option specification.
     /// </summary>
-    internal class OptionProperty
+    internal class OptionProperty : IOptionProperty
     {
         public OptionProperty(PropertyInfo property)
         {
@@ -18,6 +18,11 @@ namespace CommandLine.Kernel
             {
                 throw new ArgumentNullException("property");
             }
+        }
+
+        public bool EqualsToken(Token token)
+        {
+            throw new NotImplementedException();
         }
     }
 }
