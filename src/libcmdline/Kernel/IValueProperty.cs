@@ -5,10 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal interface IOptionProperty : IProperty
+    internal interface IValueProperty : IProperty
     {
-        string ShortName { get;  }
-
-        string LongName { get; }
     }
 }

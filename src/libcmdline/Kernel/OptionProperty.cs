@@ -30,18 +30,14 @@ namespace CommandLine.Kernel
             _longName = _longName ?? property.Name;
         }
 
-        public bool EqualsToken(IToken token)
+        public string ShortName
         {
-            if (token == null)
-            {
-                throw new ArgumentNullException("token");
-            }
+            get { return _shortName; }
+        }
 
-            if (token is LongOptionToken && token.Text == _longName) // culture?
-            {
-            }
-
-            return false;
+        public string LongName
+        {
+            get { return _longName; }
         }
     }
 }

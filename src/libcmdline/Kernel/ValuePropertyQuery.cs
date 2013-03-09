@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class OptionPropertyQuery : IPropertyQuery
+    internal sealed class ValuePropertyQuery : IPropertyQuery
     {
         public IEnumerable<IProperty> SelectProperties(Type type)
         {

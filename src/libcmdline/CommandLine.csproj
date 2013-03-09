@@ -92,20 +92,24 @@
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
     <Compile Include="IValueAttribute.cs" />
+    <Compile Include="Kernel\IValueProperty.cs" />
+    <Compile Include="Kernel\ValuePropertyQuery.cs" />
     <Compile Include="Kernel\HelpOptionMethod.cs" />
     <Compile Include="Kernel\HelpOptionMethodQuery.cs" />
     <Compile Include="Kernel\IMethodQuery.cs" />
     <Compile Include="Kernel\EqualToken.cs" />
     <Compile Include="Kernel\IMethod.cs" />
+    <Compile Include="Kernel\IProperty.cs" />
     <Compile Include="Kernel\IStringTokenizer.cs" />
     <Compile Include="Kernel\IToken.cs" />
     <Compile Include="Kernel\LightweightMaybe.cs" />
     <Compile Include="Kernel\LongOptionToken.cs" />
+    <Compile Include="Kernel\Likeness.cs" />
     <Compile Include="Kernel\OptionToken.cs" />
     <Compile Include="Kernel\OptionGroupToken.cs" />
     <Compile Include="Kernel\Token.cs" />
     <Compile Include="Kernel\IOptionProperty.cs" />
-    <Compile Include="Kernel\IOptionPropertyQuery.cs" />
+    <Compile Include="Kernel\IPropertyQuery.cs" />
     <Compile Include="Kernel\OptionProperty.cs" />
     <Compile Include="Kernel\OptionPropertyQuery.cs" />
     <Compile Include="Kernel\StringEnumerableTokenizer.cs" />
