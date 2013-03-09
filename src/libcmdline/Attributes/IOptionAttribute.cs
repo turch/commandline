@@ -6,9 +6,12 @@ using System.Text;
 namespace CommandLine
 {
     /// <summary>
-    /// Option marker interface.
+    /// Named option interface.
     /// </summary>
     public interface IOptionAttribute
     {
+        char? ShortName { get; }
+
+        string LongName { get;  }
     }
 }

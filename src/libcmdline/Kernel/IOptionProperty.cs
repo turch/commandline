@@ -7,6 +7,6 @@ namespace CommandLine.Kernel
 {
     internal interface IOptionProperty
     {
-        bool EqualsToken(Token token);
+        bool EqualsToken(IToken token);
     }
 }

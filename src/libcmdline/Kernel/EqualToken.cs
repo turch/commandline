@@ -7,5 +7,12 @@ namespace CommandLine.Kernel
 {
     internal class EqualToken : IToken
     {
+        public string Text
+        {
+            get
+            {
+                return "=";
+            }
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace CommandLine
     /// </summary>
     /// <remarks>To map individual values use instead <see cref="CommandLine.ValueOptionAttribute"/>.</remarks>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class ValueListAttribute : Attribute, IOptionAttribute, ITargetDescriptor
+    public sealed class ValueListAttribute : Attribute, IValueAttribute, ITargetDescriptor
     {
         private readonly Type _concreteType;
 

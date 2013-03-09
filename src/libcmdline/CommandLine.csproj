@@ -91,6 +91,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="IValueAttribute.cs" />
     <Compile Include="Kernel\HelpOptionMethod.cs" />
     <Compile Include="Kernel\HelpOptionMethodQuery.cs" />
     <Compile Include="Kernel\IMethodQuery.cs" />
@@ -98,6 +99,7 @@
     <Compile Include="Kernel\IMethod.cs" />
     <Compile Include="Kernel\IStringTokenizer.cs" />
     <Compile Include="Kernel\IToken.cs" />
+    <Compile Include="Kernel\LightweightMaybe.cs" />
     <Compile Include="Kernel\LongOptionToken.cs" />
     <Compile Include="Kernel\OptionToken.cs" />
     <Compile Include="Kernel\OptionGroupToken.cs" />
