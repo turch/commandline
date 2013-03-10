@@ -5,10 +5,14 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal interface IOptionName
+    internal interface IOptionSpecifiaction
     {
         string ShortName { get;  }
 
         string LongName { get; }
+
+        bool Required { get; }
+
+        string SetName { get; }
     }
 }

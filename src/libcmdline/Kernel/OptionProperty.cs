@@ -11,10 +11,12 @@ namespace CommandLine.Kernel
     /// <summary>
     /// Encapsulates a property that defines an option specification.
     /// </summary>
-    internal class OptionProperty : IProperty,  IOptionName
+    internal class OptionProperty : IProperty,  IOptionSpecifiaction
     {
         private readonly string _shortName;
         private readonly string _longName;
+        private readonly bool _required;
+        private readonly string _setName;
 
         public OptionProperty(PropertyInfo property, IOptionAttribute attribute)
         {
@@ -24,10 +26,12 @@ namespace CommandLine.Kernel
             }
 
             _shortName = attribute.ShortName.HasValue
-                             ? Convert.ToString(attribute.ShortName, CultureInfo.InvariantCulture)
+                             ? attribute.ShortName.Value.ToOptionName()
                              : string.Empty;
             
             _longName = _longName ?? property.Name;
+            _required = attribute.Required;
+            _setName = attribute.MutuallyExclusiveSet;
         }
 
         public string ShortName
@@ -38,6 +42,16 @@ namespace CommandLine.Kernel
         public string LongName
         {
             get { return _longName; }
+        }
+
+        public bool Required
+        {
+            get { return _required; }
+        }
+
+        public string SetName
+        {
+            get { return _setName; }
         }
     }
 }

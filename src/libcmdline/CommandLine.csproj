@@ -92,7 +92,7 @@
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
     <Compile Include="Attributes\IValueAttribute.cs" />
-    <Compile Include="Kernel\IOptionSpecification.cs" />
+    <Compile Include="Kernel\IOptionNameRule.cs" />
     <Compile Include="Kernel\IValueProperty.cs" />
     <Compile Include="Kernel\OptionNameConverter.cs" />
     <Compile Include="Kernel\ParsedValue.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="Kernel\Tokens\LongOptionToken.cs" />
     <Compile Include="Kernel\Likeness.cs" />
     <Compile Include="Kernel\Tokens\Token.cs" />
-    <Compile Include="Kernel\IOptionName.cs" />
+    <Compile Include="Kernel\IOptionSpecifiaction.cs" />
     <Compile Include="Kernel\IPropertyQuery.cs" />
     <Compile Include="Kernel\OptionProperty.cs" />
     <Compile Include="Kernel\OptionPropertyQuery.cs" />

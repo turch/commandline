@@ -13,5 +13,9 @@ namespace CommandLine
         char? ShortName { get; }
 
         string LongName { get;  }
+
+        bool Required { get; }
+
+        string MutuallyExclusiveSet { get; }
     }
 }

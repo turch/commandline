@@ -8,16 +8,16 @@ namespace CommandLine.Kernel
 {
     internal class ArgumentEnumerableTokenizer
     {
-        private readonly ArgumentTokenizer _stringTokenizer;
+        private readonly ArgumentTokenizer _argumentTokenizer;
 
-        public ArgumentEnumerableTokenizer()
+        public ArgumentEnumerableTokenizer(ArgumentTokenizer argumentTokenizer)
         {
-            //_stringTokenizer = new ArgumentTokenizer();
+            _argumentTokenizer = argumentTokenizer;
         }
 
         public IEnumerable<IToken> ToTokenEnumerable(IEnumerable<string> arguments)
         {
-            return arguments.SelectMany(arg => _stringTokenizer.ToTokenEnumerable(arg));
+            return arguments.SelectMany(arg => _argumentTokenizer.ToTokenEnumerable(arg));
         }
     }
 }

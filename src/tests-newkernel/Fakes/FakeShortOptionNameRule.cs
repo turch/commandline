@@ -7,16 +7,16 @@ using CommandLine.Kernel;
 
 namespace CommandLineUnitTest.Fakes
 {
-    class FakeShortOptionSpecification : IOptionSpecification
+    class FakeShortOptionNameRule : IOptionNameRule
     {
         private readonly string[] _shortNames;
 
-        public FakeShortOptionSpecification()
+        public FakeShortOptionNameRule()
         {
             _shortNames = new[] { "a", "b", "c", "d" };
         }
 
-        public bool IsSatisfiedBy(string name)
+        public bool ContainsName(string name)
         {
             if (name.Length != 1)
             {

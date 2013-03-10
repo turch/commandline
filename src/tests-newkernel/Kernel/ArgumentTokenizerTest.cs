@@ -36,7 +36,7 @@ namespace CommandLineUnitTest.Kernel
                 }.AsEnumerable();
             var argument = "--long-option=a-value";
             // Exercise system
-            var sut = new ArgumentTokenizer(new FakeNullOptionSpecification());
+            var sut = new ArgumentTokenizer(new FakeEmptyOptionNameRule());
             var result = sut.ToTokenEnumerable(argument);
             // Verify outcome
             Assert.True(expectedTokens.SequenceEqual(expectedTokens));
@@ -55,7 +55,7 @@ namespace CommandLineUnitTest.Kernel
                 }.AsEnumerable();
             var argument = "-defile-a.bin";
             // Exercise system
-            var sut = new ArgumentTokenizer(new FakeShortOptionSpecification());
+            var sut = new ArgumentTokenizer(new FakeShortOptionNameRule());
             var result = sut.ToTokenEnumerable(argument);
             // Verify outcome
             Assert.True(expectedTokens.SequenceEqual(expectedTokens));

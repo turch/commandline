@@ -9,11 +9,11 @@ namespace CommandLine.Kernel
     /// </summary>
     internal class ArgumentTokenizer
     {
-        private readonly IOptionSpecification _specification;
+        private readonly IOptionNameRule _nameRule;
 
-        public ArgumentTokenizer(IOptionSpecification specification)
+        public ArgumentTokenizer(IOptionNameRule nameRule)
         {
-            _specification = specification;
+            _nameRule = nameRule;
         }
 
         public IEnumerable<IToken> ToTokenEnumerable(string argument)
@@ -47,10 +47,11 @@ namespace CommandLine.Kernel
             if (argument.Length > 2 && argument[0] == '-')
             {
                 var items = argument.Substring(1).Select(c => c.ToOptionName());
-                return items.TakeWhile(n => _specification.IsSatisfiedBy(n))
+
+                return items.TakeWhile(n => _nameRule.ContainsName(n))
                     .Select(o => new ShortOptionToken(o))
                     .Concat(new IToken[] {
-                        new ValueToken(items.SkipWhile(n => !_specification.IsSatisfiedBy(n)).Aggregate((acc, c) => acc += c))
+                        new ValueToken(items.SkipWhile(n => !this._nameRule.ContainsName(n)).Aggregate((acc, c) => acc += c))
                         });
             }
 
