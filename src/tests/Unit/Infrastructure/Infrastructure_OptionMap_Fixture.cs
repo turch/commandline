@@ -51,7 +51,7 @@ namespace CommandLine.Tests.Unit.Infrastructure
 
             public OptionMapBuilder(int capacity)
             {
-                _optionMap = new OptionMap(capacity, new ParserSettings(true));
+                _optionMap = new OptionMap(new ParserSettings(true));
                 _options = new List<OptionProperty>(capacity);
                 _names = new List<string>(capacity);
             }
@@ -124,7 +124,7 @@ namespace CommandLine.Tests.Unit.Infrastructure
         {
             if (map == null)
             {
-                map = new OptionMap (3, new ParserSettings (true));
+                map = new OptionMap(new ParserSettings (true));
             }
 
             var attribute1 = new OptionAttribute('p', "pretend");

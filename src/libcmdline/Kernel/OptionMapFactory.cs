@@ -22,7 +22,7 @@ namespace CommandLine.Kernel
         {
             var list = new OptionPropertyQuery().SelectProperties(options.GetType());
 
-            var map = new OptionMap(list.Count(), _settings);
+            var map = new OptionMap(_settings);
 
             foreach (OptionProperty prop in list)
             {
@@ -38,7 +38,7 @@ namespace CommandLine.Kernel
         {
             var verbs = new VerbOptionPropertyQuery().SelectProperties(options.GetType());
 
-            var map = new OptionMap(verbs.Count(), _settings);
+            var map = new OptionMap(_settings);
 
             foreach (OptionProperty verb in verbs)
             {

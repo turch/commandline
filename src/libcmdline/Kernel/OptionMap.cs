@@ -39,15 +39,10 @@ namespace CommandLine.Kernel
         private readonly Dictionary<string, OptionProperty> _map;
         private readonly Dictionary<string, MutuallyExclusiveInfo> _mutuallyExclusiveSetMap;
         
-        /// <summary>
-        /// Initializes a new instance of the <see cref="OptionMap"/> class.
-        /// It is internal rather than private for unit testing purpose.
-        /// </summary>
-        /// <param name="capacity">Initial internal capacity.</param>
-        /// <param name="settings">Parser settings instance.</param>
-        internal OptionMap(int capacity, ParserSettings settings) 
+        internal OptionMap(ParserSettings settings) 
         {
             _settings = settings;
+            const int capacity = 16; // TODO: to remove
 
             IEqualityComparer<string> comparer =
                 _settings.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
