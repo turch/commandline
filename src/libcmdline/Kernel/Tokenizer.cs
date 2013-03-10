@@ -7,16 +7,16 @@ namespace CommandLine.Kernel
     /// <summary>
     /// Tokenize a single argument without options specification knowledge.
     /// </summary>
-    internal class ArgumentTokenizer
+    internal class Tokenizer
     {
         private readonly IOptionNameRule _nameRule;
 
-        public ArgumentTokenizer(IOptionNameRule nameRule)
+        public Tokenizer(IOptionNameRule nameRule)
         {
             _nameRule = nameRule;
         }
 
-        public IEnumerable<IToken> ToTokenEnumerable(string argument)
+        public IEnumerable<IToken> CreateTokens(string argument)
         {
             if (argument == null)
             {

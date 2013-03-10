@@ -7,11 +7,8 @@ namespace CommandLine.Kernel
 {
     internal class ParsedValue
     {
-        private readonly IProperty _property;
-
-        public ParsedValue(IProperty property)
+        public ParsedValue()
         {
-            _property = property;
         }
     }
 }

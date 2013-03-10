@@ -70,7 +70,7 @@
     </Compile>
     <Compile Include="Fakes\FakeShortOptionNameRule.cs" />
     <Compile Include="Fakes\FakeEmptyOptionNameRule.cs" />
-    <Compile Include="Kernel\ArgumentTokenizerTest.cs" />
+    <Compile Include="Kernel\TokenizerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

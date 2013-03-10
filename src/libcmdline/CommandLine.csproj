@@ -96,9 +96,7 @@
     <Compile Include="Kernel\IValueProperty.cs" />
     <Compile Include="Kernel\OptionNameConverter.cs" />
     <Compile Include="Kernel\ParsedValue.cs" />
-    <Compile Include="Kernel\ArgumentEnumerableTokenizer.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Kernel\ParsedValueBuilder.cs" />
     <Compile Include="Kernel\Tokens\ShortOptionToken.cs" />
     <Compile Include="Kernel\ValuePropertyQuery.cs" />
     <Compile Include="Kernel\HelpOptionMethod.cs" />
@@ -142,7 +140,7 @@
     </Compile>
     <Compile Include="Parsing\Transitions\FailureTransition.cs" />
     <Compile Include="Parsing\Transitions\SuccessfulTransition.cs" />
-    <Compile Include="Kernel\ArgumentTokenizer.cs" />
+    <Compile Include="Kernel\Tokenizer.cs" />
     <Compile Include="UnboundValues.cs" />
     <Compile Include="Parsing\LongOptionParser.cs" />
     <Compile Include="Parsing\OptionGroupParser.cs" />

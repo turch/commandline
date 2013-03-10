@@ -11,19 +11,8 @@ using Xunit;
 
 namespace CommandLineUnitTest.Kernel
 {
-    public class ArgumentTokenizerTest
+    public class TokenizerTest
     {
-        //[Fact]
-        //public void SutIsArgumentTokenizer()
-        //{
-        //    // Fixture setup
-        //    // Exercise system
-        //    var sut = new ArgumentTokenizer();
-        //    // Verify outcome
-        //    Assert.IsAssignableFrom<IArgumentTokenizer(sut);
-        //    // Teardown
-        //}
-
         [Fact]
         public void TokenizeLongOptionWithEqualSign()
         {
@@ -36,8 +25,8 @@ namespace CommandLineUnitTest.Kernel
                 }.AsEnumerable();
             var argument = "--long-option=a-value";
             // Exercise system
-            var sut = new ArgumentTokenizer(new FakeEmptyOptionNameRule());
-            var result = sut.ToTokenEnumerable(argument);
+            var sut = new Tokenizer(new FakeEmptyOptionNameRule());
+            var result = sut.CreateTokens(argument);
             // Verify outcome
             Assert.True(expectedTokens.SequenceEqual(expectedTokens));
             // Teardown
@@ -55,8 +44,8 @@ namespace CommandLineUnitTest.Kernel
                 }.AsEnumerable();
             var argument = "-defile-a.bin";
             // Exercise system
-            var sut = new ArgumentTokenizer(new FakeShortOptionNameRule());
-            var result = sut.ToTokenEnumerable(argument);
+            var sut = new Tokenizer(new FakeShortOptionNameRule());
+            var result = sut.CreateTokens(argument);
             // Verify outcome
             Assert.True(expectedTokens.SequenceEqual(expectedTokens));
             // Teardown
