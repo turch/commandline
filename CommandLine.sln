@@ -34,7 +34,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{350E59
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Develop", "Develop", "{939BEBC0-CE70-4209-A991-0DA4E8F3B9AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine.Tests.Legacy", "src\tests\CommandLine.Tests.Legacy.csproj", "{86E1AC34-ED2D-4E42-8B95-65208FEA36C2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine.Tests", "src\tests\CommandLine.Tests.csproj", "{86E1AC34-ED2D-4E42-8B95-65208FEA36C2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
