@@ -7,7 +7,7 @@ using CommandLine.Kernel;
 
 namespace CommandLineUnitTest.Fakes
 {
-    class FakeShortOptionNameRule : IOptionNameRule
+    class FakeShortOptionNameRule : INameSpecificationRule
     {
         private readonly string[] _shortNames;
 
@@ -16,13 +16,13 @@ namespace CommandLineUnitTest.Fakes
             _shortNames = new[] { "a", "b", "c", "d" };
         }
 
-        public bool ContainsName(string name)
+        public bool ContainsName(string optionName)
         {
-            if (name.Length != 1)
+            if (optionName.Length != 1)
             {
-                throw new ArgumentNullException("name");
+                throw new ArgumentNullException("optionName");
             }
-            return _shortNames.Contains(name, StringComparer.InvariantCultureIgnoreCase);
+            return _shortNames.Contains(optionName, StringComparer.InvariantCultureIgnoreCase);
         }
     }
 }

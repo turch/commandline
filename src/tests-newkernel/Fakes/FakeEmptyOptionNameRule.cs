@@ -7,9 +7,9 @@ using CommandLine.Kernel;
 
 namespace CommandLineUnitTest.Fakes
 {
-    class FakeEmptyOptionNameRule : IOptionNameRule
+    class FakeEmptyOptionNameRule : INameSpecificationRule
     {
-        public bool ContainsName(string name)
+        public bool ContainsName(string optionName)
         {
             throw new NotImplementedException();
         }

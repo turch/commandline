@@ -5,10 +5,8 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal class ParsedValue
+    internal interface IMandatoryRule
     {
-        public ParsedValue(IOptionSpecifiaction specification, string value)
-        {
-        }
+        bool IsRequired();
     }
 }

@@ -9,11 +9,11 @@ namespace CommandLine.Kernel
     /// </summary>
     internal class Tokenizer
     {
-        private readonly IOptionNameRule _nameRule;
+        private readonly INameSpecificationRule _nameRule;
 
-        public Tokenizer(IOptionNameRule nameRule)
+        public Tokenizer(INameSpecificationRule nameRule)
         {
-            _nameRule = nameRule;
+            this._nameRule = nameRule;
         }
 
         public IEnumerable<IToken> CreateTokens(string argument)
@@ -48,7 +48,7 @@ namespace CommandLine.Kernel
             {
                 var items = argument.Substring(1).Select(c => c.ToOptionName());
 
-                return items.TakeWhile(n => _nameRule.ContainsName(n))
+                return items.TakeWhile(n => this._nameRule.ContainsName(n))
                     .Select(o => new ShortOptionToken(o))
                     .Concat(new IToken[] {
                         new ValueToken(items.SkipWhile(n => !this._nameRule.ContainsName(n)).Aggregate((acc, c) => acc += c))

@@ -5,8 +5,8 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal interface IOptionNameRule
+    internal interface INameSpecificationRule
     {
-        bool ContainsName(string name);
+        bool ContainsName(string optionName);
     }
 }

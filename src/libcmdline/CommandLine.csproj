@@ -92,29 +92,6 @@
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
     <Compile Include="Attributes\IValueAttribute.cs" />
-    <Compile Include="Kernel\IOptionNameRule.cs" />
-    <Compile Include="Kernel\IValueProperty.cs" />
-    <Compile Include="Kernel\OptionNameConverter.cs" />
-    <Compile Include="Kernel\ParsedValue.cs" />
-    <Compile Include="Kernel\ParsedValueBuilder.cs" />
-    <Compile Include="Kernel\Tokens\ShortOptionToken.cs" />
-    <Compile Include="Kernel\ValuePropertyQuery.cs" />
-    <Compile Include="Kernel\HelpOptionMethod.cs" />
-    <Compile Include="Kernel\HelpOptionMethodQuery.cs" />
-    <Compile Include="Kernel\IMethodQuery.cs" />
-    <Compile Include="Kernel\Tokens\EqualToken.cs" />
-    <Compile Include="Kernel\IMethod.cs" />
-    <Compile Include="Kernel\IProperty.cs" />
-    <Compile Include="Kernel\IToken.cs" />
-    <Compile Include="Kernel\LightweightMaybe.cs" />
-    <Compile Include="Kernel\Tokens\LongOptionToken.cs" />
-    <Compile Include="Kernel\Likeness.cs" />
-    <Compile Include="Kernel\Tokens\Token.cs" />
-    <Compile Include="Kernel\IOptionSpecifiaction.cs" />
-    <Compile Include="Kernel\IPropertyQuery.cs" />
-    <Compile Include="Kernel\OptionProperty.cs" />
-    <Compile Include="Kernel\OptionPropertyQuery.cs" />
-    <Compile Include="Kernel\Tokens\ValueToken.cs" />
     <Compile Include="MetadataQuery.cs" />
     <Compile Include="Options\OptionMapFactory.cs" />
     <Compile Include="Options\UnderlyingBindingContext.cs" />
@@ -140,7 +117,6 @@
     </Compile>
     <Compile Include="Parsing\Transitions\FailureTransition.cs" />
     <Compile Include="Parsing\Transitions\SuccessfulTransition.cs" />
-    <Compile Include="Kernel\Tokenizer.cs" />
     <Compile Include="UnboundValues.cs" />
     <Compile Include="Parsing\LongOptionParser.cs" />
     <Compile Include="Parsing\OptionGroupParser.cs" />
