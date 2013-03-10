@@ -309,7 +309,8 @@ namespace CommandLine
         private Tuple<bool, T> ParseArgumentsImpl<T>(string[] args, T options)
         {
             var hadError = false;
-            var optionMap = new OptionMapFactory<T>(_settings).CreateOptionMap(options);
+            var props = new OptionPropertyQuery().SelectProperties(options.GetType());
+            var optionMap = new OptionMapFactory<T>(_settings).Create(options, new NullOptionPropertyGuard(), props);
             optionMap.SetDefaults(options);
             var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
 
@@ -359,9 +360,10 @@ namespace CommandLine
         {
             var options = new T();
 
-            var verbs = MetadataQuery.Get<PropertyInfo, VerbOptionAttribute, T>(
-                options,
-                a => a.Item2 is VerbOptionAttribute);
+            //var verbs = MetadataQuery.Get<PropertyInfo, VerbOptionAttribute, T>(
+            //    options,
+            //    a => a.Item2 is VerbOptionAttribute);
+            var verbs = new VerbOptionPropertyQuery().SelectProperties(options.GetType());
             var helpInfo = MetadataQuery.GetSingle<MethodInfo, HelpVerbOptionAttribute, T>(
                 options,
                 a => a.Item2 is HelpVerbOptionAttribute);
@@ -376,7 +378,10 @@ namespace CommandLine
                 return new Tuple<bool, T, object>(false, options, null);
             }
 
-            var optionMap = new OptionMapFactory<T>(_settings).CreateVerbOptionMap(options); //, verbs);
+            var optionMap = new OptionMapFactory<T>(_settings).Create(
+                options,
+                new ThrowingVerbOptionParameterLessCtorGuard(),
+                verbs);
 
             if (TryParseHelpVerb(args, options, helpInfo, optionMap))
             {

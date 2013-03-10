@@ -89,6 +89,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="Kernel\NullOptionPropertyGuard.cs" />
+    <Compile Include="Kernel\IOptionPropertyGuard.cs" />
+    <Compile Include="Kernel\ThrowingVerbOptionParameterLessCtorGuard.cs" />
     <Compile Include="Kernel\VerbOptionPropertyQuery.cs" />
     <Compile Include="Kernel\IProperty.cs" />
     <Compile Include="Kernel\IPropertyQuery.cs" />

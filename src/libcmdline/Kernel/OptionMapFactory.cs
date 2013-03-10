@@ -18,39 +18,52 @@ namespace CommandLine.Kernel
             _settings = settings;
         }
 
-        public OptionMap CreateOptionMap(T options)
-        {
-            var list = new OptionPropertyQuery().SelectProperties(options.GetType());
+        //public OptionMap CreateOptionMap(T options)
+        //{
+        //    var list = new OptionPropertyQuery().SelectProperties(options.GetType());
 
+        //    var map = new OptionMap(_settings);
+
+        //    foreach (OptionProperty prop in list)
+        //    {
+        //        map[prop.UniqueName] = prop;
+        //    }
+
+        //    map.RawOptions = options;
+        //    return map;
+        //}
+
+        //public OptionMap CreateVerbOptionMap(T options)
+        //{
+        //    var verbs = new VerbOptionPropertyQuery().SelectProperties(options.GetType());
+
+        //    var map = new OptionMap(_settings);
+
+        //    var guard = new ThrowingVerbOptionParameterLessCtorGuard();
+
+        //    foreach (OptionProperty verb in verbs)
+        //    {
+        //        guard.Execute(verb);
+
+        //        map[verb.UniqueName] = verb;
+        //    }
+
+        //    map.RawOptions = options;
+        //    return map;
+        //}
+
+        public OptionMap Create(
+            T options,
+            IOptionPropertyGuard guard,
+            IEnumerable<IProperty> properties)
+        {
             var map = new OptionMap(_settings);
 
-            foreach (OptionProperty prop in list)
+            foreach (OptionProperty prop in properties)
             {
+                guard.Execute(prop);
+
                 map[prop.UniqueName] = prop;
-            }
-
-            map.RawOptions = options;
-            return map;
-        }
-
-        public OptionMap CreateVerbOptionMap(T options)
-            //,IEnumerable<Tuple<PropertyInfo, VerbOptionAttribute>> verbs)
-        {
-            var verbs = new VerbOptionPropertyQuery().SelectProperties(options.GetType());
-
-            var map = new OptionMap(_settings);
-
-            foreach (OptionProperty verb in verbs)
-            {
-                //var optionInfo = new OptionProperty(verb.Left(), verb.Right());
-
-                if (!verb.HasParameterLessCtor && verb.UnderlyingProperty.GetValue(options, null) == null)
-                {
-                    throw new ParserException("Type {0} must have a parameterless constructor or" +
-                        " be already initialized to be used as a verb command.".FormatInvariant(verb.UnderlyingProperty.PropertyType));
-                }
-
-                map[verb.UniqueName] = verb;
             }
 
             map.RawOptions = options;
