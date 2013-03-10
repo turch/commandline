@@ -34,7 +34,7 @@ namespace CommandLine
     /// of <see cref="System.String"/> instances.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class OptionListAttribute : BaseOptionAttribute, IOptionAttribute
+    public sealed class OptionListAttribute : BaseOptionAttribute//, IOptionAttribute
     {
         private const char DefaultSeparator = ':';
 

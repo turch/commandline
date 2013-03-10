@@ -66,7 +66,6 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Attributes\BaseOptionAttribute.cs" />
-    <Compile Include="Attributes\IOptionAttribute.cs" />
     <Compile Include="Attributes\ITargetDescriptor.cs" />
     <Compile Include="Attributes\IVerbOptionAttribute.cs" />
     <Compile Include="Attributes\OptionAttribute.cs" />
@@ -91,7 +90,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
-    <Compile Include="Attributes\IValueAttribute.cs" />
+    <Compile Include="Kernel\IProperty.cs" />
+    <Compile Include="Kernel\IPropertyQuery.cs" />
+    <Compile Include="Kernel\OptionPropertyQuery.cs" />
     <Compile Include="MetadataQuery.cs" />
     <Compile Include="Kernel\OptionMapFactory.cs" />
     <Compile Include="Kernel\BindingContext.cs" />

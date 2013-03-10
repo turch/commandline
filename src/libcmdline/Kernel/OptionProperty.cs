@@ -33,12 +33,21 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class OptionProperty
+    internal sealed class OptionProperty : IProperty
     {
         public OptionProperty(PropertyInfo property, BaseOptionAttribute attribute)
         {
             ShortName = attribute.ShortName;
-            LongName = attribute.LongName;
+            if (attribute.AutoLongName)
+            {
+                LongName = property.Name.ToLowerInvariant();
+                UniqueName = LongName;
+            }
+            else
+            {
+                LongName = attribute.LongName;
+                UniqueName = attribute.UniqueName;
+            }
             Required = attribute.Required;
             MutuallyExclusiveSet = attribute.MutuallyExclusiveSet;
             DefaultValue = attribute.DefaultValue;
@@ -55,7 +64,7 @@ namespace CommandLine.Kernel
         }
 
         // TEST ctor
-        public OptionProperty(char? shortName, string longName)
+        internal OptionProperty(char? shortName, string longName)
         {
             ShortName = shortName;
             LongName = longName;
@@ -64,6 +73,8 @@ namespace CommandLine.Kernel
         public char? ShortName { get; private set; }
 
         public string LongName { get; private set; }
+
+        public string UniqueName { get; private set; }
 
         public string MutuallyExclusiveSet { get; private set; }
 

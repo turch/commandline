@@ -37,7 +37,10 @@ namespace CommandLine.Parsing
         private readonly OptionMap _map;
         private readonly ParserSettings _settings;
 
-        protected ArgumentParser(T options, OptionMap map, ParserSettings settings)
+        protected ArgumentParser(
+            T options,
+            OptionMap map,
+            ParserSettings settings)
         {
             _options = options;
             _map = map;
@@ -59,6 +62,7 @@ namespace CommandLine.Parsing
             get { return _settings; }
         }
 
+        // TODO: refactor this
         protected BindingContext<T> CreateBindingContext(OptionProperty optionProperty)
         {
             return new BindingContext<T>(_settings, optionProperty, _options);

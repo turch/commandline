@@ -15,9 +15,9 @@ namespace CommandLine.Kernel
             }
 
             return from pi in type.GetProperties()
-                   let attributes = pi.GetCustomAttributes(typeof(IOptionAttribute), true)
+                   let attributes = pi.GetCustomAttributes(typeof(BaseOptionAttribute), true)
                    where attributes.Length == 1
-                   select new OptionProperty(pi, (IOptionAttribute)attributes.ElementAt(0)) as IProperty;
+                   select new OptionProperty(pi, (BaseOptionAttribute)attributes.ElementAt(0)) as IProperty;
         }
     }
 }

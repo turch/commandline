@@ -23,31 +23,14 @@ namespace CommandLine.Kernel
             var list = MetadataQuery.Get<PropertyInfo, BaseOptionAttribute, T>(
                 options,
                 a => a.Item1 is PropertyInfo && a.Item2 is BaseOptionAttribute);
-            if (list == null)
-            {
-                return null;
-            }
+            //var list = new OptionPropertyQuery().SelectProperties(typeof(T));
 
             var map = new OptionMap(list.Count(), _settings);
 
             foreach (var pair in list)
             {
-                if (pair.Left() != null && pair.Right() != null)
-                {
-                    string uniqueName;
-
-                    if (pair.Right().AutoLongName)
-                    {
-                        uniqueName = pair.Left().Name.ToLowerInvariant();
-                        pair.Right().LongName = uniqueName;
-                    }
-                    else
-                    {
-                        uniqueName = pair.Right().UniqueName;
-                    }
-
-                    map[uniqueName] = new OptionProperty(pair.Left(), pair.Right());
-                }
+                var prop = new OptionProperty(pair.Left(), pair.Right());
+                map[prop.UniqueName] = prop;
             }
 
             map.RawOptions = options;

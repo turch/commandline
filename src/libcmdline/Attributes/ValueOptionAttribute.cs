@@ -34,7 +34,7 @@ namespace CommandLine
     /// </summary>
     /// <remarks>It can handle only scalar values. Do not apply to arrays or lists.</remarks>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class ValueOptionAttribute : Attribute, IValueAttribute, ITargetDescriptor
+    public sealed class ValueOptionAttribute : Attribute, ITargetDescriptor //IValueAttribute
     {
         private readonly int _index;
 
