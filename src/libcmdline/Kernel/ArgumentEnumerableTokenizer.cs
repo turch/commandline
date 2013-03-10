@@ -6,13 +6,13 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal class StringEnumerableTokenizer
+    internal class ArgumentEnumerableTokenizer
     {
-        private readonly IStringTokenizer _stringTokenizer;
+        private readonly ArgumentTokenizer _stringTokenizer;
 
-        public StringEnumerableTokenizer(IStringTokenizer stringTokenizer)
+        public ArgumentEnumerableTokenizer()
         {
-            _stringTokenizer = stringTokenizer;
+            //_stringTokenizer = new ArgumentTokenizer();
         }
 
         public IEnumerable<IToken> ToTokenEnumerable(IEnumerable<string> arguments)

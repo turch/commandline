@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class OptionGroupToken : OptionToken
+    internal sealed class OptionGroupToken : Token
     {
         public OptionGroupToken(string text)
             : base(text)

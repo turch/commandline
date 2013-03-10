@@ -5,9 +5,9 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class LongOptionToken : OptionToken
+    internal sealed class ShortOptionToken : Token
     {
-        public LongOptionToken(string text)
+        public ShortOptionToken(string text)
             : base(text)
         {
         }

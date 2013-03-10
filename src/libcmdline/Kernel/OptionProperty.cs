@@ -11,7 +11,7 @@ namespace CommandLine.Kernel
     /// <summary>
     /// Encapsulates a property that defines an option specification.
     /// </summary>
-    internal class OptionProperty : IOptionProperty
+    internal class OptionProperty : IProperty,  IOptionName
     {
         private readonly string _shortName;
         private readonly string _longName;

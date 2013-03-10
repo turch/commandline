@@ -9,8 +9,15 @@ namespace CommandLine.Kernel
     /// <summary>
     /// Tokenize a single argument without options specification knowledge.
     /// </summary>
-    internal class StringTokenizer : IStringTokenizer
+    internal class ArgumentTokenizer
     {
+        private readonly IOptionSpecification _specification;
+
+        public ArgumentTokenizer(IOptionSpecification specification)
+        {
+            _specification = specification;
+        }
+
         public IEnumerable<IToken> ToTokenEnumerable(string argument)
         {
             if (argument == null)
@@ -34,10 +41,19 @@ namespace CommandLine.Kernel
                 }
             }
 
+            if (argument.Length > 1 && argument[0] == '-')
+            {
+                return new IToken[] { new ShortOptionToken(argument.Substring(1)) };
+            }
+
             if (argument.Length > 2 && argument[0] == '-')
             {
-                var group = argument.Substring(1);
-                return new IToken[] { new OptionGroupToken(argument)  };
+                var items = argument.Substring(1).Select(c => c.ToOptionName());
+                return items.TakeWhile(n => _specification.IsSatisfiedBy(n))
+                    .Select(o => new ShortOptionToken(o))
+                    .Concat(new IToken[] {
+                        new ValueToken(items.SkipWhile(n => !_specification.IsSatisfiedBy(n)).Aggregate((acc, c) => acc += c))
+                        });
             }
 
             return new IToken[] { new ValueToken(argument) };

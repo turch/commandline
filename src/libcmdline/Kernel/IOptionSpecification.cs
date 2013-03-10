@@ -5,10 +5,8 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal interface IOptionProperty : IProperty
+    internal interface IOptionSpecification
     {
-        string ShortName { get;  }
-
-        string LongName { get; }
+        bool IsSatisfiedBy(string name);
     }
 }
