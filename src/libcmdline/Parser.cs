@@ -376,7 +376,7 @@ namespace CommandLine
                 return new Tuple<bool, T, object>(false, options, null);
             }
 
-            var optionMap = new OptionMapFactory<T>(_settings).CreateVerbOptionMap(options, verbs);
+            var optionMap = new OptionMapFactory<T>(_settings).CreateVerbOptionMap(options); //, verbs);
 
             if (TryParseHelpVerb(args, options, helpInfo, optionMap))
             {

@@ -33,22 +33,24 @@ namespace CommandLine.Kernel
             return map;
         }
 
-        public OptionMap CreateVerbOptionMap(T options,
-            IEnumerable<Tuple<PropertyInfo, VerbOptionAttribute>> verbs)
+        public OptionMap CreateVerbOptionMap(T options)
+            //,IEnumerable<Tuple<PropertyInfo, VerbOptionAttribute>> verbs)
         {
+            var verbs = new VerbOptionPropertyQuery().SelectProperties(options.GetType());
+
             var map = new OptionMap(verbs.Count(), _settings);
 
-            foreach (var verb in verbs)
+            foreach (OptionProperty verb in verbs)
             {
-                var optionInfo = new OptionProperty(verb.Left(), verb.Right());
+                //var optionInfo = new OptionProperty(verb.Left(), verb.Right());
 
-                if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(options, null) == null)
+                if (!verb.HasParameterLessCtor && verb.UnderlyingProperty.GetValue(options, null) == null)
                 {
                     throw new ParserException("Type {0} must have a parameterless constructor or" +
-                        " be already initialized to be used as a verb command.".FormatInvariant(verb.Left().PropertyType));
+                        " be already initialized to be used as a verb command.".FormatInvariant(verb.UnderlyingProperty.PropertyType));
                 }
 
-                map[verb.Right().UniqueName] = optionInfo;
+                map[verb.UniqueName] = verb;
             }
 
             map.RawOptions = options;

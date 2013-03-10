@@ -36,7 +36,7 @@ namespace CommandLine
     /// The method signature is an instance method with that accepts and returns a <see cref="System.String"/>.
     /// </summary>
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = true)]
-    public sealed class HelpVerbOptionAttribute : BaseOptionAttribute, IVerbOptionAttribute
+    public sealed class HelpVerbOptionAttribute : BaseOptionAttribute//, IVerbOptionAttribute
     {
         private const string DefaultHelpText = "Display more information on a specific command.";
 

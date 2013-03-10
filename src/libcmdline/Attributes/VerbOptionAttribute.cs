@@ -33,7 +33,7 @@ namespace CommandLine
     /// Models a verb command specification.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class VerbOptionAttribute : BaseOptionAttribute, IVerbOptionAttribute
+    public sealed class VerbOptionAttribute : BaseOptionAttribute//, IVerbOptionAttribute
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="CommandLine.VerbOptionAttribute"/> class.
