@@ -310,7 +310,7 @@ namespace CommandLine
         private Tuple<bool, T> ParseArgumentsImpl<T>(string[] args, T options)
         {
             var hadError = false;
-            var optionMap = new OptionMapFactory<T>(options, _settings).CreateOptionMap();
+            var optionMap = new OptionMapFactory<T>(_settings).CreateOptionMap(options);
             optionMap.SetDefaults();
             var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
 
@@ -377,7 +377,7 @@ namespace CommandLine
                 return new Tuple<bool, T, object>(false, options, null);
             }
 
-            var optionMap = new OptionMapFactory<T>(options, _settings).CreateVerbOptionMap(verbs);
+            var optionMap = new OptionMapFactory<T>(_settings).CreateVerbOptionMap(options, verbs);
 
             if (TryParseHelpVerb(args, options, helpInfo, optionMap))
             {

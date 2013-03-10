@@ -10,21 +10,18 @@ namespace CommandLine.Options
 {
     internal class OptionMapFactory<T>
     {
-        private readonly T _options;
         private readonly ParserSettings _settings;
 
         public OptionMapFactory(
-            T options,
             ParserSettings settings)
         {
-            _options = options;
             _settings = settings;
         }
 
-        public OptionMap CreateOptionMap()
+        public OptionMap CreateOptionMap(T options)
         {
             var list = MetadataQuery.Get<PropertyInfo, BaseOptionAttribute, T>(
-                _options,
+                options,
                 a => a.Item1 is PropertyInfo && a.Item2 is BaseOptionAttribute);
             if (list == null)
             {
@@ -52,25 +49,25 @@ namespace CommandLine.Options
                     map[uniqueName] = OptionInfoFactory.CreateFromMetadata(
                         pair.Right(),
                         pair.Left(),
-                        _options,
+                        options,
                         _settings.ParsingCulture);
                 }
             }
 
-            map.RawOptions = _options;
+            map.RawOptions = options;
             return map;
         }
 
-        public OptionMap CreateVerbOptionMap(
+        public OptionMap CreateVerbOptionMap(T options,
             IEnumerable<Tuple<PropertyInfo, VerbOptionAttribute>> verbs)
         {
             var map = new OptionMap(verbs.Count(), _settings);
 
             foreach (var verb in verbs)
             {
-                var optionInfo = OptionInfoFactory.CreateFromMetadata(verb.Right(), verb.Left(), _options, _settings.ParsingCulture);
+                var optionInfo = OptionInfoFactory.CreateFromMetadata(verb.Right(), verb.Left(), options, _settings.ParsingCulture);
 
-                if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(_options, null) == null)
+                if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(options, null) == null)
                 {
                     throw new ParserException("Type {0} must have a parameterless constructor or" +
                         " be already initialized to be used as a verb command.".FormatInvariant(verb.Left().PropertyType));
@@ -79,7 +76,7 @@ namespace CommandLine.Options
                 map[verb.Right().UniqueName] = optionInfo;
             }
 
-            map.RawOptions = _options;
+            map.RawOptions = options;
             return map;
         }
     }
