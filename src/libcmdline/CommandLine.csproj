@@ -94,14 +94,10 @@
     <Compile Include="Attributes\IValueAttribute.cs" />
     <Compile Include="MetadataQuery.cs" />
     <Compile Include="Options\OptionMapFactory.cs" />
-    <Compile Include="Options\UnderlyingBindingContext.cs" />
-    <Compile Include="Options\OptionInfoFactory.cs" />
+    <Compile Include="Options\BindingContext.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Options\PropertyWriter.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Options\IUnderlyingBindingContext.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Parsing\ArgumentComparer.cs">
@@ -120,7 +116,7 @@
     <Compile Include="UnboundValues.cs" />
     <Compile Include="Parsing\LongOptionParser.cs" />
     <Compile Include="Parsing\OptionGroupParser.cs" />
-    <Compile Include="Options\OptionInfo.cs" />
+    <Compile Include="Options\OptionProperty.cs" />
     <Compile Include="Options\OptionMap.cs" />
     <Compile Include="Parsing\OneCharStringEnumerator.cs" />
     <Compile Include="Parsing\StringArrayEnumerator.cs" />

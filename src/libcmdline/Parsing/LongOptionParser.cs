@@ -55,6 +55,8 @@ namespace CommandLine.Parsing
 
             bool valueSetting;
 
+            var context = base.CreateBindingContext(option);
+
             if (!option.IsBoolean)
             {
                 if (parts.Length == 1 && (argumentEnumerator.IsLast || !ArgumentComparer.IsValue(argumentEnumerator.Next)))
@@ -66,7 +68,7 @@ namespace CommandLine.Parsing
                 {
                     if (!option.IsArray)
                     {
-                        valueSetting = option.BindingContext.SetValue(parts[1]);
+                        valueSetting = context.SetValue(parts[1]);
                         if (!valueSetting)
                         {
                             return new FailureTransition(new [] { ParsingError.DefineOptionThatViolatesFormat(option) });
@@ -79,7 +81,7 @@ namespace CommandLine.Parsing
                     var items = argumentEnumerator.ConsumeNextValues();
                     items.Insert(0, parts[1]);
 
-                    valueSetting = option.BindingContext.SetValue(items);
+                    valueSetting = context.SetValue(items);
                     if (!valueSetting)
                     {
                         return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
@@ -90,7 +92,7 @@ namespace CommandLine.Parsing
                 {
                     if (!option.IsArray)
                     {
-                        valueSetting = option.BindingContext.SetValue(argumentEnumerator.Next);
+                        valueSetting = context.SetValue(argumentEnumerator.Next);
                         if (!valueSetting)
                         {
                             return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
@@ -102,7 +104,7 @@ namespace CommandLine.Parsing
 
                     var items = argumentEnumerator.ConsumeNextValues();
 
-                    valueSetting = option.BindingContext.SetValue(items);
+                    valueSetting = context.SetValue(items);
                     if (!valueSetting)
                     {
                         return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });
@@ -117,7 +119,7 @@ namespace CommandLine.Parsing
                 return new FailureTransition(Enumerable.Empty<ParsingError>());
             }
 
-            valueSetting = option.BindingContext.SetValue(true);
+            valueSetting = context.SetValue(true);
             if (!valueSetting)
             {
                 return new FailureTransition(new[] { ParsingError.DefineOptionThatViolatesFormat(option) });

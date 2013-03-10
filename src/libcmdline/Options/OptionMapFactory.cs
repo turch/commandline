@@ -46,11 +46,7 @@ namespace CommandLine.Options
                         uniqueName = pair.Right().UniqueName;
                     }
 
-                    map[uniqueName] = OptionInfoFactory.CreateFromMetadata(
-                        pair.Right(),
-                        pair.Left(),
-                        options,
-                        _settings.ParsingCulture);
+                    map[uniqueName] = new OptionProperty(pair.Left(), pair.Right());
                 }
             }
 
@@ -65,7 +61,7 @@ namespace CommandLine.Options
 
             foreach (var verb in verbs)
             {
-                var optionInfo = OptionInfoFactory.CreateFromMetadata(verb.Right(), verb.Left(), options, _settings.ParsingCulture);
+                var optionInfo = new OptionProperty(verb.Left(), verb.Right());
 
                 if (!optionInfo.HasParameterLessCtor && verb.Left().GetValue(options, null) == null)
                 {

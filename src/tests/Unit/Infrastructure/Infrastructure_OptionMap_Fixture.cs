@@ -46,13 +46,13 @@ namespace CommandLine.Tests.Unit.Infrastructure
         class OptionMapBuilder
         {
             private readonly OptionMap _optionMap;
-            private readonly List<OptionInfo> _options;
+            private readonly List<OptionProperty> _options;
             private readonly List<string> _names;
 
             public OptionMapBuilder(int capacity)
             {
                 _optionMap = new OptionMap(capacity, new ParserSettings(true));
-                _options = new List<OptionInfo>(capacity);
+                _options = new List<OptionProperty>(capacity);
                 _names = new List<string>(capacity);
             }
 
@@ -74,7 +74,7 @@ namespace CommandLine.Tests.Unit.Infrastructure
                 _names.Add(oa.UniqueName);
             }
 
-            public List<OptionInfo> Options
+            public List<OptionProperty> Options
             {
                 get { return _options; }
             }
@@ -120,7 +120,7 @@ namespace CommandLine.Tests.Unit.Infrastructure
         //    longOi.Should().BeNull();
         //}
 
-        private static OptionMap CreateMap (ref OptionMap map, IDictionary<string, OptionInfo> optionCache)
+        private static OptionMap CreateMap (ref OptionMap map, IDictionary<string, OptionProperty> optionCache)
         {
             if (map == null)
             {

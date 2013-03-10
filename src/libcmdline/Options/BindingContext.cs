@@ -10,18 +10,21 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Options
 {
-    sealed class UnderlyingBindingContext<T> : IUnderlyingBindingContext
+    // TODO: refactor this class
+    sealed class BindingContext<T> //: IUnderlyingBindingContext
     {
-        private readonly OptionInfo _optionInfo;
-        private readonly BaseOptionAttribute _attribute;
+        private readonly ParserSettings _settings;
+        private readonly OptionProperty _optionInfo;
         private readonly PropertyInfo _property;
+        private readonly BaseOptionAttribute _attribute;
         private readonly T _target;
 
-        public UnderlyingBindingContext(OptionInfo optionInfo, BaseOptionAttribute attribute, PropertyInfo property, T target)
+        public BindingContext(ParserSettings settings, OptionProperty optionInfo, T target)
         {
+            _settings = settings;
             _optionInfo = optionInfo;
-            _attribute = attribute;
-            _property = property;
+            _property = optionInfo.UnderlyingProperty;
+            _attribute = optionInfo.UnderlyingAttribute;
             _target = target;
         }
 
@@ -57,10 +60,10 @@ namespace CommandLine.Options
 
             if (_property.PropertyType.IsNullable())
             {
-                return _optionInfo.ReceivedValue = PropertyWriter.WriteNullable(value, _target, _property, _optionInfo.ParsingCulture);
+                return _optionInfo.ReceivedValue = PropertyWriter.WriteNullable(value, _target, _property, _settings.ParsingCulture);
             }
 
-            return _optionInfo.ReceivedValue = PropertyWriter.WriteScalar(value, _target, _property, _optionInfo.ParsingCulture);
+            return _optionInfo.ReceivedValue = PropertyWriter.WriteScalar(value, _target, _property, _settings.ParsingCulture);
         }
 
         public bool SetValue(IList<string> values)
@@ -72,7 +75,7 @@ namespace CommandLine.Options
             {
                 try
                 {
-                    array.SetValue(Convert.ChangeType(values[i], elementType, _optionInfo.ParsingCulture), i);
+                    array.SetValue(Convert.ChangeType(values[i], elementType, _settings.ParsingCulture), i);
 
                     _property.SetValue(_target, array, null);
                 }

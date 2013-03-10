@@ -42,7 +42,6 @@ namespace CommandLine.Parsing
                 return new OptionGroupParser<T>(_options, _map, _settings);
             }
 
-            //return null;
             return new NullArgumentParser<T>(_options, _map, _settings);
         }
 

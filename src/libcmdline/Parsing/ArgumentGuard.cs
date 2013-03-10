@@ -9,7 +9,7 @@ namespace CommandLine.Parsing
 {
     internal static class ArgumentGuard
     {
-        public static void EnsureOptionAttributeIsArrayCompatible(OptionInfo option)
+        public static void EnsureOptionAttributeIsArrayCompatible(OptionProperty option)
         {
             if (!option.IsAttributeArrayCompatible)
             {
@@ -17,7 +17,7 @@ namespace CommandLine.Parsing
             }
         }
 
-        public static void EnsureOptionArrayAttributeIsNotBoundToScalar(OptionInfo option)
+        public static void EnsureOptionArrayAttributeIsNotBoundToScalar(OptionProperty option)
         {
             if (!option.IsArray && option.IsAttributeArrayCompatible)
             {

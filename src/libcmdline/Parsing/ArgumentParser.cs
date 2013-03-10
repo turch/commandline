@@ -59,6 +59,11 @@ namespace CommandLine.Parsing
             get { return _settings; }
         }
 
+        protected BindingContext<T> CreateBindingContext(OptionProperty optionProperty)
+        {
+            return new BindingContext<T>(_settings, optionProperty, _options);
+        }
+
         public abstract Transition Parse(IArgumentEnumerator argumentEnumerator);
     }
 }

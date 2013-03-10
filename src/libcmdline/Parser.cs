@@ -284,7 +284,6 @@ namespace CommandLine
             var pair = MetadataQuery.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
             var helpWriter = _settings.HelpWriter;
 
-            // TODO: refactoring following query in CapabilitiesExtensions?
             if (pair != null && helpWriter != null)
             {
                 if (this.TryParseHelp(args, pair.Right()))
@@ -311,7 +310,7 @@ namespace CommandLine
         {
             var hadError = false;
             var optionMap = new OptionMapFactory<T>(_settings).CreateOptionMap(options);
-            optionMap.SetDefaults();
+            optionMap.SetDefaults(options);
             var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
 
             var arguments = new StringArrayEnumerator(args);
@@ -397,11 +396,12 @@ namespace CommandLine
                 return new Tuple<bool, T, object>(false, options, null);
             }
 
-            var verbInstance = verbOption.BindingContext.GetValue();
+            var bindingContext = new BindingContext<T>(_settings, verbOption, options);
+            var verbInstance = bindingContext.GetValue();
             if (verbInstance == null)
             {
                 // Developer has not provided a default value and did not assign an instance
-                verbInstance = verbOption.BindingContext.SetValueWithBuiltInstance();
+                verbInstance = bindingContext.SetValueWithBuiltInstance();
             }
 
             var resultAndVerbInstance = this.ParseArgumentsImpl(args.Skip(1).ToArray(), verbInstance);
@@ -458,10 +458,11 @@ namespace CommandLine
                         var verbOption = optionMap[verb];
                         if (verbOption != null)
                         {
-                            if (verbOption.BindingContext.GetValue() == null)
+                            var bindingContext = new BindingContext<T>(_settings, verbOption, options);
+                            if (bindingContext.GetValue() == null)
                             {
                                 // We need to create an instance also to render help
-                                verbOption.BindingContext.SetValueWithBuiltInstance();
+                                bindingContext.SetValueWithBuiltInstance();
                             }
                         }
                     }

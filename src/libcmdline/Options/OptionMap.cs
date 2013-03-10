@@ -36,7 +36,7 @@ namespace CommandLine.Options
     {
         private readonly ParserSettings _settings;
         private readonly Dictionary<string, string> _names;
-        private readonly Dictionary<string, OptionInfo> _map;
+        private readonly Dictionary<string, OptionProperty> _map;
         private readonly Dictionary<string, MutuallyExclusiveInfo> _mutuallyExclusiveSetMap;
         
         /// <summary>
@@ -52,7 +52,7 @@ namespace CommandLine.Options
             IEqualityComparer<string> comparer =
                 _settings.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
             _names = new Dictionary<string, string>(capacity, comparer);
-            _map = new Dictionary<string, OptionInfo>(capacity * 2, comparer);
+            _map = new Dictionary<string, OptionProperty>(capacity * 2, comparer);
 
             if (_settings.MutuallyExclusive)
             {
@@ -65,11 +65,11 @@ namespace CommandLine.Options
             private get; set;
         }
 
-        public OptionInfo this[string key]
+        public OptionProperty this[string key]
         {
             get
             {
-                OptionInfo option = null;
+                OptionProperty option = null;
 
                 if (_map.ContainsKey(key))
                 {
@@ -103,15 +103,17 @@ namespace CommandLine.Options
             return EnforceMutuallyExclusiveMap() && EnforceRequiredRule();
         }
 
-        public void SetDefaults()
+        // TODO: refactor this
+        public void SetDefaults<T>(T options)
         {
             foreach (var option in _map.Values)
             {
-                option.BindingContext.SetDefault();
+                var context = new BindingContext<T>(_settings, option, options);
+                context.SetDefault();
             }
         }
 
-        private static void SetParserStateIfNeeded<T>(T options, OptionInfo option, bool? required, bool? mutualExclusiveness)
+        private static void SetParserStateIfNeeded<T>(T options, OptionProperty option, bool? required, bool? mutualExclusiveness)
         {
             var list = MetadataQuery.GetSingle<PropertyInfo, ParserStateAttribute, T>(
                 options,
@@ -201,7 +203,7 @@ namespace CommandLine.Options
             return true;
         }
 
-        private void BuildMutuallyExclusiveMap(OptionInfo option)
+        private void BuildMutuallyExclusiveMap(OptionProperty option)
         {
             var setName = option.MutuallyExclusiveSet;
             if (!_mutuallyExclusiveSetMap.ContainsKey(setName))
@@ -216,12 +218,12 @@ namespace CommandLine.Options
         {
             private int _count;
 
-            public MutuallyExclusiveInfo(OptionInfo option)
+            public MutuallyExclusiveInfo(OptionProperty option)
             {
                 BadOption = option;
             }
 
-            public OptionInfo BadOption { get; private set; }
+            public OptionProperty BadOption { get; private set; }
 
             public int Occurrence
             {

@@ -49,7 +49,7 @@ namespace CommandLine
             return error;
         }
 
-        internal static ParsingError DefineOptionThatViolatesFormat(OptionInfo option)
+        internal static ParsingError DefineOptionThatViolatesFormat(OptionProperty option)
         {
              return new ParsingError(option.ShortName, option.LongName, true);
         }

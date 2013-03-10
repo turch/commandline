@@ -9,7 +9,7 @@ namespace CommandLine.Options
 {
     internal static class OptionInfoFactory
     {
-        public static OptionInfo CreateFromMetadata<T>(
+        public static OptionProperty CreateFromMetadata<T>(
             BaseOptionAttribute attribute,
             PropertyInfo property,
             T target,
@@ -17,7 +17,7 @@ namespace CommandLine.Options
         {
             var longName = attribute.LongName;
 
-            var optionInfo = new OptionInfo
+            var optionInfo = new OptionProperty
                 {
                     ShortName = attribute.ShortName,
                     LongName = longName,
