@@ -73,13 +73,13 @@ namespace CommandLine
         {
         }
 
-        /// <summary>
-        /// Helper factory method for testing purpose.
-        /// </summary>
-        /// <returns>An <see cref="OptionProperty"/> instance.</returns>
-        internal OptionProperty CreateOptionInfo()
-        {
-            return new OptionProperty(this.ShortName, this.LongName);
-        }
+        ///// <summary>
+        ///// Helper factory method for testing purpose.
+        ///// </summary>
+        ///// <returns>An <see cref="OptionProperty"/> instance.</returns>
+        //internal OptionProperty CreateOptionInfo()
+        //{
+        //    return new OptionProperty(this.ShortName, this.LongName);
+        //}
     }
 }
