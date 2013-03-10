@@ -94,7 +94,7 @@
     </Compile>
     <Compile Include="Unit\Infrastructure\Infrastructure_ArgumentParser_Fixture.cs" />
     <Compile Include="Unit\Infrastructure\Infrastructure_Enumerators_Fixture.cs" />
-    <Compile Include="Unit\Infrastructure\Infrastructure_OptionMap_Fixture.cs" />
+    <Compile Include="Unit\Kernel\Kernel_OptionMap_Fixture.cs" />
     <Compile Include="Fakes\CommandLineOptionsBase.cs" />
     <Compile Include="Fakes\OptionsWithValueOptionExplicitIndex.cs" />
     <Compile Include="Fakes\OptionsWithValueOptionImplicitIndex.cs" />
