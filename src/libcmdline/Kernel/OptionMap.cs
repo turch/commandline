@@ -38,11 +38,30 @@ namespace CommandLine.Kernel
         private readonly Dictionary<string, string> _names;
         private readonly Dictionary<string, OptionProperty> _map;
         private readonly Dictionary<string, MutuallyExclusiveInfo> _mutuallyExclusiveSetMap;
-        
+
+        public static OptionMap Create<T>(
+            ParserSettings settings,
+            T options,
+            IOptionPropertyGuard guard,
+            IEnumerable<IProperty> properties)
+        {
+            var map = new OptionMap(settings);
+
+            foreach (OptionProperty prop in properties)
+            {
+                guard.Execute(prop);
+
+                map[prop.UniqueName] = prop;
+            }
+
+            map.RawOptions = options;
+            return map;
+        }
+
         internal OptionMap(ParserSettings settings) 
         {
             _settings = settings;
-            const int capacity = 16; // TODO: to remove
+            const int capacity = 16; // TODO: to replace
 
             IEqualityComparer<string> comparer =
                 _settings.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
@@ -54,7 +73,8 @@ namespace CommandLine.Kernel
                 _mutuallyExclusiveSetMap = new Dictionary<string, MutuallyExclusiveInfo>(capacity, StringComparer.OrdinalIgnoreCase);
             }
         }
-
+            
+        // TODO: refactoring out this!
         internal object RawOptions
         {
             private get; set;

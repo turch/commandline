@@ -310,7 +310,7 @@ namespace CommandLine
         {
             var hadError = false;
             var props = new OptionPropertyQuery().SelectProperties(options.GetType());
-            var optionMap = new OptionMapFactory<T>(_settings).Create(options, new NullOptionPropertyGuard(), props);
+            var optionMap = OptionMap.Create(_settings, options, new NullOptionPropertyGuard(), props);
             optionMap.SetDefaults(options);
             var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
 
@@ -378,7 +378,8 @@ namespace CommandLine
                 return new Tuple<bool, T, object>(false, options, null);
             }
 
-            var optionMap = new OptionMapFactory<T>(_settings).Create(
+            var optionMap = OptionMap.Create(
+                _settings,
                 options,
                 new ThrowingVerbOptionParameterLessCtorGuard(),
                 verbs);

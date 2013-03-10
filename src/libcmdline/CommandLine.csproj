@@ -97,7 +97,6 @@
     <Compile Include="Kernel\IPropertyQuery.cs" />
     <Compile Include="Kernel\OptionPropertyQuery.cs" />
     <Compile Include="MetadataQuery.cs" />
-    <Compile Include="Kernel\OptionMapFactory.cs" />
     <Compile Include="Kernel\BindingContext.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
