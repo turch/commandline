@@ -20,16 +20,12 @@ namespace CommandLine.Kernel
 
         public OptionMap CreateOptionMap(T options)
         {
-            var list = MetadataQuery.Get<PropertyInfo, BaseOptionAttribute, T>(
-                options,
-                a => a.Item1 is PropertyInfo && a.Item2 is BaseOptionAttribute);
-            //var list = new OptionPropertyQuery().SelectProperties(typeof(T));
+            var list = new OptionPropertyQuery().SelectProperties(options.GetType());
 
             var map = new OptionMap(list.Count(), _settings);
 
-            foreach (var pair in list)
+            foreach (OptionProperty prop in list)
             {
-                var prop = new OptionProperty(pair.Left(), pair.Right());
                 map[prop.UniqueName] = prop;
             }
 
