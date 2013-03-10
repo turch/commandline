@@ -30,7 +30,7 @@ using CommandLine.Extensions;
 using CommandLine.Infrastructure;
 #endregion
 
-namespace CommandLine.Options
+namespace CommandLine.Kernel
 {
     internal sealed class OptionMap
     {

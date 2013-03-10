@@ -24,7 +24,7 @@
 #region Using Directives
 using System;
 
-using CommandLine.Options;
+using CommandLine.Kernel;
 using CommandLine.Parsing;
 #endregion
 

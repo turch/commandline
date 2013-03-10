@@ -6,7 +6,7 @@ using System.Text;
 
 using CommandLine.Extensions;
 
-namespace CommandLine.Options
+namespace CommandLine.Kernel
 {
     internal class OptionMapFactory<T>
     {

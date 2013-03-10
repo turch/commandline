@@ -31,7 +31,7 @@ using System.Reflection;
 using CommandLine.Infrastructure;
 #endregion
 
-namespace CommandLine.Options
+namespace CommandLine.Kernel
 {
     internal sealed class OptionProperty
     {

@@ -31,7 +31,7 @@ using System.Linq;
 using System.Reflection;
 using CommandLine.Extensions;
 using CommandLine.Infrastructure;
-using CommandLine.Options;
+using CommandLine.Kernel;
 using CommandLine.Parsing;
 using CommandLine.Text;
 #endregion

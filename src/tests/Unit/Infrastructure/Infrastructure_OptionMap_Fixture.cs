@@ -29,7 +29,7 @@
 #region Using Directives
 using System.Collections.Generic;
 
-using CommandLine.Options;
+using CommandLine.Kernel;
 using CommandLine.Parsing;
 
 using Xunit;

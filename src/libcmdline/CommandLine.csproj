@@ -93,11 +93,11 @@
     </Compile>
     <Compile Include="Attributes\IValueAttribute.cs" />
     <Compile Include="MetadataQuery.cs" />
-    <Compile Include="Options\OptionMapFactory.cs" />
-    <Compile Include="Options\BindingContext.cs" />
+    <Compile Include="Kernel\OptionMapFactory.cs" />
+    <Compile Include="Kernel\BindingContext.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Options\PropertyWriter.cs">
+    <Compile Include="Kernel\PropertyWriter.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Parsing\ArgumentComparer.cs">
@@ -116,8 +116,8 @@
     <Compile Include="UnboundValues.cs" />
     <Compile Include="Parsing\LongOptionParser.cs" />
     <Compile Include="Parsing\OptionGroupParser.cs" />
-    <Compile Include="Options\OptionProperty.cs" />
-    <Compile Include="Options\OptionMap.cs" />
+    <Compile Include="Kernel\OptionProperty.cs" />
+    <Compile Include="Kernel\OptionMap.cs" />
     <Compile Include="Parsing\OneCharStringEnumerator.cs" />
     <Compile Include="Parsing\StringArrayEnumerator.cs" />
     <Compile Include="Parsing\ArgumentParser.cs" />

@@ -25,7 +25,7 @@
 using System;
 using System.Collections.Generic;
 using CommandLine.Extensions;
-using CommandLine.Options;
+using CommandLine.Kernel;
 
 #endregion
 

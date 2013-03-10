@@ -22,7 +22,7 @@
 // THE SOFTWARE.
 #endregion
 
-using CommandLine.Options;
+using CommandLine.Kernel;
 
 namespace CommandLine
 {

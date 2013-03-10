@@ -8,7 +8,7 @@ using System.Text;
 using CommandLine.Extensions;
 using CommandLine.Infrastructure;
 
-namespace CommandLine.Options
+namespace CommandLine.Kernel
 {
     // TODO: refactor this class
     sealed class BindingContext<T> //: IUnderlyingBindingContext

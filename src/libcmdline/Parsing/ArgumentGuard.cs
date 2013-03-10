@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-using CommandLine.Options;
+using CommandLine.Kernel;
 
 namespace CommandLine.Parsing
 {

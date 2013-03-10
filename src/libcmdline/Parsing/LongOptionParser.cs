@@ -24,7 +24,7 @@
 
 using System.Linq;
 
-using CommandLine.Options;
+using CommandLine.Kernel;
 
 namespace CommandLine.Parsing
 {
