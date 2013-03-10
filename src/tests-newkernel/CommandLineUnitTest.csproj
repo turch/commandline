@@ -68,6 +68,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Fakes\FakeShortOptionSpecification.cs" />
+    <Compile Include="Fakes\FakeNullOptionSpecification.cs" />
     <Compile Include="Kernel\ArgumentTokenizerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -4,8 +4,8 @@ src/demo/bin/*
 src/demo/obj
 src/tests/bin/*
 src/tests/obj
-src/tests-newkernel/*
-src/tests-newkernel
+src/tests-newkernel/bin/*
+src/tests-newkernel/obj
 src/templates/CSharpTemplate/bin/*
 src/templates/CSharpTemplate/obj 
 src/templates/VBNetTemplate/bin/*
