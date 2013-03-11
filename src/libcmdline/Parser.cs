@@ -229,44 +229,12 @@ namespace CommandLine
         private static T SetParserStateIfNeeded<T>(T options, IEnumerable<ParsingError> errors)
         {
             var properties = new ParserStatePropertyQuery().SelectProperties(options.GetType());
-            //if (!options.CanReceiveParserState())
-            //{
-            //    return options;
-            //}
             if (properties.Count() != 1)
             {
                 return options;
             }
             
-            //var property = (PropertyInfo)MetadataQuery.GetAll(options).Single(a => a.Item2 is ParserStateAttribute).Left();
-            var property = ((ParserStateProperty)properties.ElementAt(0)).UnderlyingProperty;
-
-            var parserState = property.GetValue(options, null); // TODO: this ops can be in -> ParserStateProperty wrapper
-            if (parserState != null)
-            {
-                if (!(parserState is IParserState))
-                {
-                    throw new InvalidOperationException(SR.InvalidOperationException_ParserStateInstanceBadApplied);
-                }
-
-                if (!(parserState is ParserState))
-                {
-                    throw new InvalidOperationException(SR.InvalidOperationException_ParserStateInstanceCannotBeNotNull);
-                }
-            }
-            else
-            {
-                try
-                {
-                    property.SetValue(options, new ParserState(), null);
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException(SR.InvalidOperationException_ParserStateInstanceBadApplied, ex);
-                }
-            }
-
-            var state = (IParserState)property.GetValue(options, null);
+            var state = ((ParserStateProperty)properties.ElementAt(0)).GetValue(options);
 
             foreach (var error in errors)
             {
