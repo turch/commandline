@@ -107,7 +107,7 @@
     <Compile Include="Unit\ParserBaseFixture.cs" />
     <Compile Include="Helpers\DebugStringUtil.cs" />
     <Compile Include="Fakes\Fake_Booleans_Options.cs" />
-    <Compile Include="Fakes\ComplexOptions.cs" />
+    <Compile Include="Fakes\Fake_Complex_Options.cs" />
     <Compile Include="Fakes\Fake_Mixed_Case_Options.cs" />
     <Compile Include="Fakes\Fake_Nullables_Options.cs" />
     <Compile Include="Fakes\Fake_Numbers_Options.cs" />

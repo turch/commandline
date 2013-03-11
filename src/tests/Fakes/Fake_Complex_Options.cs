@@ -33,16 +33,8 @@ using CommandLine.Tests.Unit;
 
 namespace CommandLine.Tests.Fakes
 {
-
-
-    public class ComplexOptions : CommandLineOptionsBase
+    public class Fake_Complex_Options
     {
-        public ComplexOptions()
-        {
-            StartOffset = 0;
-            Bytes = 0;
-        }
-
         [Option('i', "input", Required = true, HelpText = "Specify input file to be processed.")]
         public string InputFileName { get; set; }
 
@@ -55,9 +47,7 @@ namespace CommandLine.Tests.Fakes
         [Option('b', "bytes", HelpText = "Maximum number of bytes to process.")]
         public long Bytes { get; set; }
 
-        public override string ToString()
-        {
-            return DebugStringUtil.ConvertOptionsToString(this);
-        }
+        [ParserState]
+        public IParserState LastParserState { get; set; }
     }
 }

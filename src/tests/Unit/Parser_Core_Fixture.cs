@@ -444,7 +444,7 @@ namespace CommandLine.Tests.Unit
         public void Parser_should_Report_Missing_Value(Parser sut)
         {
             var result = true;
-            var options = sut.ParseArguments<ComplexOptions>(new[] { "-i", "-o" }, () => { result = false; });
+            var options = sut.ParseArguments<Fake_Complex_Options>(new[] { "-i", "-o" }, () => { result = false; });
 
             Assert.False(result);
             Assert.True(options.LastParserState.Errors.Count > 0);

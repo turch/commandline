@@ -105,7 +105,7 @@ namespace CommandLine.Tests.Unit.Text
             public string Something { get; set; }
         }
 
-        public class ComplexOptionsWithHelp : ComplexOptions
+        public class ComplexOptionsWithHelp : Fake_Complex_Options
         {
             [Option('a', "all", HelpText = "Read the file completely.", MutuallyExclusiveSet = "reading")]
             public bool ReadAll { get; set; }
@@ -482,7 +482,7 @@ namespace CommandLine.Tests.Unit.Text
                     with.CaseSensitive = false;
                     with.MutuallyExclusive = false;
                     with.HelpWriter = Console.Out;
-                }).ParseArguments<ComplexOptions>(new string[0], () => { result = false; });
+                }).ParseArguments<Fake_Complex_Options>(new string[0], () => { result = false; });
 
                 options.LastParserState.Errors.Should().HaveCount(n => n == 2);
             }
