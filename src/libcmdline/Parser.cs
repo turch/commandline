@@ -280,6 +280,7 @@ namespace CommandLine
             optionMap.SetDefaults(options);
             var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
             var parsingErrors = Enumerable.Empty<ParsingError>();
+            var factory = new ArgumentParserFactory<T>(options, optionMap, _settings);
 
             var arguments = new StringArrayEnumerator(args);
             while (arguments.MoveNext())
@@ -290,7 +291,7 @@ namespace CommandLine
                     continue;
                 }
 
-                var parser = new ArgumentParserFactory<T>(options, optionMap, _settings).Create(argument);
+                var parser = factory.Create(argument);
 
                 if (parser is NullArgumentParser<T> &&
                     unboundValues.CanWrite)
