@@ -23,8 +23,8 @@ namespace CommandLine.Kernel
         {
             _settings = settings;
             _optionInfo = optionInfo;
-            _property = optionInfo.UnderlyingProperty;
-            _attribute = optionInfo.UnderlyingAttribute;
+            _property = optionInfo.InnerProperty;
+            _attribute = optionInfo.InnerAttribute;
             _target = target;
         }
 

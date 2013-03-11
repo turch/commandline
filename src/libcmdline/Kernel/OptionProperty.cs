@@ -59,8 +59,8 @@ namespace CommandLine.Kernel
             HasParameterLessCtor = property.PropertyType.GetConstructor(Type.EmptyTypes) != null;
 
             // TODO: refactor this and bindingcontext
-            UnderlyingProperty = property;
-            UnderlyingAttribute = attribute;
+            this.InnerProperty = property;
+            this.InnerAttribute = attribute;
         }
 
         // TEST ctor
@@ -100,8 +100,8 @@ namespace CommandLine.Kernel
 
         public object DefaultValue { get; private set; }
 
-        public PropertyInfo UnderlyingProperty { get; private set; }
+        public PropertyInfo InnerProperty { get; private set; }
 
-        public BaseOptionAttribute UnderlyingAttribute { get; private set; }
+        public BaseOptionAttribute InnerAttribute { get; private set; }
     }
 }

@@ -16,7 +16,7 @@ namespace CommandLine.Kernel
                 //throw new ParserException("Type {0} must have a parameterless constructor or" +
                 //    " be already initialized to be used as a verb command.".FormatInvariant(verb.UnderlyingProperty.PropertyType));
                 throw new ParserException("Type {0} must have a parameterless constructor to be used as a verb command."
-                    .FormatInvariant(verbOption.UnderlyingProperty.PropertyType));
+                    .FormatInvariant(verbOption.InnerProperty.PropertyType));
             }
         }
     }

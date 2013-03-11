@@ -307,7 +307,6 @@ namespace CommandLine
 
                 if (result is FailureTransition)
                 {
-                    //options = SetParserStateIfNeeded(options, result.ParsingErrors);
                     parsingErrors = parsingErrors.Concat(result.ParsingErrors);
                     hadError = true;
                     continue;
@@ -330,9 +329,6 @@ namespace CommandLine
         {
             var options = new T();
 
-            //var verbs = MetadataQuery.Get<PropertyInfo, VerbOptionAttribute, T>(
-            //    options,
-            //    a => a.Item2 is VerbOptionAttribute);
             var verbs = new VerbOptionPropertyQuery().SelectProperties(options.GetType());
             var helpInfo = MetadataQuery.GetSingle<MethodInfo, HelpVerbOptionAttribute, T>(
                 options,
