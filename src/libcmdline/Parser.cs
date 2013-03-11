@@ -231,15 +231,10 @@ namespace CommandLine
             var properties = new ParserStatePropertyQuery().SelectProperties(options.GetType());
             if (properties.OfType<ParserStateProperty>().Any())
             {
-                var state = ((ParserStateProperty)properties.First()).GetValue(options);
-                foreach (var error in errors)
-                {
-                    state.Errors.Add(error);
-                }
+                return ((ParserStateProperty)properties.First()).MutateParsingErrorCollection(options, errors);
             }
             return options;
         }
-
 
         private static void DisplayHelpText<T>(T options, MethodInfo method, TextWriter helpWriter)
         {
@@ -284,6 +279,7 @@ namespace CommandLine
             var optionMap = OptionMap.Create(_settings, options, new NullOptionPropertyGuard(), props);
             optionMap.SetDefaults(options);
             var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
+            var parsingErrors = Enumerable.Empty<ParsingError>();
 
             var arguments = new StringArrayEnumerator(args);
             while (arguments.MoveNext())
@@ -310,7 +306,8 @@ namespace CommandLine
 
                 if (result is FailureTransition)
                 {
-                    options = SetParserStateIfNeeded(options, result.ParsingErrors);
+                    //options = SetParserStateIfNeeded(options, result.ParsingErrors);
+                    parsingErrors = parsingErrors.Concat(result.ParsingErrors);
                     hadError = true;
                     continue;
                 }
@@ -321,6 +318,7 @@ namespace CommandLine
                 }
             }
 
+            options = SetParserStateIfNeeded(options, parsingErrors);
             hadError |= !optionMap.EnforceRules();
 
             return new Tuple<bool, T>(!hadError, options);

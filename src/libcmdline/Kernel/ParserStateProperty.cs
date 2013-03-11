@@ -17,7 +17,17 @@ namespace CommandLine.Kernel
             _property = property;
         }
 
-        public IParserState GetValue<T>(T options)
+        public T MutateParsingErrorCollection<T>(T options, IEnumerable<ParsingError> errors)
+        {
+            var state = GetValue(options);
+            foreach (var err in errors)
+            {
+                state.Errors.Add(err);
+            }
+            return options;
+        }
+
+        private IParserState GetValue<T>(T options)
         {
             var parserState = _property.GetValue(options, null);
 
@@ -46,6 +56,7 @@ namespace CommandLine.Kernel
             }
         }
 
+        // TODO: move this code in a type that initialize the options class
         private void CreateParserState<T>(T options)
         {
             try
