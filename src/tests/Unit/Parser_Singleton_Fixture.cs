@@ -57,7 +57,7 @@ namespace CommandLine.Tests.Unit
         public void Default_doesnt_support_mutually_exclusive_options()
         {
             var result = true;
-            var options = CommandLine.Parser.Default.ParseArguments<OptionsWithMultipleSet>(
+            var options = CommandLine.Parser.Default.ParseArguments<Fake_WithMultipleSet_Options>(
                 new[] { "-r1", "-g2", "-b3", "-h4", "-s5", "-v6" }, () => { result = false; });
 
             result.Should().BeTrue();

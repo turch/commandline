@@ -29,18 +29,8 @@
 
 namespace CommandLine.Tests.Fakes
 {
-    class OptionsWithMultipleSet
+    class Fake_WithMultipleSet_Options
     {
-        public OptionsWithMultipleSet()
-        {
-            Red = 0;
-            Green = 0;
-            Blue = 0;
-            Hue = 0;
-            Saturation = 0;
-            Value = 0;
-        }
-
         // rgb mutually exclusive set
         [Option('r', "red", MutuallyExclusiveSet = "rgb")]
         public byte Red { get; set; }

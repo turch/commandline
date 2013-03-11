@@ -31,7 +31,7 @@ namespace CommandLine.Tests.Fakes
 {
     enum ColorSet {Undefined, RgbColorSet, HsvColorSet}
 
-    class OptionsWithMultipleSetAndOneOption : OptionsWithMultipleSet
+    class OptionsWithMultipleSetAndOneOption : Fake_WithMultipleSet_Options
     {
         [Option('c', "default-color-set", Required = true)]
         public ColorSet DefaultColorSet  { get; set; }

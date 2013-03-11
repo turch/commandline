@@ -33,12 +33,11 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Kernel
 {
+    // TODO: here apply SRP until the class doesn't comply
     internal sealed class OptionMap
     {
         private readonly ParserSettings _settings;
-        private IEqualityComparer<string> _comparer;
-        //private readonly Dictionary<string, string> _names;
-        //private readonly Dictionary<string, OptionProperty> _map;
+        private readonly IEqualityComparer<string> _comparer;
         private readonly Dictionary<Tuple<
                 string, // short name
                 string  // long name
@@ -53,27 +52,16 @@ namespace CommandLine.Kernel
         {
             var map = new OptionMap(settings, guard, properties);
 
-            //foreach (OptionProperty prop in properties)
-            //{
-            //    guard.Execute(prop);
-
-            //    map[prop.UniqueName] = prop;
-            //}
-
             map.RawOptions = options;
             return map;
         }
 
-        internal OptionMap(ParserSettings settings, IOptionPropertyGuard guard, IEnumerable<IProperty> properties) 
+        internal OptionMap(ParserSettings settings, IOptionPropertyGuard guard, IEnumerable<IProperty> properties)
         {
-            _settings = settings;
             var capacity = properties.Count();
-
-            _comparer =
-                _settings.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
-            //_names = new Dictionary<string, string>(capacity, comparer);
-            //_map = new Dictionary<string, OptionProperty>(capacity * 2, comparer);
-            _map = new Dictionary<Tuple<string, string>, OptionProperty>();
+            _settings = settings;
+            _comparer = _settings.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
+            _map = new Dictionary<Tuple<string, string>, OptionProperty>(capacity);
 
             foreach (OptionProperty prop in properties)
             {
@@ -102,34 +90,9 @@ namespace CommandLine.Kernel
         {
             get
             {
-                //OptionProperty option = null;
-                //if (_map.ContainsKey(key))
-                //{
-                //    option = _map[key];
-                //}
-                //else
-                //{
-                //    if (_names.ContainsKey(key))
-                //    {
-                //        var optionKey = _names[key];
-                //        option = _map[optionKey];
-                //    }
-                //}
-                //return option;
-                return
-                    _map.SingleOrDefault(s => _comparer.Equals(key, s.Key.Item1) || _comparer.Equals(key, s.Key.Item2))
-                        .Value;
+                return _map.SingleOrDefault(
+                    s => _comparer.Equals(key, s.Key.Item1) || _comparer.Equals(key, s.Key.Item2)).Value;
             }
-
-            //set
-            //{
-            //    _map[key] = value;
-
-            //    if (value.HasBothNames)
-            //    {
-            //        _names[value.LongName] = new string(value.ShortName.Value, 1);
-            //    }
-            //}
         }
 
         public bool EnforceRules()
@@ -173,13 +136,13 @@ namespace CommandLine.Kernel
             }
 
             var error = new ParsingError
-            {
-                BadOption =
                 {
-                    ShortName = option.ShortName,
-                    LongName = option.LongName
-                }
-            };
+                    BadOption =
+                    {
+                        ShortName = option.ShortName,
+                        LongName = option.LongName
+                    }
+                };
 
             if (required != null)
             {

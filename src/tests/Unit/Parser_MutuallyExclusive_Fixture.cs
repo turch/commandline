@@ -77,7 +77,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser(with => with.MutuallyExclusive = true);
             var result = true;
-            var options = parser.ParseArguments<OptionsWithMultipleSet>(
+            var options = parser.ParseArguments<Fake_WithMultipleSet_Options>(
                 new[] { "-g167", "--hue", "205" }, () => { result = false; });
             
             result.Should().BeTrue();
@@ -90,7 +90,7 @@ namespace CommandLine.Tests.Unit
         {
             var parser = new CommandLine.Parser(with => with.MutuallyExclusive = true);
             var result = true;
-            var options = parser.ParseArguments<OptionsWithMultipleSet>(
+            var options = parser.ParseArguments<Fake_WithMultipleSet_Options>(
                 new[] { "-g167", "--hue", "205", "--saturation=37" }, () => { result = false; });
 
             result.Should().BeFalse();
