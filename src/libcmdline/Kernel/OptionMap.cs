@@ -42,7 +42,6 @@ namespace CommandLine.Kernel
                 string, // short name
                 string  // long name
             >, OptionProperty> _map; 
-        private readonly Dictionary<string, MutuallyExclusiveInfo> _mutuallyExclusiveSetMap;
 
         public static OptionMap Create<T>(
             ParserSettings settings,
@@ -56,6 +55,7 @@ namespace CommandLine.Kernel
             return map;
         }
 
+        // TODO: after refactoring -> private
         internal OptionMap(ParserSettings settings, IOptionPropertyGuard guard, IEnumerable<IProperty> properties)
         {
             var capacity = properties.Count();
@@ -72,11 +72,6 @@ namespace CommandLine.Kernel
                         prop.ShortName.HasValue ? new string(prop.ShortName.Value, 1) : "",
                         prop.LongName ?? ""),
                     prop);
-            }
-
-            if (_settings.MutuallyExclusive)
-            {
-                _mutuallyExclusiveSetMap = new Dictionary<string, MutuallyExclusiveInfo>(capacity, StringComparer.OrdinalIgnoreCase);
             }
         }
             
@@ -180,57 +175,11 @@ namespace CommandLine.Kernel
                 return true;
             }
 
-            foreach (var option in _map.Values)
-            {
-                if (option.IsDefined && option.MutuallyExclusiveSet != null)
-                {
-                    BuildMutuallyExclusiveMap(option);
-                }
-            }
+            var query = from opt in _map.Values
+                        where opt.IsDefined && opt.MutuallyExclusiveSet != null
+                        group opt by opt.MutuallyExclusiveSet;
 
-            foreach (var info in _mutuallyExclusiveSetMap.Values)
-            {
-                if (info.Occurrence > 1)
-                {
-                    SetParserStateIfNeeded(RawOptions, info.BadOption, null, true);
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private void BuildMutuallyExclusiveMap(OptionProperty option)
-        {
-            var setName = option.MutuallyExclusiveSet;
-            if (!_mutuallyExclusiveSetMap.ContainsKey(setName))
-            {
-                _mutuallyExclusiveSetMap.Add(setName, new MutuallyExclusiveInfo(option));
-            }
-
-            _mutuallyExclusiveSetMap[setName].IncrementOccurrence();
-        }
-  
-        private sealed class MutuallyExclusiveInfo
-        {
-            private int _count;
-
-            public MutuallyExclusiveInfo(OptionProperty option)
-            {
-                BadOption = option;
-            }
-
-            public OptionProperty BadOption { get; private set; }
-
-            public int Occurrence
-            {
-                get { return this._count; }
-            }
-
-            public void IncrementOccurrence()
-            {
-                ++this._count;
-            }
+            return query.All(@group => @group.Count() <= 1);
         }
     }
 }
