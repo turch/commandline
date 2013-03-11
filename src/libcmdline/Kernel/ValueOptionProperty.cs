@@ -28,6 +28,6 @@ namespace CommandLine.Kernel
 
         public PropertyInfo InnerProperty { get { return _property; } } 
 
-        public ValueOptionAttribute InnerAttribute { get { return _attribute; } }
+        //public ValueOptionAttribute InnerAttribute { get { return _attribute; } }
     }
 }

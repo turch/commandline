@@ -42,7 +42,6 @@ namespace CommandLine
     {
         private readonly T _options;
         private readonly CultureInfo _parsingCulture;
-        //private readonly IEnumerable<Tuple<PropertyInfo, ValueOptionAttribute>> _valueOptionAttributeList;
         private readonly IEnumerable<ValueOptionProperty> _valueOptionAttributeList;
         private readonly ValueListAttribute _valueListAttribute;
         private readonly IList<string> _valueListReference;
@@ -106,13 +105,6 @@ namespace CommandLine
             return true;
         }
 
-        //private static IEnumerable<Tuple<PropertyInfo, ValueOptionAttribute>> SetValueOptionList(T options)
-        //{
-        //    return MetadataQuery.Get<PropertyInfo, ValueOptionAttribute, T>(
-        //        options,
-        //        a => a.Item2 is ValueOptionAttribute)
-        //            .OrderBy(x => x.Right().Index);
-        //}
         private static IEnumerable<ValueOptionProperty> SetValueOptionList(T options)
         {
             return from prop in new ValueOptionPropertyQuery().SelectProperties(options.GetType()).Cast<ValueOptionProperty>()
