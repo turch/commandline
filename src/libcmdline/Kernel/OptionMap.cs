@@ -156,13 +156,11 @@ namespace CommandLine.Kernel
         {
             var requiredRulesAllMet = true;
 
-            foreach (var option in _map.Values)
+            var requiredViolations = _map.Values.Where(option => option.Required && !(option.IsDefined && option.ReceivedValue));
+            foreach (var option in requiredViolations)
             {
-                if (option.Required && !(option.IsDefined && option.ReceivedValue))
-                {
-                    SetParserStateIfNeeded(RawOptions, option, true, null);
-                    requiredRulesAllMet = false;
-                }
+                SetParserStateIfNeeded(RawOptions, option, true, null);
+                requiredRulesAllMet = false;
             }
 
             return requiredRulesAllMet;
