@@ -13,7 +13,7 @@ namespace CommandLine.Tests.Unit
     public class Parser_Nullables_Fixture
     {
         [Theory, ParserTestConventions]
-        public void Parse_Nullable_Integer_Option(Parser sut, int intergerValue)
+        public void Parse_nullable_integer_option(Parser sut, int intergerValue)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -24,7 +24,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Nullable_Integer_Option__without_value(Parser sut)
+        public void Parse_nullable_integer_option__without_value(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -35,7 +35,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Passing_a_Bad_Value_to_a_Nullable_Integer_Option_Fails(Parser sut)
+        public void Passing_a_bad_value_to_a_nullable_integer_options_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -45,7 +45,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_to_a_Nullable_Integer_Option_Fails(Parser sut)
+        public void Not_passing_a_value_to_a_nullable_integer_options_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -55,7 +55,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Nullable_Enumeration_Option(Parser sut, FileAttributes enumValue)
+        public void Parse_nullable_enumeration_option(Parser sut, FileAttributes enumValue)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -66,7 +66,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Nullable_Enumeration_Option__without_value(Parser sut)
+        public void Parse_nullable_enumeration_option__without_value(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -77,7 +77,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Passing_a_Bad_Value_to_a_Nullable_Enumeration_Option_Fails(Parser sut, FileAttributes enumValue)
+        public void Passing_a_bad_value_to_a_nullable_Enumeration_options_fails(Parser sut, FileAttributes enumValue)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -87,7 +87,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_value_to_a_Nullable_Enumeration_Option_Fails(Parser sut)
+        public void Not_Passing_a_value_to_a_nullable_enumeration_options_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -97,7 +97,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Nullable_Double_Option(Parser sut, double doubleValue)
+        public void Parse_nullable_double_option(Parser sut, double doubleValue)
         {
             var result = true;
             var expected = doubleValue.AsFractional();
@@ -109,7 +109,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Nullable_Double_Option__without_value(Parser sut)
+        public void Parse_nullable_double_option__without_value(Parser sut)
         {
             var result2 = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(
@@ -120,7 +120,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Passing_a_Bad_Value_to_a_Nullable_Double_Option_Fails(Parser sut, double doubleValue)
+        public void Passing_a_bad_value_to_a_nullable_double_options_fails(Parser sut, double doubleValue)
         {
             var result = true;
             var expected = doubleValue.AsFractional();
@@ -132,7 +132,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_to_a_Nullable_Double_Option_Fails(Parser sut)
+        public void Not_passing_a_value_to_a_nullable_double_options_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Nullables_Options>(

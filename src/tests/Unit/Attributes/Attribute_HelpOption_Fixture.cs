@@ -10,7 +10,7 @@ namespace CommandLine.Tests.Unit.Attributes
     public class Attribute_HelpOption_Fixture
     {
         [Theory, ParserWithHelpTestConventionsAttribute]
-        public void Correct_Input_Not_Activates_Help(Parser sut, string argument1, string argument2)
+        public void Correct_input_not_activates_help(Parser sut, string argument1, string argument2)
         {
             var result = true;
             var arguments = new[] { string.Concat("-i", argument1), string.Concat("-o", argument2) };
@@ -21,7 +21,7 @@ namespace CommandLine.Tests.Unit.Attributes
         }
 
         [Theory, ParserWithHelpTestConventionsAttribute]
-        public void Bad_Input_Activates_Help(Parser sut)
+        public void Bad_input_activates_help(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_With_Help>(
@@ -33,7 +33,7 @@ namespace CommandLine.Tests.Unit.Attributes
         }
 
         [Theory, ParserWithHelpTestConventionsAttribute]
-        public void Explicit_Help_Activation(Parser sut)
+        public void Explicit_help_activation(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_With_Help>(

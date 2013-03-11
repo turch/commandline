@@ -18,7 +18,7 @@ namespace CommandLine.Tests.Unit
     public class Parser_Core_Fixture
     {
         [Fact]
-        public void Will_throw_Exception_if_Arguments_Array_is_Null()
+        public void Will_throw_exception_if_arguments_array_is_null()
         {
             Assert.Throws<ArgumentNullException>(
                 () => new CommandLine.Parser().ParseArguments<Fake_Simple_Options>(null, () => {}));
@@ -35,7 +35,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_String_Integer_and_Bool_Options(Parser sut, string stringValue, int integerValue)
+        public void Parse_string_integer_and_bool_options(Parser sut, string stringValue, int integerValue)
         {
             var arguments = new[] { "-s", stringValue, string.Concat("-i", integerValue), "--switch" };
 
@@ -47,7 +47,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Short_Adjacent_Options_with_Double(Parser sut, double doubleValue)
+        public void Parse_short_adjacent_options_with_double(Parser sut, double doubleValue)
         {
             var expected = doubleValue.AsFractional();
             var arguments = new[] { "-ca", string.Concat("-d", expected.ToInvariantString()) };
@@ -60,7 +60,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Short_and_Long_Options_with_Double(Parser sut, double doubleValue)
+        public void Parse_short_and_long_options_with_double(Parser sut, double doubleValue)
         {
             var expected = doubleValue.AsFractional();
             var arguments = new[] { "-b", string.Concat("--double=", expected.ToInvariantString()) };
@@ -71,7 +71,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_using_OptionList(Parser sut, int count, Generator<string> generator)
+        public void Parse_using_option_list(Parser sut, int count, Generator<string> generator)
         {
             var strings = generator.Take(count + 2).Select(a => a.Replace(":", ""));
             var items = string.Join(":", strings.ToArray());
@@ -84,7 +84,7 @@ namespace CommandLine.Tests.Unit
 
         #region #BUG0000
         [Theory, ParserTestConventions]
-        public void Short_Option_refuses_Equal_Token(Parser sut, int integerValue)
+        public void Short_option_refuses_equal_token(Parser sut, int integerValue)
         {
             var result = true;
             var arguments = new[] { string.Concat("-i=", integerValue) };
@@ -96,7 +96,7 @@ namespace CommandLine.Tests.Unit
         #endregion
 
         [Theory, ParserTestConventions]
-        public void Parse_Options_with_Enumeration(Parser sut, FileAttributes enumValue)
+        public void Parse_options_with_enumeration(Parser sut, FileAttributes enumValue)
         {
             var arguments = new[] { "-s", "data.bin", "-x", enumValue.ToString() };
             var options = sut.ParseArguments<Fake_Simple_With_Enum_Options>(arguments, () => { });
@@ -105,7 +105,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserWithItalianCultureTestConventions]
-        public void Parse_Culture_specific_Number(Parser sut, double doubleValue)
+        public void Parse_culture_specific_number(Parser sut, double doubleValue)
         {
             var expected = doubleValue.AsFractional();
             var arguments = new[] { "-d", expected.ToItalianCultureString() };
@@ -116,7 +116,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserWithItalianCultureTestConventions]
-        public void Parse_Culture_specific_Nullable_Number(Parser sut, double doubleValue)
+        public void Parse_culture_specific_nullable_number(Parser sut, double doubleValue)
         {
             var expected = doubleValue.AsFractional();
             var arguments = new[] { "--n-double", expected.ToItalianCultureString() };
@@ -138,7 +138,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Options_with_Default_Array(Parser sut)
+        public void Parse_options_with_default_array(Parser sut)
         {
             var arguments = new string[] {};
 
@@ -150,7 +150,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Fact]
-        public void Will_throw_Exception_with_Options_having_Bad_Defaults()
+        public void Will_throw_exception_with_options_having_bad_defaults()
         {
             Assert.Throws<ParserException>(
                 () => new CommandLine.Parser().ParseArguments<Fake_With_Bad_Defaults_Options>(
@@ -159,7 +159,7 @@ namespace CommandLine.Tests.Unit
 
         #region #BUG0002
         [Theory, ParserTestConventions]
-        public void Parsing_Non_Existent_Short_Option_Fails(Parser sut)
+        public void Parsing_non_existent_short_option_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Simple_Options>(
@@ -169,7 +169,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parsing_Non_Existent_Long_Option_Fails(Parser sut)
+        public void Parsing_non_existent_long_option_dails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Simple_Options>(
@@ -181,7 +181,7 @@ namespace CommandLine.Tests.Unit
 
         #region #REQ0000
         [Theory, AutoData]
-        public void By_Default_Parser_Is_Case_Sensitive(Parser sut)
+        public void By_default_parser_is_case_sensitive(Parser sut)
         {
             var options = sut.ParseArguments<Fake_Mixed_Case_Options>(
                 new[] { "-a", "alfa", "--beta-OPTION", "beta" }, () => { });
@@ -191,7 +191,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, AutoData]
-        public void By_Default_Parser_Is_Case_Sensitive__reverse_proof(Parser sut)
+        public void By_default_parser_is_case_sensitive__reverse_proof(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Mixed_Case_Options>(
@@ -201,7 +201,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Fact]
-        public void Case_Sensitiveness_can_be_Disabled()
+        public void Case_sensitiveness_can_be_disabled()
         {
             var parser = new CommandLine.Parser(new ParserSettings(false)); //Ref.: #DGN0001
 
@@ -215,7 +215,7 @@ namespace CommandLine.Tests.Unit
 
         #region #BUG0003
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_to_a_String_type_Long_Option_Fails(Parser sut)
+        public void Not_passing_a_value_to_a_string_type_long_option_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Simple_Options>(
@@ -225,7 +225,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_to_a_Byte_type_Long_Option_Fails(Parser sut)
+        public void Not_passing_a_value_to_a_byte_type_long_option_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--byte" }, () => { result = false; });
@@ -234,7 +234,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_to_a_Short_type_Long_Option_Fails(Parser sut)
+        public void Not_passing_a_value_to_a_short_type_long_option_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--short" }, () => { result = false; });
@@ -243,7 +243,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_to_an_Integer_type_Long_Option_Fails(Parser sut)
+        public void Not_passing_a_value_to_an_integer_type_long_option_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--int" }, () => { result = false; });
@@ -252,7 +252,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_a_Long_type_Long_Option_Fails(Parser sut)
+        public void Not_passing_a_value_a_Long_type_long_option_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--long" }, () => { result = false; });
@@ -261,7 +261,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_a_Float_type_Long_Option_Fails(Parser sut)
+        public void Not_passing_a_value_a_float_type_long_option_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--float" }, () => { result = false; });
@@ -270,7 +270,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Not_Passing_a_Value_a_Double_type_Long_Option_Fails(Parser sut)
+        public void Not_passing_a_value_a_double_type_long_option_fails(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(new[] { "--double" }, () => { result = false; });
@@ -281,7 +281,7 @@ namespace CommandLine.Tests.Unit
 
         #region #REQ0001
         [Theory, ParserTestConventions]
-        public void Allow_Single_Dash_as_Option_Input_Value(Parser sut)
+        public void Allow_single_dash_as_option_input_value(Parser sut)
         {
             var options = sut.ParseArguments<Fake_Simple_Options>(new[] { "--string", "-" }, () => { });
 
@@ -289,7 +289,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Allow_Single_Dash_as_Non_Option_Value(Parser sut)
+        public void Allow_single_dash_as_non_option_value(Parser sut)
         {
             var options = sut.ParseArguments<SimpleOptionsWithValueList>(
                 new[] { "-sparser.xml", "-", "--switch" }, () => {});
@@ -303,7 +303,7 @@ namespace CommandLine.Tests.Unit
 
         #region #BUG0004
         [Theory, ParserTestConventions]
-        public void Parse_Negative_Integer_Value(Parser sut, int integerValue)
+        public void Parse_negative_integer_value(Parser sut, int integerValue)
         {
             var expected = (0 - integerValue);
             var arguments = new[] { "-i", expected.ToInvariantString() };
@@ -313,7 +313,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Negative_Integer_Value__adjacent_style(Parser sut, int integerValue)
+        public void Parse_negative_integer_value__adjacent_style(Parser sut, int integerValue)
         {
             var expected = (0 - integerValue);
             var arguments = new[] { string.Concat("-i", expected.ToInvariantString()) };
@@ -323,7 +323,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Negative_Integer_Value__long_option(Parser sut, int integerValue)
+        public void Parse_negative_integer_value__long_option(Parser sut, int integerValue)
         {
             var expected = (0 - integerValue);
             var arguments = new[] { "--int", expected.ToInvariantString() };
@@ -333,7 +333,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Negative_Integer_Value__long_option__equal(Parser sut, int integerValue)
+        public void Parse_negative_integer_value__long_option__equal(Parser sut, int integerValue)
         {
             var expected = (0 - integerValue);
             var arguments = new[] { string.Concat("--int=", expected.ToInvariantString()) };
@@ -344,7 +344,7 @@ namespace CommandLine.Tests.Unit
 
 
         [Theory, ParserTestConventions]
-        public void Parse_Negative_Floating_Point_Value(Parser sut, float floatValue)
+        public void Parse_negative_floating_point_value(Parser sut, float floatValue)
         {
             var expected = 0f - floatValue.AsFractional();
             var arguments = new[] { "-f", expected.ToInvariantString() };
@@ -354,7 +354,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Negative_Floating_Point_Value__adjacent(Parser sut, float floatValue)
+        public void Parse_negative_floating_point_value__adjacent(Parser sut, float floatValue)
         {
             var expected = 0 - floatValue.AsFractional();
             var arguments = new[] { string.Concat("-f", expected.ToInvariantString()) };
@@ -364,7 +364,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Negative_Floating_Point_Value__long_option(Parser sut, float floatValue)
+        public void Parse_negative_floating_point_value__long_option(Parser sut, float floatValue)
         {
             var expected = 0 - floatValue.AsFractional();
             var arguments = new[] { "--float", expected.ToInvariantString() };
@@ -374,7 +374,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Parse_Negative_Floating_Point_Value__long_option__equal(Parser sut, float floatValue)
+        public void Parse_negative_floating_point_value__long_option__equal(Parser sut, float floatValue)
         {
             var expected = 0 - floatValue.AsFractional();
             var arguments = new[] { string.Concat("--float=", expected.ToInvariantString()) };
@@ -386,7 +386,7 @@ namespace CommandLine.Tests.Unit
 
         #region #BUG0005
         [Theory, ParserTestConventions]
-        public void Passing_Short_Value_to_Byte_Option_must_Fail_gracefully(Parser sut)
+        public void Passing_short_value_to_byte_option_must_fail_gracefully(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(
@@ -396,7 +396,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Passing_Integer_Value_to_Short_Option_must_Fail_gracefully(Parser sut)
+        public void Passing_integer_value_to_short_option_must_fail_gracefully(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(
@@ -406,7 +406,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Passing_Long_Value_to_Integer_Option_must_Fail_gracefully(Parser sut)
+        public void Passing_long_value_to_integer_option_must_fail_gracefully(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(
@@ -416,7 +416,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Passing_Float_Value_to_Long_Option_must_Fail_gracefully(Parser sut)
+        public void Passing_float_value_to_long_option_must_fail_gracefully(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(
@@ -426,7 +426,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void Passing_Double_Value_to_Float_Option_must_Fail_gracefully(Parser sut)
+        public void Passing_double_value_to_float_option_must_fail_gracefully(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Numbers_Options>(
@@ -441,7 +441,7 @@ namespace CommandLine.Tests.Unit
         /// https://github.com/gsscoder/commandline/issues/15
         /// </summary>
         [Theory, ParserTestConventions]
-        public void Parser_should_Report_Missing_Value(Parser sut)
+        public void Parser_should_report_missing_value(Parser sut)
         {
             var result = true;
             var options = sut.ParseArguments<Fake_Complex_Options>(new[] { "-i", "-o" }, () => { result = false; });
@@ -456,7 +456,7 @@ namespace CommandLine.Tests.Unit
         /// https://github.com/gsscoder/commandline/issues/64
         /// </summary>
         [Theory, ParserTestConventions]
-        public void By_Default_Correct_but_Undefined_Long_Options_should_be_Reported_as_Errors(Parser sut)
+        public void By_default_correct_but_undefined_long_options_should_be_reported_as_errors(Parser sut)
         {
             var result = true;
             var arguments = new[]
@@ -473,7 +473,7 @@ namespace CommandLine.Tests.Unit
         }
 
         [Theory, ParserTestConventions]
-        public void By_Default_Correct_but_Undefined_Short_Options_should_be_Reported_as_Errors(Parser sut)
+        public void By_default_correct_but_undefined_short_options_should_be_reported_as_errors(Parser sut)
         {
             var result = true;
             var arguments = new[]

@@ -392,7 +392,7 @@ namespace CommandLine.Tests.Unit.Text
 
         #region ISSUE#65
         [Theory, HelpTextTestConventions]
-        public void DefaultValue_set_to_Array_should_be_Properly_Printed()
+        public void DefaultValue_set_to_array_should_be_properly_printed()
         {
             var helpText = HelpText.AutoBuild(new Fake_With_Defaults_Array_Options());
 

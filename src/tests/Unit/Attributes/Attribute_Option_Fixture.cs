@@ -15,7 +15,7 @@ namespace CommandLine.Tests.Unit.Attributes
     public class Attribute_Option_Fixture
     {
         [Theory, ParserTestConventions]
-        public void Use_Property_Name_if_is_Long_Name_if_Omitted(Parser sut)
+        public void Use_property_name_if_is_long_name_if_omitted(Parser sut)
         {
             // Given
             var result = true;
@@ -38,7 +38,7 @@ namespace CommandLine.Tests.Unit.Attributes
         }
 
         [Theory, ParserWithHelpTestDynamicAutoBuildConventionsAttribute]
-        public void Use_Property_Name_if_is_Long_Name_if_Omitted_when_printing_Help(Parser sut)
+        public void Use_property_name_if_is_long_name_if_omitted_when_printing_help(Parser sut)
         {
             var arguments = new[] { "-b", "not_a_number" };
 
