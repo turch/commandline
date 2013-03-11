@@ -42,7 +42,8 @@ namespace CommandLine
     {
         private readonly T _options;
         private readonly CultureInfo _parsingCulture;
-        private readonly IEnumerable<Tuple<PropertyInfo, ValueOptionAttribute>> _valueOptionAttributeList;
+        //private readonly IEnumerable<Tuple<PropertyInfo, ValueOptionAttribute>> _valueOptionAttributeList;
+        private readonly IEnumerable<ValueOptionProperty> _valueOptionAttributeList;
         private readonly ValueListAttribute _valueListAttribute;
         private readonly IList<string> _valueListReference;
         private int _valueOptionIndex;
@@ -83,11 +84,11 @@ namespace CommandLine
             {
                 var valueOption = _valueOptionAttributeList.ElementAt(_valueOptionIndex++);
 
-                if (valueOption.Left().PropertyType.IsNullable())
+                if (valueOption.InnerProperty.PropertyType.IsNullable())
                 {
-                    return PropertyWriter.WriteNullable(value, _options, valueOption.Left(), _parsingCulture);
+                    return PropertyWriter.WriteNullable(value, _options, valueOption.InnerProperty, _parsingCulture);
                 }
-                return PropertyWriter.WriteScalar(value, _options, valueOption.Left(), _parsingCulture);
+                return PropertyWriter.WriteScalar(value, _options, valueOption.InnerProperty, _parsingCulture);
             }
 
             return HasValueList && this.WriteItemToValueList(value);
@@ -105,12 +106,18 @@ namespace CommandLine
             return true;
         }
 
-        private static IEnumerable<Tuple<PropertyInfo, ValueOptionAttribute>> SetValueOptionList(T options)
+        //private static IEnumerable<Tuple<PropertyInfo, ValueOptionAttribute>> SetValueOptionList(T options)
+        //{
+        //    return MetadataQuery.Get<PropertyInfo, ValueOptionAttribute, T>(
+        //        options,
+        //        a => a.Item2 is ValueOptionAttribute)
+        //            .OrderBy(x => x.Right().Index);
+        //}
+        private static IEnumerable<ValueOptionProperty> SetValueOptionList(T options)
         {
-            return MetadataQuery.Get<PropertyInfo, ValueOptionAttribute, T>(
-                options,
-                a => a.Item2 is ValueOptionAttribute)
-                    .OrderBy(x => x.Right().Index);
+            return from prop in new ValueOptionPropertyQuery().SelectProperties(options.GetType()).Cast<ValueOptionProperty>()
+                   orderby prop.Index
+                   select prop;
         }
     }
 }
