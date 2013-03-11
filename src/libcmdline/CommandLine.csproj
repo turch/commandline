@@ -89,6 +89,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="Kernel\ParserStateProperty.cs" />
+    <Compile Include="Kernel\ParserStatePropertyQuery.cs" />
     <Compile Include="Kernel\NullOptionPropertyGuard.cs" />
     <Compile Include="Kernel\IOptionPropertyGuard.cs" />
     <Compile Include="Kernel\ThrowingVerbOptionParameterLessCtorGuard.cs" />

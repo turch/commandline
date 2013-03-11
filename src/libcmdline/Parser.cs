@@ -228,14 +228,20 @@ namespace CommandLine
 
         private static T SetParserStateIfNeeded<T>(T options, IEnumerable<ParsingError> errors)
         {
-            if (!options.CanReceiveParserState())
+            var properties = new ParserStatePropertyQuery().SelectProperties(options.GetType());
+            //if (!options.CanReceiveParserState())
+            //{
+            //    return options;
+            //}
+            if (properties.Count() != 1)
             {
                 return options;
             }
+            
+            //var property = (PropertyInfo)MetadataQuery.GetAll(options).Single(a => a.Item2 is ParserStateAttribute).Left();
+            var property = ((ParserStateProperty)properties.ElementAt(0)).UnderlyingProperty;
 
-            var property = (PropertyInfo)MetadataQuery.GetAll(options).Single(a => a.Item2 is ParserStateAttribute).Left();
-
-            var parserState = property.GetValue(options, null);
+            var parserState = property.GetValue(options, null); // TODO: this ops can be in -> ParserStateProperty wrapper
             if (parserState != null)
             {
                 if (!(parserState is IParserState))

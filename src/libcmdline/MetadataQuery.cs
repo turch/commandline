@@ -7,6 +7,7 @@ using System.Text;
 
 namespace CommandLine
 {
+    // REMARKS: this type will be replaced by Single-Responsability types in Kernel ns
     static class MetadataQuery
     {
         private static readonly Dictionary<object, IEnumerable<Tuple<MemberInfo, object>>> Cache = new Dictionary<object, IEnumerable<Tuple<MemberInfo, object>>>();
