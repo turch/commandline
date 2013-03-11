@@ -229,20 +229,17 @@ namespace CommandLine
         private static T SetParserStateIfNeeded<T>(T options, IEnumerable<ParsingError> errors)
         {
             var properties = new ParserStatePropertyQuery().SelectProperties(options.GetType());
-            if (properties.Count() != 1)
+            if (properties.OfType<ParserStateProperty>().Any())
             {
-                return options;
+                var state = ((ParserStateProperty)properties.First()).GetValue(options);
+                foreach (var error in errors)
+                {
+                    state.Errors.Add(error);
+                }
             }
-            
-            var state = ((ParserStateProperty)properties.ElementAt(0)).GetValue(options);
-
-            foreach (var error in errors)
-            {
-                state.Errors.Add(error);
-            }
-
             return options;
         }
+
 
         private static void DisplayHelpText<T>(T options, MethodInfo method, TextWriter helpWriter)
         {
