@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using CommandLine.Extensions;
 
 namespace CommandLine.Kernel
 {
@@ -24,10 +26,13 @@ namespace CommandLine.Kernel
             get { return _index; }
         }
 
-        // TODO: exposing these members will be replaced with logic inserted in this class
-
-        public PropertyInfo InnerProperty { get { return _property; } } 
-
-        //public ValueOptionAttribute InnerAttribute { get { return _attribute; } }
+        public bool MutateValue<T>(T target, string value, CultureInfo parsingCulture)
+        {
+            if (_property.PropertyType.IsNullable())
+            {
+                return PropertyWriter.WriteNullable(value, target, _property, parsingCulture);
+            }
+            return PropertyWriter.WriteScalar(value, target, _property, parsingCulture);
+        }
     }
 }

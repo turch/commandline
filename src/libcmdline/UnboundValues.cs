@@ -83,11 +83,7 @@ namespace CommandLine
             {
                 var valueOption = _valueOptionAttributeList.ElementAt(_valueOptionIndex++);
 
-                if (valueOption.InnerProperty.PropertyType.IsNullable())
-                {
-                    return PropertyWriter.WriteNullable(value, _options, valueOption.InnerProperty, _parsingCulture);
-                }
-                return PropertyWriter.WriteScalar(value, _options, valueOption.InnerProperty, _parsingCulture);
+                return valueOption.MutateValue(_options, value, _parsingCulture);
             }
 
             return HasValueList && this.WriteItemToValueList(value);
