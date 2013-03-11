@@ -24,6 +24,7 @@
 #region Using Directives
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using CommandLine.Extensions;
@@ -35,8 +36,13 @@ namespace CommandLine.Kernel
     internal sealed class OptionMap
     {
         private readonly ParserSettings _settings;
-        private readonly Dictionary<string, string> _names;
-        private readonly Dictionary<string, OptionProperty> _map;
+        private IEqualityComparer<string> _comparer;
+        //private readonly Dictionary<string, string> _names;
+        //private readonly Dictionary<string, OptionProperty> _map;
+        private readonly Dictionary<Tuple<
+                string, // short name
+                string  // long name
+            >, OptionProperty> _map; 
         private readonly Dictionary<string, MutuallyExclusiveInfo> _mutuallyExclusiveSetMap;
 
         public static OptionMap Create<T>(
@@ -45,28 +51,40 @@ namespace CommandLine.Kernel
             IOptionPropertyGuard guard,
             IEnumerable<IProperty> properties)
         {
-            var map = new OptionMap(settings);
+            var map = new OptionMap(settings, guard, properties);
 
-            foreach (OptionProperty prop in properties)
-            {
-                guard.Execute(prop);
+            //foreach (OptionProperty prop in properties)
+            //{
+            //    guard.Execute(prop);
 
-                map[prop.UniqueName] = prop;
-            }
+            //    map[prop.UniqueName] = prop;
+            //}
 
             map.RawOptions = options;
             return map;
         }
 
-        internal OptionMap(ParserSettings settings) 
+        internal OptionMap(ParserSettings settings, IOptionPropertyGuard guard, IEnumerable<IProperty> properties) 
         {
             _settings = settings;
-            const int capacity = 16; // TODO: to replace
+            var capacity = properties.Count();
 
-            IEqualityComparer<string> comparer =
+            _comparer =
                 _settings.CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase;
-            _names = new Dictionary<string, string>(capacity, comparer);
-            _map = new Dictionary<string, OptionProperty>(capacity * 2, comparer);
+            //_names = new Dictionary<string, string>(capacity, comparer);
+            //_map = new Dictionary<string, OptionProperty>(capacity * 2, comparer);
+            _map = new Dictionary<Tuple<string, string>, OptionProperty>();
+
+            foreach (OptionProperty prop in properties)
+            {
+                guard.Execute(prop);
+
+                _map.Add(
+                    Tuple.Create(
+                        prop.ShortName.HasValue ? new string(prop.ShortName.Value, 1) : "",
+                        prop.LongName ?? ""),
+                    prop);
+            }
 
             if (_settings.MutuallyExclusive)
             {
@@ -84,33 +102,34 @@ namespace CommandLine.Kernel
         {
             get
             {
-                OptionProperty option = null;
-
-                if (_map.ContainsKey(key))
-                {
-                    option = _map[key];
-                }
-                else
-                {
-                    if (_names.ContainsKey(key))
-                    {
-                        var optionKey = _names[key];
-                        option = _map[optionKey];
-                    }
-                }
-
-                return option;
+                //OptionProperty option = null;
+                //if (_map.ContainsKey(key))
+                //{
+                //    option = _map[key];
+                //}
+                //else
+                //{
+                //    if (_names.ContainsKey(key))
+                //    {
+                //        var optionKey = _names[key];
+                //        option = _map[optionKey];
+                //    }
+                //}
+                //return option;
+                return
+                    _map.SingleOrDefault(s => _comparer.Equals(key, s.Key.Item1) || _comparer.Equals(key, s.Key.Item2))
+                        .Value;
             }
 
-            set
-            {
-                _map[key] = value;
+            //set
+            //{
+            //    _map[key] = value;
 
-                if (value.HasBothNames)
-                {
-                    _names[value.LongName] = new string(value.ShortName.Value, 1);
-                }
-            }
+            //    if (value.HasBothNames)
+            //    {
+            //        _names[value.LongName] = new string(value.ShortName.Value, 1);
+            //    }
+            //}
         }
 
         public bool EnforceRules()
