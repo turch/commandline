@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class ValueListProperty : IProperty
+    internal sealed class ValueListProperty : IMember
     {
         private readonly PropertyInfo _property;
         private readonly ValueListAttribute _attribute;

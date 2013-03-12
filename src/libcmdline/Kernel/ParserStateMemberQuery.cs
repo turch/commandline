@@ -5,9 +5,9 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class ValueListPropertyQuery : IPropertyQuery
+    internal sealed class ParserStateMemberQuery : IMemberQuery
     {
-        public IEnumerable<IProperty> SelectProperties(Type type)
+        public IEnumerable<IMember> SelectMembers(Type type)
         {
             if (type == null)
             {
@@ -15,9 +15,9 @@ namespace CommandLine.Kernel
             }
 
             yield return (from pi in type.GetProperties()
-                   let attributes = pi.GetCustomAttributes(typeof(ValueListAttribute), true)
+                   let attributes = pi.GetCustomAttributes(typeof(ParserStateAttribute), true)
                    where attributes.Length == 1
-                   select new ValueListProperty(pi, (ValueListAttribute)attributes.ElementAt(0)) as IProperty).SingleOrDefault();
+                   select new ParserStateProperty(pi) as IMember).SingleOrDefault();
         }
     }
 }

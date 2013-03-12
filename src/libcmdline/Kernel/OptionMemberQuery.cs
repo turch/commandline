@@ -5,9 +5,9 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class VerbOptionPropertyQuery : IPropertyQuery
+    internal sealed class OptionMemberQuery : IMemberQuery
     {
-        public IEnumerable<IProperty> SelectProperties(Type type)
+        public IEnumerable<IMember> SelectMembers(Type type)
         {
             if (type == null)
             {
@@ -15,9 +15,9 @@ namespace CommandLine.Kernel
             }
 
             return from pi in type.GetProperties()
-                   let attributes = pi.GetCustomAttributes(typeof(VerbOptionAttribute), true)
+                   let attributes = pi.GetCustomAttributes(typeof(BaseOptionAttribute), true)
                    where attributes.Length == 1
-                   select new OptionProperty(pi, (VerbOptionAttribute)attributes.ElementAt(0)) as IProperty;
+                   select new OptionProperty(pi, (BaseOptionAttribute)attributes.ElementAt(0)) as IMember;
         }
     }
 }

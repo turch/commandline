@@ -8,7 +8,7 @@ using CommandLine.Extensions;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class ValueOptionProperty : IProperty
+    internal sealed class ValueOptionProperty : IMember
     {
         private readonly PropertyInfo _property;
         private readonly ValueOptionAttribute _attribute;

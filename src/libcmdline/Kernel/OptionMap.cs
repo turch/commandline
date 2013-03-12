@@ -47,7 +47,7 @@ namespace CommandLine.Kernel
             ParserSettings settings,
             T options,
             IOptionPropertyGuard guard,
-            IEnumerable<IProperty> properties)
+            IEnumerable<IMember> properties)
         {
             var map = new OptionMap(settings, guard, properties);
 
@@ -56,7 +56,7 @@ namespace CommandLine.Kernel
         }
 
         // TODO: after refactoring -> private
-        internal OptionMap(ParserSettings settings, IOptionPropertyGuard guard, IEnumerable<IProperty> properties)
+        internal OptionMap(ParserSettings settings, IOptionPropertyGuard guard, IEnumerable<IMember> properties)
         {
             var capacity = properties.Count();
             _settings = settings;

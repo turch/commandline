@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal interface IProperty
+    internal interface IMember
     {
     }
 }

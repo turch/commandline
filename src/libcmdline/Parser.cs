@@ -228,7 +228,7 @@ namespace CommandLine
 
         private static T SetParserStateIfNeeded<T>(T options, IEnumerable<ParsingError> errors)
         {
-            var properties = new ParserStatePropertyQuery().SelectProperties(options.GetType());
+            var properties = new ParserStateMemberQuery().SelectMembers(options.GetType());
             if (properties.OfType<ParserStateProperty>().Any())
             {
                 return ((ParserStateProperty)properties.First()).MutateParsingErrorCollection(options, errors);
@@ -236,10 +236,10 @@ namespace CommandLine
             return options;
         }
 
-        private static void DisplayHelpText<T>(T options, MethodInfo method, TextWriter helpWriter)
+        private static void DisplayHelpText<T>(T options, HelpOptionMethod helpMethod, TextWriter helpWriter)
         {
             string helpText;
-            HelpOptionAttribute.Invoke(options, method, out helpText);
+            helpMethod.Invoke(options, out helpText);
             helpWriter.Write(helpText);
         }
 
@@ -247,14 +247,18 @@ namespace CommandLine
             where T : new()
         {
             var options = new T();
-            var pair = MetadataQuery.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
+            
+            //var pair = MetadataQuery.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
+            var methods = new HelpOptionMethodQuery().SelectMembers(options.GetType());
+
             var helpWriter = _settings.HelpWriter;
 
-            if (pair != null && helpWriter != null)
+            if (methods.OfType<HelpOptionMethod>().Any() && helpWriter != null)
             {
-                if (this.TryParseHelp(args, pair.Right()))
+                var helpMethod = (HelpOptionMethod)methods.First();
+                if (this.TryParseHelp(args, helpMethod))
                 {
-                    DisplayHelpText(options, pair.Left(), helpWriter);
+                    DisplayHelpText(options, helpMethod, helpWriter);
                     return new Tuple<bool, T>(false, options);
                 }
 
@@ -264,7 +268,7 @@ namespace CommandLine
 
                 if (!result)
                 {
-                    DisplayHelpText(options, pair.Left(), helpWriter);
+                    DisplayHelpText(options, helpMethod, helpWriter);
                     return new Tuple<bool, T>(false, options);
                 }
             }
@@ -275,7 +279,7 @@ namespace CommandLine
         private Tuple<bool, T> ParseArgumentsImpl<T>(string[] args, T options)
         {
             var hadError = false;
-            var props = new OptionPropertyQuery().SelectProperties(options.GetType());
+            var props = new OptionMemberQuery().SelectMembers(options.GetType());
             var optionMap = OptionMap.Create(_settings, options, new NullOptionPropertyGuard(), props);
             optionMap.SetDefaults(options);
             var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
@@ -329,7 +333,7 @@ namespace CommandLine
         {
             var options = new T();
 
-            var verbs = new VerbOptionPropertyQuery().SelectProperties(options.GetType());
+            var verbs = new VerbOptionMemberQuery().SelectMembers(options.GetType());
             var helpInfo = MetadataQuery.GetSingle<MethodInfo, HelpVerbOptionAttribute, T>(
                 options,
                 a => a.Item2 is HelpVerbOptionAttribute);
@@ -389,7 +393,7 @@ namespace CommandLine
             return new Tuple<bool, T, object>(result, options, verbInstance);
         }
 
-        private bool TryParseHelp(string[] args, HelpOptionAttribute helpOption)
+        private bool TryParseHelp(string[] args, HelpOptionMethod helpOption)
         {
             var caseSensitive = _settings.CaseSensitive;
             foreach (var arg in args)

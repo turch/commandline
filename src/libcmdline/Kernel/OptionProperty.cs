@@ -33,7 +33,7 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class OptionProperty : IProperty
+    internal sealed class OptionProperty : IMember
     {
         public OptionProperty(PropertyInfo property, BaseOptionAttribute attribute)
         {

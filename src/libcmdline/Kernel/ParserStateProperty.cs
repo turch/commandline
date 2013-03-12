@@ -8,7 +8,7 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class ParserStateProperty : IProperty
+    internal sealed class ParserStateProperty : IMember
     {
         private readonly PropertyInfo _property;
 

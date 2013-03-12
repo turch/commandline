@@ -5,19 +5,19 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class HelpOptionMethodQuery : IMethodQuery
+    internal sealed class HelpOptionMethodQuery : IMemberQuery
     {
-        public IEnumerable<IMethod> SelectMethods(Type type)
+        public IEnumerable<IMember> SelectMembers(Type type)
         {
             if (type == null)
             {
                 throw new ArgumentNullException("type");
             }
 
-            return from mi in type.GetMethods()
+            yield return (from mi in type.GetMethods()
                    let attributes = mi.GetCustomAttributes(typeof(HelpOptionAttribute), true)
                    where attributes.Length > 0
-                   select new HelpOptionMethod(mi) as IMethod;
+                   select new HelpOptionMethod(mi, (HelpOptionAttribute)attributes.ElementAt(0)) as IMember).SingleOrDefault();
         }
     }
 }
