@@ -5,6 +5,7 @@ using System.Text;
 
 namespace CommandLine
 {
+    // TODO: will go away with MetadataQuery
     public interface ITargetDescriptor
     {
     }

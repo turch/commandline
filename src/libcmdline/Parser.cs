@@ -215,7 +215,7 @@ namespace CommandLine
                 return target;
             }
 
-            var verbs = new VerbOptionPropertyQuery().SelectMembers(target.GetType()).Cast<OptionProperty>();
+            var verbs = new VerbPropertyQuery().SelectMembers(target.GetType()).Cast<OptionProperty>();
             var verbOption = verbs.SingleOrDefault(a => string.CompareOrdinal(a.UniqueName, verb) == 0);
             found = verbOption != null;
             return found ? verbOption.InnerProperty.GetValue(target, null) : target;
@@ -328,7 +328,7 @@ namespace CommandLine
         {
             var options = new T();
 
-            var verbs = new VerbOptionPropertyQuery().SelectMembers(options.GetType());
+            var verbs = new VerbPropertyQuery().SelectMembers(options.GetType()).Cast<VerbProperty>();
             var methods = new HelpVerbOptionMethodQuery().SelectMembers(options.GetType());
             var hasHelpMethod = methods.OfType<HelpVerbOptionMethod>().Any();
 
@@ -348,21 +348,24 @@ namespace CommandLine
                 return Tuple.Create(false, options, (object)null);
             }
 
-            var optionMap = OptionMap.Create(
-                _settings,
-                options,
-                new ThrowingVerbOptionParameterLessCtorGuard(),
-                verbs);
+            //var optionMap = OptionMap.Create(
+            //    _settings,
+            //    options,
+            //    new ThrowingVerbOptionParameterLessCtorGuard(),
+            //    verbs);
 
-            if (TryParseHelpVerb(args, options, helpInfo, optionMap))
+            var verbOption = verbs.SingleOrDefault(
+                s => string.Compare(args.First(), s.Name, _settings.StringComparison) == 0);
+
+            if (TryParseHelpVerb(args, options, helpInfo, verbOption))
             {
                 return Tuple.Create(false, options, (object)null);
             }
 
-            var verbOption = optionMap[args.First()];
+            //var verbOption = optionMap[args.First()];
 
             // User invoked a bad verb name
-            if (verbOption == null)
+            if (verbOption == null) // TODO: refactor all this horrible null checks
             {
                 if (helpInfo != null)
                 {
@@ -372,12 +375,12 @@ namespace CommandLine
                 return Tuple.Create(false, options, (object)null);
             }
 
-            var bindingContext = new BindingContext<T>(_settings, verbOption, options);
-            var verbInstance = bindingContext.GetValue();
+            //var bindingContext = new BindingContext<T>(_settings, verbOption, options);
+            var verbInstance = verbOption.GetValue(options);  //bindingContext.GetValue();
             if (verbInstance == null)
             {
                 // Developer has not provided a default value and did not assign an instance
-                verbInstance = bindingContext.SetValueWithBuiltInstance();
+                verbInstance = verbOption.SetValueWithBuiltInstance(options); // bindingContext.SetValueWithBuiltInstance();
             }
 
             var resultAndVerbInstance = this.ParseArgumentsImpl(args.Skip(1).ToArray(), verbInstance);
@@ -420,7 +423,7 @@ namespace CommandLine
             return false;
         }
 
-        private bool TryParseHelpVerb<T>(string[] args, T options, HelpVerbOptionMethod helpInfo, OptionMap optionMap)
+        private bool TryParseHelpVerb<T>(string[] args, T options, HelpVerbOptionMethod helpInfo, VerbProperty verbOption)
         {
             var helpWriter = _settings.HelpWriter;
             if (helpInfo != null && helpWriter != null)
@@ -431,14 +434,16 @@ namespace CommandLine
                     var verb = args.FirstOrDefault();
                     if (verb != null)
                     {
-                        var verbOption = optionMap[verb];
+                        //var verbOption = optionMap[verb];
                         if (verbOption != null)
                         {
-                            var bindingContext = new BindingContext<T>(_settings, verbOption, options);
-                            if (bindingContext.GetValue() == null)
+                            //var bindingContext = new BindingContext<T>(_settings, verbOption, options);
+                            //if (bindingContext.GetValue() == null)
+                            if (verbOption.GetValue(options) == null)
                             {
                                 // We need to create an instance also to render help
-                                bindingContext.SetValueWithBuiltInstance();
+                                //bindingContext.SetValueWithBuiltInstance();
+                                verbOption.SetValueWithBuiltInstance(options);
                             }
                         }
                     }

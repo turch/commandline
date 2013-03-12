@@ -102,10 +102,11 @@
     <Compile Include="Kernel\NullOptionPropertyGuard.cs" />
     <Compile Include="Kernel\IOptionPropertyGuard.cs" />
     <Compile Include="Kernel\ThrowingVerbOptionParameterLessCtorGuard.cs" />
-    <Compile Include="Kernel\VerbOptionPropertyQuery.cs" />
+    <Compile Include="Kernel\VerbPropertyQuery.cs" />
     <Compile Include="Kernel\IMember.cs" />
     <Compile Include="Kernel\IMemberQuery.cs" />
     <Compile Include="Kernel\OptionPropertyQuery.cs" />
+    <Compile Include="Kernel\VerbProperty.cs" />
     <Compile Include="MetadataQuery.cs" />
     <Compile Include="Kernel\BindingContext.cs" />
     <Compile Include="Infrastructure\Assumes.cs" />
@@ -146,7 +147,7 @@
     <Compile Include="Attributes\AssemblyUsageAttribute.cs" />
     <Compile Include="Text\FormatOptionHelpTextEventArgs.cs" />
     <Compile Include="Attributes\HelpVerbOptionAttribute.cs" />
-    <Compile Include="Attributes\VerbOptionAttribute.cs" />
+    <Compile Include="Attributes\VerbAttribute.cs" />
     <Compile Include="BadOptionInfo.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="ParserException.cs" />

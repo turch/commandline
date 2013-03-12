@@ -82,13 +82,13 @@ namespace CommandLine.Tests.Fakes
             CommitVerb = new CommitSubOptions();
         }
 
-        [VerbOption("add", HelpText = "Add file contents to the index.")]
+        [Verb("add", HelpText = "Add file contents to the index.")]
         public AddSubOptions AddVerb { get; set; }
 
-        [VerbOption("commit", HelpText = "Record changes to the repository.")]
+        [Verb("commit", HelpText = "Record changes to the repository.")]
         public CommitSubOptions CommitVerb { get; set; }
 
-        [VerbOption("clone", HelpText = "Clone a repository into a new directory.")]
+        [Verb("clone", HelpText = "Clone a repository into a new directory.")]
         public CloneSubOptions CloneVerb { get; set; }
 
         [HelpVerbOption]
@@ -111,13 +111,13 @@ namespace CommandLine.Tests.Fakes
             CommitVerb = new CommitSubOptions();
         }
 
-        [VerbOption("add", HelpText = "Add file contents to the index.")]
+        [Verb("add", HelpText = "Add file contents to the index.")]
         public AddSubOptions AddVerb { get; set; }
 
-        [VerbOption("commit", HelpText = "Record changes to the repository.")]
+        [Verb("commit", HelpText = "Record changes to the repository.")]
         public CommitSubOptions CommitVerb { get; set; }
 
-        [VerbOption("clone", HelpText = "Clone a repository into a new directory.")]
+        [Verb("clone", HelpText = "Clone a repository into a new directory.")]
         public CloneSubOptions CloneVerb { get; set; }
     }
 
@@ -129,7 +129,7 @@ namespace CommandLine.Tests.Fakes
 
     class OptionsWithVerbsNoHelp2 : OptionsWithVerbsNoHelp
     {
-        [VerbOption("with")]
+        [Verb("with")]
         public WithRequiredSubOptions WithRequired { get; set; }
     }
 }

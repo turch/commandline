@@ -35,7 +35,7 @@ namespace CommandLine
     {
         public static bool AnyVerbCommands<T>(this T options)
         {
-            return MetadataQuery.GetAll(options).Any(a => a.Item2 is VerbOptionAttribute);
+            return MetadataQuery.GetAll(options).Any(a => a.Item2 is VerbAttribute);
         }
 
         public static bool HasHelpMethod<T>(this T options)

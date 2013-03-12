@@ -33,34 +33,32 @@ namespace CommandLine
     /// Models a verb command specification.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class VerbOptionAttribute : BaseOptionAttribute//, IVerbOptionAttribute
+    public sealed class VerbAttribute : Attribute
     {
+        private readonly string _name;
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="CommandLine.VerbOptionAttribute"/> class.
+        /// Initializes a new instance of the <see cref="VerbAttribute"/> class.
         /// </summary>
-        /// <param name="longName">The long name of the verb command.</param>
-        public VerbOptionAttribute(string longName)
-            : base(null, longName)
+        /// <param name="name">The long name of the verb command.</param>
+        public VerbAttribute(string name)
         {
-            Assumes.NotNullOrEmpty(longName, "longName");
+            Assumes.NotNullOrEmpty(name, "name");
+
+            _name = name;
         }
 
         /// <summary>
         /// Verb commands do not support short name by design.
         /// </summary>
-        public override char? ShortName
+        public string Name
         {
-            get { return null; }
-            internal set { throw new InvalidOperationException(SR.InvalidOperationException_DoNotUseShortNameForVerbCommands); }
+            get { return _name; }
         }
 
-        /// <summary>
-        /// Verb commands cannot be mandatory since are mutually exclusive by design.
-        /// </summary>
-        public override bool Required
+        public string HelpText
         {
-            get { return false; }
-            set { throw new InvalidOperationException(SR.InvalidOperationException_DoNotSetRequiredPropertyForVerbCommands); }
+            get; set;
         }
     }
 }

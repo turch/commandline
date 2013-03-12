@@ -83,13 +83,13 @@ namespace CommandLine.Tests.Fakes
             CommitVerb = new CommitSubOptionsHelp();
         }
 
-        [VerbOption("add", HelpText = "Add file contents to the index.")]
+        [Verb("add", HelpText = "Add file contents to the index.")]
         public AddSubOptionsHelp AddVerb { get; set; }
 
-        [VerbOption("commit", HelpText = "Record changes to the repository.")]
+        [Verb("commit", HelpText = "Record changes to the repository.")]
         public CommitSubOptionsHelp CommitVerb { get; set; }
 
-        [VerbOption("clone", HelpText = "Clone a repository into a new directory.")]
+        [Verb("clone", HelpText = "Clone a repository into a new directory.")]
         public CloneSubOptionsHelp CloneVerb { get; set; }
 
         public string InvokedVerb { get; set; }
