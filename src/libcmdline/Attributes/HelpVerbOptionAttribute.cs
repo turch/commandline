@@ -82,30 +82,5 @@ namespace CommandLine
             get { return false; }
             set { throw new InvalidOperationException(SR.InvalidOperationException_DoNotSetRequiredPropertyForVerbCommands); }
         }
-
-        //internal static void Invoke<T>(
-        //    T target,
-        //    MethodInfo method,
-        //    string verb,
-        //    out string text)
-        //{
-        //    if (!CheckMethodSignature(method))
-        //    {
-        //        throw new MemberAccessException(
-        //            SR.MemberAccessException_BadSignatureForHelpVerbOptionAttribute.FormatInvariant(method.Name));
-        //    }
-
-        //    text = (string)method.Invoke(target, new object[] { verb });
-        //}
-
-        //private static bool CheckMethodSignature(MethodInfo value)
-        //{
-        //    if (value.ReturnType == typeof(string) && value.GetParameters().Length == 1)
-        //    {
-        //        return value.GetParameters()[0].ParameterType == typeof(string);
-        //    }
-
-        //    return false;
-        //}
     }
 }

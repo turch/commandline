@@ -106,25 +106,5 @@ namespace CommandLine
             get { return false; }
             set { throw new InvalidOperationException(); }
         }
-
-        //internal static void Invoke<T>(
-        //    T options,
-        //    MethodInfo method,
-        //    out string text)
-        //{
-        //    text = null;
-            
-        //    if (!CheckMethodSignature(method))
-        //    {
-        //        throw new MemberAccessException();
-        //    }
-            
-        //    text = (string)method.Invoke(options, null);
-        //}
-
-        //private static bool CheckMethodSignature(MethodInfo value)
-        //{
-        //    return value.ReturnType == typeof(string) && value.GetParameters().Length == 0;
-        //}
     }
 }

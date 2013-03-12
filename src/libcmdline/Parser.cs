@@ -334,9 +334,6 @@ namespace CommandLine
             var options = new T();
 
             var verbs = new VerbOptionMemberQuery().SelectMembers(options.GetType());
-            //var helpInfo = MetadataQuery.GetSingle<MethodInfo, HelpVerbOptionAttribute, T>(
-            //    options,
-            //    a => a.Item2 is HelpVerbOptionAttribute);
             var methods = new HelpVerbOptionMethodQuery().SelectMembers(options.GetType());
             var hasHelpMethod = methods.OfType<HelpVerbOptionMethod>().Any();
 
@@ -462,14 +459,8 @@ namespace CommandLine
         private void DisplayHelpVerbText<T>(T options, HelpVerbOptionMethod method, string verb)
         {
             string helpText;
-            if (verb == null) // AUTONOTE: WHAT'S THE DIFFERENCE HERE?
-            {
-                method.Invoke(options, null, out helpText);
-            }
-            else
-            {
-                method.Invoke(options, verb, out helpText);
-            }
+
+            method.Invoke(options, verb, out helpText);
 
             if (_settings.HelpWriter != null)
             {
