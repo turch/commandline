@@ -44,7 +44,6 @@ namespace CommandLine
         private readonly T _options;
         private readonly CultureInfo _parsingCulture;
         private readonly IEnumerable<ValueOptionProperty> _valueOptionAttributeList;
-        //private readonly ValueListAttribute _valueListAttribute;
         private readonly ValueListProperty _valueListProperty;
         private readonly bool _hasValueList;
         private readonly IList<string> _valueListReference;
@@ -56,12 +55,6 @@ namespace CommandLine
             _parsingCulture = parsingCulture;
 
             _valueOptionAttributeList = SetValueOptionList(_options);
-
-            //_valueListAttribute = ValueListAttribute.GetAttribute(_options).Right();
-            //if (_valueListAttribute != null)
-            //{
-            //    _valueListReference = ValueListAttribute.GetReference(_options);
-            //}
 
             var properties = new ValueListPropertyQuery().SelectMembers(options.GetType());
             _hasValueList = properties.OfType<ValueListProperty>().Any();
@@ -79,7 +72,6 @@ namespace CommandLine
 
         private bool HasValueList
         {
-            //get { return _valueListAttribute != null; }
             get { return _hasValueList; }
         }
 

@@ -253,7 +253,7 @@ namespace CommandLine
                 if (this.TryParseHelp(args, helpMethod))
                 {
                     DisplayHelpText(options, helpMethod, helpWriter);
-                    return new Tuple<bool, T>(false, options);
+                    return Tuple.Create(false, options);
                 }
 
                 var optionsAndResult = this.ParseArgumentsImpl(args, options);
@@ -263,7 +263,7 @@ namespace CommandLine
                 if (!result)
                 {
                     DisplayHelpText(options, helpMethod, helpWriter);
-                    return new Tuple<bool, T>(false, options);
+                    return Tuple.Create(false, options);
                 }
             }
 
@@ -320,7 +320,7 @@ namespace CommandLine
             options = SetParserStateIfNeeded(options, parsingErrors);
             hadError |= !optionMap.EnforceRules();
 
-            return new Tuple<bool, T>(!hadError, options);
+            return Tuple.Create(!hadError, options);
         }
 
         private Tuple<bool, T, object> ParseArgumentsImplVerbs<T>(string[] args)
@@ -345,7 +345,7 @@ namespace CommandLine
                     DisplayHelpVerbText(options, helpInfo, null);
                 }
 
-                return new Tuple<bool, T, object>(false, options, null);
+                return Tuple.Create(false, options, (object)null);
             }
 
             var optionMap = OptionMap.Create(
@@ -356,7 +356,7 @@ namespace CommandLine
 
             if (TryParseHelpVerb(args, options, helpInfo, optionMap))
             {
-                return new Tuple<bool, T, object>(false, options, null);
+                return Tuple.Create(false, options, (object)null);
             }
 
             var verbOption = optionMap[args.First()];
@@ -369,7 +369,7 @@ namespace CommandLine
                     DisplayHelpVerbText(options, helpInfo, null);
                 }
 
-                return new Tuple<bool, T, object>(false, options, null);
+                return Tuple.Create(false, options, (object)null);
             }
 
             var bindingContext = new BindingContext<T>(_settings, verbOption, options);
@@ -390,7 +390,7 @@ namespace CommandLine
                 DisplayHelpVerbText(options, helpInfo, args.First());
             }
 
-            return new Tuple<bool, T, object>(result, options, verbInstance);
+            return Tuple.Create(result, options, verbInstance);
         }
 
         private bool TryParseHelp(string[] args, HelpOptionMethod helpOption)
