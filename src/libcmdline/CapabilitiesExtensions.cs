@@ -30,6 +30,7 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine
 {
+    // TODO: once a composite is designed and used in Parser this will be removed
     internal static class CapabilitiesExtensions
     {
         public static bool AnyVerbCommands<T>(this T options)
