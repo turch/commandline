@@ -38,12 +38,15 @@ using CommandLine.Parsing;
 
 namespace CommandLine
 {
+    // TODO: refactor this
     internal sealed class UnboundValues<T>
     {
         private readonly T _options;
         private readonly CultureInfo _parsingCulture;
         private readonly IEnumerable<ValueOptionProperty> _valueOptionAttributeList;
-        private readonly ValueListAttribute _valueListAttribute;
+        //private readonly ValueListAttribute _valueListAttribute;
+        private readonly ValueListProperty _valueListProperty;
+        private readonly bool _hasValueList;
         private readonly IList<string> _valueListReference;
         private int _valueOptionIndex;
 
@@ -54,10 +57,18 @@ namespace CommandLine
 
             _valueOptionAttributeList = SetValueOptionList(_options);
 
-            _valueListAttribute = ValueListAttribute.GetAttribute(_options).Right();
-            if (_valueListAttribute != null)
+            //_valueListAttribute = ValueListAttribute.GetAttribute(_options).Right();
+            //if (_valueListAttribute != null)
+            //{
+            //    _valueListReference = ValueListAttribute.GetReference(_options);
+            //}
+
+            var properties = new ValueListPropertyQuery().SelectProperties(options.GetType());
+            _hasValueList = properties.OfType<ValueListProperty>().Any();
+            if (_hasValueList)
             {
-                _valueListReference = ValueListAttribute.GetReference(_options);
+                _valueListProperty = ((ValueListProperty)properties.First());
+                _valueListReference = _valueListProperty.GetList(options);
             }
         }
 
@@ -68,7 +79,8 @@ namespace CommandLine
 
         private bool HasValueList
         {
-            get { return _valueListAttribute != null; }
+            //get { return _valueListAttribute != null; }
+            get { return _hasValueList; }
         }
 
         private bool AnyValueOption
@@ -91,8 +103,8 @@ namespace CommandLine
 
         private bool WriteItemToValueList(string value)
         {
-            if (_valueListAttribute.MaximumElements == 0 ||
-                _valueListAttribute.MaximumElements == _valueListReference.Count)
+            if (_valueListProperty.MaximumElements == 0 ||
+                _valueListProperty.MaximumElements == _valueListReference.Count)
             {
                 return false;
             }

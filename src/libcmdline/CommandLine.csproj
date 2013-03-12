@@ -89,6 +89,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="Kernel\ValueListProperty.cs" />
+    <Compile Include="Kernel\ValueListPropertyQuery.cs" />
     <Compile Include="Kernel\ValueOptionProperty.cs" />
     <Compile Include="Kernel\ValueOptionPropertyQuery.cs" />
     <Compile Include="Kernel\ParserStateProperty.cs" />
