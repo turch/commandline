@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class ParserStateMemberQuery : IMemberQuery
+    internal sealed class OptionPropertyQuery : IMemberQuery
     {
         public IEnumerable<IMember> SelectMembers(Type type)
         {
@@ -14,10 +14,10 @@ namespace CommandLine.Kernel
                 throw new ArgumentNullException("type");
             }
 
-            yield return (from pi in type.GetProperties()
-                   let attributes = pi.GetCustomAttributes(typeof(ParserStateAttribute), true)
+            return from pi in type.GetProperties()
+                   let attributes = pi.GetCustomAttributes(typeof(BaseOptionAttribute), true)
                    where attributes.Length == 1
-                   select new ParserStateProperty(pi) as IMember).SingleOrDefault();
+                   select new OptionProperty(pi, (BaseOptionAttribute)attributes.ElementAt(0)) as IMember;
         }
     }
 }

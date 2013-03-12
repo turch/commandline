@@ -215,20 +215,15 @@ namespace CommandLine
                 return target;
             }
 
-            var pair = MetadataQuery.GetSingle<PropertyInfo, VerbOptionAttribute, T>(
-                target,
-                a =>
-                    {
-                        var verbAttribute = a.Item2 as VerbOptionAttribute;
-                        return verbAttribute != null && string.CompareOrdinal(verbAttribute.UniqueName, verb) == 0;
-                    });
-            found = pair != null;
-            return found ? pair.Left().GetValue(target, null) : target;
+            var verbs = new VerbOptionPropertyQuery().SelectMembers(target.GetType()).Cast<OptionProperty>();
+            var verbOption = verbs.SingleOrDefault(a => string.CompareOrdinal(a.UniqueName, verb) == 0);
+            found = verbOption != null;
+            return found ? verbOption.InnerProperty.GetValue(target, null) : target;
         }
 
         private static T SetParserStateIfNeeded<T>(T options, IEnumerable<ParsingError> errors)
         {
-            var properties = new ParserStateMemberQuery().SelectMembers(options.GetType());
+            var properties = new ParserStatePropertyQuery().SelectMembers(options.GetType());
             if (properties.OfType<ParserStateProperty>().Any())
             {
                 return ((ParserStateProperty)properties.First()).MutateParsingErrorCollection(options, errors);
@@ -279,7 +274,7 @@ namespace CommandLine
         private Tuple<bool, T> ParseArgumentsImpl<T>(string[] args, T options)
         {
             var hadError = false;
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var optionMap = OptionMap.Create(_settings, options, new NullOptionPropertyGuard(), props);
             optionMap.SetDefaults(options);
             var unboundValues = new UnboundValues<T>(options, _settings.ParsingCulture);
@@ -333,7 +328,7 @@ namespace CommandLine
         {
             var options = new T();
 
-            var verbs = new VerbOptionMemberQuery().SelectMembers(options.GetType());
+            var verbs = new VerbOptionPropertyQuery().SelectMembers(options.GetType());
             var methods = new HelpVerbOptionMethodQuery().SelectMembers(options.GetType());
             var hasHelpMethod = methods.OfType<HelpVerbOptionMethod>().Any();
 

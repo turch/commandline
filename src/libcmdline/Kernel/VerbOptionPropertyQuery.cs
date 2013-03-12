@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CommandLine.Kernel
 {
-    internal sealed class VerbOptionMemberQuery : IMemberQuery
+    internal sealed class VerbOptionPropertyQuery : IMemberQuery
     {
         public IEnumerable<IMember> SelectMembers(Type type)
         {

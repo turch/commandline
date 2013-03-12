@@ -18,7 +18,7 @@ namespace CommandLine.Tests.Unit.Kernel
         public void Options_from_different_set_cannot_be_specified()
         {
             var options = new Fake_WithMultipleSet_Options();
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var sut = OptionMap.Create(
                 new ParserSettings { MutuallyExclusive = true }, options, new NullOptionPropertyGuard(), props);
 
@@ -36,7 +36,7 @@ namespace CommandLine.Tests.Unit.Kernel
         public void Options_from_different_set_can_be_specified()
         {
             var options = new Fake_WithMultipleSet_Options();
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var sut = OptionMap.Create(
                 new ParserSettings { MutuallyExclusive = true }, options, new NullOptionPropertyGuard(), props);
 

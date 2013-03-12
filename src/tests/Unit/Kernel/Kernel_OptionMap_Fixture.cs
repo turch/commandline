@@ -16,7 +16,7 @@ namespace CommandLine.Tests.Unit.Kernel
         public void Retrieve_option_with_both_name()
         {
             var options = new Fake_Simple_Options();
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var sut = OptionMap.Create(new ParserSettings(), options, new NullOptionPropertyGuard(), props);
 
             var opt1 = sut["s"];
@@ -31,7 +31,7 @@ namespace CommandLine.Tests.Unit.Kernel
         public void Retrieve_option_with_short_name()
         {
             var options = new Fake_Simple_Options();
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var sut = OptionMap.Create(new ParserSettings(), options, new NullOptionPropertyGuard(), props);
 
             var opt = sut["i"];
@@ -44,7 +44,7 @@ namespace CommandLine.Tests.Unit.Kernel
         public void Retrieve_option_with_long_name()
         {
             var options = new Fake_Simple_Options();
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var sut = OptionMap.Create(new ParserSettings(), options, new NullOptionPropertyGuard(), props);
 
             var opt = sut["switch"];
@@ -57,7 +57,7 @@ namespace CommandLine.Tests.Unit.Kernel
         public void Retrieve_non_existent_option()
         {
             var options = new Fake_Simple_Options();
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var sut = OptionMap.Create(new ParserSettings(), options, new NullOptionPropertyGuard(), props);
 
             var opt = sut["maybe-avalue"];

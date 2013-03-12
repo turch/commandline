@@ -63,7 +63,7 @@ namespace CommandLine
             //    _valueListReference = ValueListAttribute.GetReference(_options);
             //}
 
-            var properties = new ValueListMemberQuery().SelectMembers(options.GetType());
+            var properties = new ValueListPropertyQuery().SelectMembers(options.GetType());
             _hasValueList = properties.OfType<ValueListProperty>().Any();
             if (_hasValueList)
             {
@@ -115,7 +115,7 @@ namespace CommandLine
 
         private static IEnumerable<ValueOptionProperty> SetValueOptionList(T options)
         {
-            return from prop in new ValueOptionMemberQuery().SelectMembers(options.GetType()).Cast<ValueOptionProperty>()
+            return from prop in new ValueOptionPropertyQuery().SelectMembers(options.GetType()).Cast<ValueOptionProperty>()
                    orderby prop.Index
                    select prop;
         }

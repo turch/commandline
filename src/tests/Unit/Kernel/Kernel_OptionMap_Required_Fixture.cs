@@ -16,7 +16,7 @@ namespace CommandLine.Tests.Unit.Kernel
         public void If_one_of_two_required_options_is_specified_fails()
         {
             var options = new Fake_Complex_Options();
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var sut = OptionMap.Create(
                 new ParserSettings { MutuallyExclusive = true }, options, new NullOptionPropertyGuard(), props);
 
@@ -32,7 +32,7 @@ namespace CommandLine.Tests.Unit.Kernel
         public void If_all_required_options_are_specified_succeeds()
         {
             var options = new Fake_Complex_Options();
-            var props = new OptionMemberQuery().SelectMembers(options.GetType());
+            var props = new OptionPropertyQuery().SelectMembers(options.GetType());
             var sut = OptionMap.Create(
                 new ParserSettings { MutuallyExclusive = true }, options, new NullOptionPropertyGuard(), props);
 
