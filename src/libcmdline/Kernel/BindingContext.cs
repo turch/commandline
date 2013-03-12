@@ -11,6 +11,7 @@ using CommandLine.Infrastructure;
 namespace CommandLine.Kernel
 {
     // TODO: refactor this class
+    //        this is class persiste OptionProperty data to the target
     sealed class BindingContext<T> //: IUnderlyingBindingContext
     {
         private readonly ParserSettings _settings;

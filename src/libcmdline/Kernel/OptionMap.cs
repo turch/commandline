@@ -33,7 +33,8 @@ using CommandLine.Infrastructure;
 
 namespace CommandLine.Kernel
 {
-    // TODO: here apply SRP until the class doesn't comply
+    // TODO: - remove RULE-ENFORCING logic
+    //        - it make no sense to handle verb here (they are to easy to handle) 
     internal sealed class OptionMap
     {
         private readonly ParserSettings _settings;

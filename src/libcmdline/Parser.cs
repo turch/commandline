@@ -242,8 +242,7 @@ namespace CommandLine
             where T : new()
         {
             var options = new T();
-            
-            //var pair = MetadataQuery.GetSingle<MethodInfo, HelpOptionAttribute, T>(options, a => a.Item2 is HelpOptionAttribute);
+             
             var methods = new HelpOptionMethodQuery().SelectMembers(options.GetType());
 
             var helpWriter = _settings.HelpWriter;
@@ -292,6 +291,7 @@ namespace CommandLine
 
                 var parser = factory.Create(argument);
 
+                // TODO: this need to be refactored
                 if (parser is NullArgumentParser<T> &&
                     unboundValues.CanWrite)
                 {
