@@ -11,19 +11,19 @@ namespace CommandLine.Kernel
     internal class HelpVerbOptionMethod : IMember
     {
         private readonly MethodInfo _method;
-        private readonly HelpVerbOptionAttribute _attribute;
-        private readonly string _longName;
+        private readonly HelpVerbAttribute _attribute;
+        private readonly string _name;
 
-        public HelpVerbOptionMethod(MethodInfo method, HelpVerbOptionAttribute attribute)
+        public HelpVerbOptionMethod(MethodInfo method, HelpVerbAttribute attribute)
         {
             _method = method;
             _attribute = attribute;
-            _longName = attribute.LongName;
+            _name = attribute.Name;
         }
 
-        public string LongName
+        public string Name
         {
-            get { return _longName; }
+            get { return _name; }
         }
 
         public void Invoke<T>(

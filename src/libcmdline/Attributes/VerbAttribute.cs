@@ -33,7 +33,7 @@ namespace CommandLine
     /// Models a verb command specification.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
-    public sealed class VerbAttribute : Attribute
+    public class VerbAttribute : Attribute
     {
         private readonly string _name;
 

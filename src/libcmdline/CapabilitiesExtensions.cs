@@ -45,7 +45,7 @@ namespace CommandLine
 
         public static bool HasHelpVerbCommandMethod<T>(this T options)
         {
-            return MetadataQuery.GetAll(options).Count(a => a.Item2 is HelpVerbOptionAttribute) == 1;
+            return MetadataQuery.GetAll(options).Count(a => a.Item2 is HelpVerbAttribute) == 1;
         }
 
         public static bool CanReceiveParserState<T>(this T options)

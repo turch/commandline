@@ -94,7 +94,7 @@ namespace CommandLine.Tests.Fakes
 
         public string InvokedVerb { get; set; }
 
-        [HelpVerbOption]
+        [HelpVerb]
         public string GetUsage(string verb)
         {
             //bool found;

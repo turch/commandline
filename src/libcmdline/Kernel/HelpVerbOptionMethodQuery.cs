@@ -15,9 +15,9 @@ namespace CommandLine.Kernel
             }
 
             yield return (from mi in type.GetMethods()
-                          let attributes = mi.GetCustomAttributes(typeof(HelpVerbOptionAttribute), true)
+                          let attributes = mi.GetCustomAttributes(typeof(HelpVerbAttribute), true)
                           where attributes.Length > 0
-                          select new HelpVerbOptionMethod(mi, (HelpVerbOptionAttribute)attributes.ElementAt(0)) as IMember).SingleOrDefault();
+                          select new HelpVerbOptionMethod(mi, (HelpVerbAttribute)attributes.ElementAt(0)) as IMember).SingleOrDefault();
         }
     }
 }

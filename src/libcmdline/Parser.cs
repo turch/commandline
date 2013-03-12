@@ -428,7 +428,7 @@ namespace CommandLine
             var helpWriter = _settings.HelpWriter;
             if (helpInfo != null && helpWriter != null)
             {
-                if (string.Compare(args[0], helpInfo.LongName, _settings.StringComparison) == 0)
+                if (string.Compare(args[0], helpInfo.Name, _settings.StringComparison) == 0)
                 {
                     // User explicitly requested help
                     var verb = args.FirstOrDefault();

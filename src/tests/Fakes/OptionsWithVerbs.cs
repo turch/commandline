@@ -91,7 +91,7 @@ namespace CommandLine.Tests.Fakes
         [Verb("clone", HelpText = "Clone a repository into a new directory.")]
         public CloneSubOptions CloneVerb { get; set; }
 
-        [HelpVerbOption]
+        [HelpVerb]
         public string GetUsage(string verb)
         {
             // verb is null when parser asks to print the help index (with verbs summary),
