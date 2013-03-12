@@ -89,6 +89,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SR.tt</DependentUpon>
     </Compile>
+    <Compile Include="Kernel\CompositeMemberQuery.cs" />
     <Compile Include="Kernel\HelpVerbOptionMethod.cs" />
     <Compile Include="Kernel\HelpVerbOptionMethodQuery.cs" />
     <Compile Include="Kernel\HelpOptionMethod.cs" />
